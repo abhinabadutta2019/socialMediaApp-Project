@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 //
 const userRoutes = require("./routes/userRoutes");
+const postRoutes = require("./routes/postRoutes");
 //
 const app = express();
 app.use(express.json());
@@ -22,3 +23,4 @@ app.listen(process.env.PORT, () => {
 });
 
 app.use("/user", userRoutes);
+app.use("/post", postRoutes);
