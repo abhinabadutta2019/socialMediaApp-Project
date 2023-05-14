@@ -11,7 +11,7 @@ router.post("/", async (req, res) => {
     const savedPost = await newPost.save();
     res.send(savedPost);
   } catch (e) {
-    console.log(e);
+    res.send(e);
   }
 });
 
@@ -19,6 +19,17 @@ router.post("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
+    res.send(post);
+  } catch (e) {
+    res.send(e);
+  }
+});
+//reference link-for syntax-
+//https://stackoverflow.com/questions/38051977/what-does-populate-in-mongoose-mean
+// populate method test( working)
+router.get("/populate/:id", async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id).populate("userId");
     res.send(post);
   } catch (e) {
     res.send(e);
