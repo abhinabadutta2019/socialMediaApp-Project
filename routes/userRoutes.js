@@ -1,22 +1,57 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const User = require("../models/userModel");
+const bcrypt = require("bcryptjs");
 const router = express.Router();
 
 //--/user
 //create / register- user
 router.post("/register", async (req, res) => {
+  //hashing portion
+  const password = req.body.password;
+  const stringPassword = password.toString(); //converting to string--bcrypt.hash() needs password in string form(),as recommended in bcrypt documentation
+  const saltRounds = 10;
+  const hashedPassword = await bcrypt.hash(stringPassword, saltRounds);
+  //putting hashed into newUser
   const newUser = new User({
     username: req.body.username,
-    password: req.body.password,
+    password: hashedPassword,
   });
+  // console.log(newUser.password);
   //
   try {
     const user = await newUser.save();
     res.send(user);
+    // res.send();
   } catch (e) {
     //trying basic error handeling
-    console.log(`error.code-${e.code},Reason-Duplicate Username`);
+    // console.log(`error.code-${e.code},Reason-Duplicate Username`);
+    res.send(e);
+  }
+});
+//login route
+router.post("/login", async (req, res) => {
+  const inputUsername = req.body.username;
+  let inputPassword = req.body.password;
+  let stringPassword = inputPassword.toString(); //password changed to string
+  try {
+    const user = await User.findOne({ username: inputUsername });
+    // console.log(user);
+    // console.log(stringPassword, "stringPassword");
+    const hashedPassword = user.password;
+    // console.log(hashedPassword, "hashedPassword");
+
+    //await diye korle -- error ta paoa jacchilo naa
+    //Error: Illegal arguments: number, string
+    bcrypt.compare(stringPassword, hashedPassword, (err, isMatch) => {
+      if (err) {
+        console.log(err);
+      }
+      console.log(isMatch, "isMatch");
+    });
+
+    res.send(user);
+  } catch (e) {
     res.send(e);
   }
 });
