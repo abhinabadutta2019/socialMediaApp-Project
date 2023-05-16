@@ -7,8 +7,28 @@ const dotenv = require("dotenv");
 dotenv.config();
 const router = express.Router();
 
+///////////////////////////////////////////////
+//jwt.verify--middleware
 //
-// const jwtMiddleware =
+const verifyJwt = async (req, res, next) => {
+  //
+  const token = req.headers.authorization.split(" ")[1];
+  //
+  try {
+    let decoded = jwt.verify(token, `${process.env.JWT_SECRET}`);
+    // let username = decoded;
+    let userDetail = await User.findOne({ username: decoded });
+
+    //
+    req.userDetail = userDetail; //routes are acessing this variable
+
+    next();
+  } catch (e) {
+    return res.send("Invalid Token");
+  }
+};
+
+//////////////////////////////////////////////
 //--/user
 //create / register- user
 router.post("/register", async (req, res) => {
@@ -34,6 +54,7 @@ router.post("/register", async (req, res) => {
     res.send(e);
   }
 });
+/////////////////////////////////////////////
 //login route
 router.post("/login", async (req, res) => {
   const inputUsername = req.body.username;
@@ -44,12 +65,7 @@ router.post("/login", async (req, res) => {
   let payload = req.body.username;
   // const token = jwt.sign(payload, "secret");
   const token = jwt.sign(payload, `${process.env.JWT_SECRET}`);
-
   // console.log(token, "token");
-
-  //jwt.verify()
-  // let decoded = jwt.verify(token, "secret");
-  // console.log(decoded, "decoded");
 
   try {
     const user = await User.findOne({ username: inputUsername });
@@ -57,6 +73,7 @@ router.post("/login", async (req, res) => {
     // console.log(stringPassword, "stringPassword");
     const hashedPassword = user.password;
 
+    //bcrypt-used for password hashing
     const match = await bcrypt.compare(stringPassword, hashedPassword);
 
     res.send({ user: user, token: token }); //sending token from here
@@ -67,24 +84,12 @@ router.post("/login", async (req, res) => {
 });
 //
 //verify token
-router.get("/verifyToken", async (req, res) => {
+router.get("/verifyToken", verifyJwt, async (req, res) => {
   try {
-    // if (!token) {
-    //   res.send({ message: "No token" });
-    // }
-    const token = req.headers.authorization.split(" ")[1];
-
-    //jwt.verify()
-    // let decoded = jwt.verify(token, "secret");
-
-    //jwt.verify() --.env
-    let decoded = jwt.verify(token, `${process.env.JWT_SECRET}`);
-    // console.log(decoded, "decoded");
-
-    //finding user by username
-    let user = await User.findOne({ username: decoded });
-    console.log(user);
+    const user = req.userDetail; //req.userDetail--getting from middleware
     //
+    console.log(user.id, "getting from route");
+
     res.send(user);
   } catch (e) {
     console.log(e);
