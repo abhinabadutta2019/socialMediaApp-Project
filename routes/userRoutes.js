@@ -33,28 +33,34 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   const inputUsername = req.body.username;
   let inputPassword = req.body.password;
-  let stringPassword = inputPassword.toString(); //password changed to string
+  let stringPassword = inputPassword.toString(); //password converted to string
   try {
     const user = await User.findOne({ username: inputUsername });
     // console.log(user);
     // console.log(stringPassword, "stringPassword");
     const hashedPassword = user.password;
     // console.log(hashedPassword, "hashedPassword");
-
+    //////////////////
     //await diye korle -- error ta paoa jacchilo naa
     //Error: Illegal arguments: number, string
-    bcrypt.compare(stringPassword, hashedPassword, (err, isMatch) => {
-      if (err) {
-        console.log(err);
-      }
-      console.log(isMatch, "isMatch");
-    });
+
+    //callBack use korlam( in place of await)
+    // bcrypt.compare(stringPassword, hashedPassword, (err, isMatch) => {
+    //   if (err) {
+    //     console.log(err);
+    //   }
+    //   console.log(isMatch, "isMatch");
+    // });
+    ////////////////
+    const match = await bcrypt.compare(stringPassword, hashedPassword);
 
     res.send(user);
   } catch (e) {
+    console.log(e);
     res.send(e);
   }
 });
+//
 
 // get one user by id
 router.get("/:id", async (req, res) => {
