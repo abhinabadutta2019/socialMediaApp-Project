@@ -2,8 +2,13 @@ const express = require("express");
 const mongoose = require("mongoose");
 const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+dotenv.config();
 const router = express.Router();
 
+//
+// const jwtMiddleware =
 //--/user
 //create / register- user
 router.post("/register", async (req, res) => {
@@ -34,33 +39,58 @@ router.post("/login", async (req, res) => {
   const inputUsername = req.body.username;
   let inputPassword = req.body.password;
   let stringPassword = inputPassword.toString(); //password converted to string
+
+  //jwt.sign()
+  let payload = req.body.username;
+  // const token = jwt.sign(payload, "secret");
+  const token = jwt.sign(payload, `${process.env.JWT_SECRET}`);
+
+  // console.log(token, "token");
+
+  //jwt.verify()
+  // let decoded = jwt.verify(token, "secret");
+  // console.log(decoded, "decoded");
+
   try {
     const user = await User.findOne({ username: inputUsername });
     // console.log(user);
     // console.log(stringPassword, "stringPassword");
     const hashedPassword = user.password;
-    // console.log(hashedPassword, "hashedPassword");
-    //////////////////
-    //await diye korle -- error ta paoa jacchilo naa
-    //Error: Illegal arguments: number, string
 
-    //callBack use korlam( in place of await)
-    // bcrypt.compare(stringPassword, hashedPassword, (err, isMatch) => {
-    //   if (err) {
-    //     console.log(err);
-    //   }
-    //   console.log(isMatch, "isMatch");
-    // });
-    ////////////////
     const match = await bcrypt.compare(stringPassword, hashedPassword);
 
-    res.send(user);
+    res.send({ user: user, token: token }); //sending token from here
   } catch (e) {
     console.log(e);
     res.send(e);
   }
 });
 //
+//verify token
+router.get("/verifyToken", async (req, res) => {
+  try {
+    // if (!token) {
+    //   res.send({ message: "No token" });
+    // }
+    const token = req.headers.authorization.split(" ")[1];
+
+    //jwt.verify()
+    // let decoded = jwt.verify(token, "secret");
+
+    //jwt.verify() --.env
+    let decoded = jwt.verify(token, `${process.env.JWT_SECRET}`);
+    // console.log(decoded, "decoded");
+
+    //finding user by username
+    let user = await User.findOne({ username: decoded });
+    console.log(user);
+    //
+    res.send(user);
+  } catch (e) {
+    console.log(e);
+    res.send(e);
+  }
+});
 
 // get one user by id
 router.get("/:id", async (req, res) => {
