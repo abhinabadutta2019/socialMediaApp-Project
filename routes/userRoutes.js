@@ -17,14 +17,18 @@ const verifyJwt = async (req, res, next) => {
   try {
     let decoded = jwt.verify(token, `${process.env.JWT_SECRET}`);
     // let username = decoded;
-    let userDetail = await User.findOne({ username: decoded });
+    //
+    // console.log(decoded, "decoded");
 
+    let userDetail = await User.findById({ _id: decoded });
+    // console.log(userDetail, "userDetail");
     //
     req.userDetail = userDetail; //routes are acessing this variable
 
     next();
   } catch (e) {
-    return res.send("Invalid Token");
+    return res.send(`Invalid Token from verifyJwt-middleware`);
+    // next();
   }
 };
 
@@ -61,12 +65,6 @@ router.post("/login", async (req, res) => {
   let inputPassword = req.body.password;
   let stringPassword = inputPassword.toString(); //password converted to string
 
-  //jwt.sign()
-  let payload = req.body.username;
-  // const token = jwt.sign(payload, "secret");
-  const token = jwt.sign(payload, `${process.env.JWT_SECRET}`);
-  // console.log(token, "token");
-
   try {
     const user = await User.findOne({ username: inputUsername });
     // console.log(user);
@@ -75,6 +73,13 @@ router.post("/login", async (req, res) => {
 
     //bcrypt-used for password hashing
     const match = await bcrypt.compare(stringPassword, hashedPassword);
+    ///////////////////////////////////////////////////////////
+
+    //jwt.sign()
+    let payload = user.id;
+    // const token = jwt.sign(payload, "secret");
+    const token = jwt.sign(payload, `${process.env.JWT_SECRET}`);
+    // console.log(token, "token");
 
     res.send({ user: user, token: token }); //sending token from here
   } catch (e) {
@@ -88,7 +93,7 @@ router.get("/verifyToken", verifyJwt, async (req, res) => {
   try {
     const user = req.userDetail; //req.userDetail--getting from middleware
     //
-    console.log(user.id, "getting from route");
+    console.log(user.id, `getting from route:${req.url}`);
 
     res.send(user);
   } catch (e) {
