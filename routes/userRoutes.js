@@ -154,23 +154,12 @@ router.post("/update", verifyJwt, hashBcrypt, async (req, res) => {
         let hashedPassword = req.hashedPassword;
         // console.log(`hashBcrypt middleware from routeName ${req.url}`);
 
-        // //
-        let updatePassword = await user.updateOne({
-          $set: { password: hashedPassword },
-        });
-        console.log(`password updated from routeName ${req.url}`);
-      }
-      //////////
-      //update username
-      if (req.body.username) {
-        // console.log(req.body.username, "req.body.username");
-        let updatedUsername = await user.updateOne({
-          $set: { username: req.body.username },
-        });
-        console.log(`username updated from routeName ${req.url}`);
+        //now set req.body.passsword as hashedPassword
+        req.body.password = hashedPassword;
       }
 
-      console.log(req.body, "req.body");
+      //update whole req.body
+      user = await User.findByIdAndUpdate(user.id, { $set: req.body });
 
       res.send(user);
     }
