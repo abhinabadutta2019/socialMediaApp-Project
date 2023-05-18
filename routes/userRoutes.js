@@ -11,17 +11,38 @@ const router = express.Router();
 //jwt.verify--middleware
 //
 const verifyJwt = async (req, res, next) => {
-  //
+  //bearer token theke- token part - split
   const token = req.headers.authorization.split(" ")[1];
   //
   try {
-    let decoded = jwt.verify(token, `${process.env.JWT_SECRET}`);
-    // let username = decoded;
+    //jwt.verify verify gives id
+    let decoded;
+    try {
+      decoded = jwt.verify(token, `${process.env.JWT_SECRET}`);
+      console.log(decoded, "decoded");
+    } catch (e) {
+      return res.status(401).send("Invalid Token");
+    }
+
+    // if (!decoded) {
+    //   return req.send(`token secret not correct or Invalid token`);
+    // }
+    // decoded = "64650010343898cc7e6ff601";//hard coding userid to test error
     //
     // console.log(decoded, "decoded");
-
-    let userDetail = await User.findById({ _id: decoded });
+    let userDetail;
+    //////////////////
+    // try {
+    //   userDetail = await User.findById({ _id: decoded });
+    // } catch (e) {
+    //   return res.send("User not found in database");
+    // }
+    //////////////////////
+    userDetail = await User.findById({ _id: decoded });
     // console.log(userDetail, "userDetail");
+    if (!userDetail) {
+      return res.send("User not found in database");
+    }
     //
     req.userDetail = userDetail; //routes are acessing this variable
 
@@ -29,6 +50,24 @@ const verifyJwt = async (req, res, next) => {
   } catch (e) {
     return res.send(`Invalid Token from verifyJwt-middleware`);
     // next();
+  }
+};
+
+////////////////////////////////////////////
+//taking passsword from route and converting to hashed password
+
+const hashBcrypt = async (req, res, next) => {
+  try {
+    let password = req.body.password;
+    let stringPassword = password.toString();
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(stringPassword, saltRounds);
+    console.log(hashedPassword, "middleware hashedPassword");
+    //
+    req.hashedPassword = hashedPassword;
+    next();
+  } catch (e) {
+    return res.send(`error from hashBcrypt middleware`);
   }
 };
 
@@ -59,7 +98,7 @@ router.post("/register", async (req, res) => {
   }
 });
 /////////////////////////////////////////////
-//login route
+//login route ( it is to check password and genarate token)
 router.post("/login", async (req, res) => {
   const inputUsername = req.body.username;
   let inputPassword = req.body.password;
@@ -73,27 +112,70 @@ router.post("/login", async (req, res) => {
 
     //bcrypt-used for password hashing
     const match = await bcrypt.compare(stringPassword, hashedPassword);
-    ///////////////////////////////////////////////////////////
 
-    //jwt.sign()
-    let payload = user.id;
-    // const token = jwt.sign(payload, "secret");
-    const token = jwt.sign(payload, `${process.env.JWT_SECRET}`);
-    // console.log(token, "token");
+    // checking if password is correct
+    if (!match) {
+      return res.send({ message: "passsword not matched" });
+    } else {
+      //jwt.sign()
+      let payload = user.id;
+      // const token = jwt.sign(payload, "secret");
+      const token = jwt.sign(payload, `${process.env.JWT_SECRET}`);
+      // console.log(token, "token");
 
-    res.send({ user: user, token: token }); //sending token from here
+      res.send({ user: user, token: token }); //sending token from here
+    }
   } catch (e) {
     console.log(e);
     res.send(e);
   }
 });
 //
+//update user with user id
+router.post("/update", verifyJwt, hashBcrypt, async (req, res) => {
+  try {
+    //getting from id---thiw was working-- for this --"/update/:id"-- when sending id with url
+    // let user = await User.findById(req.params.id);
+
+    //try token middleware theke
+    let user = req.userDetail;
+    console.log(`verifyJwt middleware from ${req.url}`);
+    //////////
+    // let updateUsername = await user.updateOne({
+    //   $set: { username: req.body.username },
+    // });
+    // console.log(updateUsername, "updateUsername");
+    ///////////////////////////////////////////
+    // (req.body.password)converting password to string
+    // /////////////
+    // let stringPassword = req.body.password.toString();
+    // let saltRounds = 10;
+    // let hashedPassword = await bcrypt.hash(stringPassword, saltRounds);
+    ///////////////////////////////////////////
+
+    //middleware hash password
+    let hashedPassword = req.hashedPassword;
+    console.log(`hashBcrypt middleware from routeName ${req.url}`);
+
+    //
+    let updatePassword = await user.updateOne({
+      $set: { password: hashedPassword },
+    });
+    console.log(`password updated from routeName ${req.url}`);
+
+    res.send(user);
+  } catch (e) {
+    console.log(e);
+    res.send(e);
+  }
+});
+
 //verify token
 router.get("/verifyToken", verifyJwt, async (req, res) => {
   try {
     const user = req.userDetail; //req.userDetail--getting from middleware
     //
-    console.log(user.id, `getting from route:${req.url}`);
+    console.log(user.id, `getting from routeName :${req.url}`);
 
     res.send(user);
   } catch (e) {
