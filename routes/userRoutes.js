@@ -107,24 +107,29 @@ router.post("/login", async (req, res) => {
 
   try {
     const user = await User.findOne({ username: inputUsername });
-    // console.log(user);
-    // console.log(stringPassword, "stringPassword");
-    const hashedPassword = user.password;
-
-    //bcrypt-used for password hashing
-    const match = await bcrypt.compare(stringPassword, hashedPassword);
-
-    // checking if password is correct
-    if (!match) {
-      return res.send({ message: "passsword not matched" });
+    if (!user) {
+      return res.send({ message: "username not found" });
+      //
     } else {
-      //jwt.sign()
-      let payload = user.id;
-      // const token = jwt.sign(payload, "secret");
-      const token = jwt.sign(payload, `${process.env.JWT_SECRET}`);
-      // console.log(token, "token");
+      // console.log(user);
+      // console.log(stringPassword, "stringPassword");
+      const hashedPassword = user.password;
 
-      res.send({ user: user, token: token }); //sending token from here
+      //bcrypt-used for password hashing
+      const match = await bcrypt.compare(stringPassword, hashedPassword);
+
+      // checking if password is correct
+      if (!match) {
+        return res.send({ message: "passsword not matched" });
+      } else {
+        //jwt.sign()
+        let payload = user.id;
+        // const token = jwt.sign(payload, "secret");
+        const token = jwt.sign(payload, `${process.env.JWT_SECRET}`);
+        // console.log(token, "token");
+
+        res.send({ user: user, token: token }); //sending token from here
+      }
     }
   } catch (e) {
     console.log(e);
