@@ -19,7 +19,7 @@ const verifyJwt = async (req, res, next) => {
     let decoded;
     try {
       decoded = jwt.verify(token, `${process.env.JWT_SECRET}`);
-      console.log(decoded, "decoded");
+      // console.log(decoded, "decoded");
     } catch (e) {
       return res.status(401).send("Invalid Token");
     }
@@ -30,14 +30,9 @@ const verifyJwt = async (req, res, next) => {
     // decoded = "64650010343898cc7e6ff601";//hard coding userid to test error
     //
     // console.log(decoded, "decoded");
+    //
     let userDetail;
-    //////////////////
-    // try {
-    //   userDetail = await User.findById({ _id: decoded });
-    // } catch (e) {
-    //   return res.send("User not found in database");
-    // }
-    //////////////////////
+
     userDetail = await User.findById({ _id: decoded });
     // console.log(userDetail, "userDetail");
     if (!userDetail) {
@@ -58,14 +53,19 @@ const verifyJwt = async (req, res, next) => {
 
 const hashBcrypt = async (req, res, next) => {
   try {
-    let password = req.body.password;
-    let stringPassword = password.toString();
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(stringPassword, saltRounds);
-    console.log(hashedPassword, "middleware hashedPassword");
-    //
-    req.hashedPassword = hashedPassword;
-    next();
+    if (!req.body.password) {
+      console.log("no passsword in req.body--from hashBcrypt middleware ");
+      next();
+    } else {
+      let password = req.body.password;
+      let stringPassword = password.toString();
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(stringPassword, saltRounds);
+      // console.log(hashedPassword, "middleware hashedPassword");
+      //
+      req.hashedPassword = hashedPassword;
+      next();
+    }
   } catch (e) {
     return res.send(`error from hashBcrypt middleware`);
   }
@@ -138,30 +138,23 @@ router.post("/update", verifyJwt, hashBcrypt, async (req, res) => {
     // let user = await User.findById(req.params.id);
 
     //try token middleware theke
+
     let user = req.userDetail;
     console.log(`verifyJwt middleware from ${req.url}`);
     //////////
-    // let updateUsername = await user.updateOne({
-    //   $set: { username: req.body.username },
-    // });
-    // console.log(updateUsername, "updateUsername");
-    ///////////////////////////////////////////
-    // (req.body.password)converting password to string
-    // /////////////
-    // let stringPassword = req.body.password.toString();
-    // let saltRounds = 10;
-    // let hashedPassword = await bcrypt.hash(stringPassword, saltRounds);
-    ///////////////////////////////////////////
 
-    //middleware hash password
-    let hashedPassword = req.hashedPassword;
-    console.log(`hashBcrypt middleware from routeName ${req.url}`);
+    //if req.body contains password
+    if (req.body.password) {
+      //middleware hash password
+      let hashedPassword = req.hashedPassword;
+      // console.log(`hashBcrypt middleware from routeName ${req.url}`);
 
-    //
-    let updatePassword = await user.updateOne({
-      $set: { password: hashedPassword },
-    });
-    console.log(`password updated from routeName ${req.url}`);
+      // //
+      let updatePassword = await user.updateOne({
+        $set: { password: hashedPassword },
+      });
+      console.log(`password updated from routeName ${req.url}`);
+    }
 
     res.send(user);
   } catch (e) {
