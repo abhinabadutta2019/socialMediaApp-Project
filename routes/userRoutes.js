@@ -27,7 +27,7 @@ const verifyJwt = async (req, res, next) => {
     // if (!decoded) {
     //   return req.send(`token secret not correct or Invalid token`);
     // }
-    // decoded = "64650010343898cc7e6ff601";//hard coding userid to test error
+    // decoded = "64650010343898cc7e6ff601"; //hard coding userid to test error
     //
     // console.log(decoded, "decoded");
     //
@@ -37,8 +37,9 @@ const verifyJwt = async (req, res, next) => {
     // console.log(userDetail, "userDetail");
     if (!userDetail) {
       return res.send("User not found in database");
+      // next(userDetail); //??( ekhane next use kore-- error pass kora ki possible?)
     }
-    //
+    //exporting from middleware to access from route
     req.userDetail = userDetail; //routes are acessing this variable
 
     next();
@@ -61,9 +62,12 @@ const hashBcrypt = async (req, res, next) => {
       let stringPassword = password.toString();
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(stringPassword, saltRounds);
-      // console.log(hashedPassword, "middleware hashedPassword");
       //
       req.hashedPassword = hashedPassword;
+      //
+      if (hashedPassword) {
+        console.log("middleware hashedPassword");
+      }
       next();
     }
   } catch (e) {
@@ -74,13 +78,10 @@ const hashBcrypt = async (req, res, next) => {
 //////////////////////////////////////////////
 //--/user
 //create / register- user
-router.post("/register", async (req, res) => {
-  //hashing portion
-  const password = req.body.password;
-  const stringPassword = password.toString(); //converting to string--bcrypt.hash() needs password in string form(),as recommended in bcrypt documentation
-  const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(stringPassword, saltRounds);
-  //putting hashed into newUser
+router.post("/register", hashBcrypt, async (req, res) => {
+  //req.hashedPassword from hashBcrypt middleware
+  let hashedPassword = req.hashedPassword;
+
   const newUser = new User({
     username: req.body.username,
     password: hashedPassword,
@@ -140,23 +141,39 @@ router.post("/update", verifyJwt, hashBcrypt, async (req, res) => {
     //try token middleware theke
 
     let user = req.userDetail;
-    console.log(`verifyJwt middleware from ${req.url}`);
-    //////////
+    if (!user) {
+      return res.send(
+        `verifyJwt middleware - not passing user routeName ${req.url}`
+      );
+    } else {
+      // console.log(`verifyJwt middleware working from ${req.url}`);
 
-    //if req.body contains password
-    if (req.body.password) {
-      //middleware hash password
-      let hashedPassword = req.hashedPassword;
-      // console.log(`hashBcrypt middleware from routeName ${req.url}`);
+      //if req.body contains password
+      if (req.body.password) {
+        //middleware hash password
+        let hashedPassword = req.hashedPassword;
+        // console.log(`hashBcrypt middleware from routeName ${req.url}`);
 
-      // //
-      let updatePassword = await user.updateOne({
-        $set: { password: hashedPassword },
-      });
-      console.log(`password updated from routeName ${req.url}`);
+        // //
+        let updatePassword = await user.updateOne({
+          $set: { password: hashedPassword },
+        });
+        console.log(`password updated from routeName ${req.url}`);
+      }
+      //////////
+      //update username
+      if (req.body.username) {
+        // console.log(req.body.username, "req.body.username");
+        let updatedUsername = await user.updateOne({
+          $set: { username: req.body.username },
+        });
+        console.log(`username updated from routeName ${req.url}`);
+      }
+
+      console.log(req.body, "req.body");
+
+      res.send(user);
     }
-
-    res.send(user);
   } catch (e) {
     console.log(e);
     res.send(e);
