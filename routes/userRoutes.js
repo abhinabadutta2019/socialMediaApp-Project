@@ -226,11 +226,19 @@ router.put("/follow/:id", verifyJwt, async (req, res) => {
     }
 
     //
+    //
+
+    //check if params object id is valid
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.send({ message: "req.params.id - not a valid ObjectId" });
+    }
     const followingUser = await User.findById(req.params.id);
 
     // console.log(countPresence);
-    if (!followingUser) {
-      return res.send({ message: "req.params.id (followingUser) not found" });
+    if (followingUser == null) {
+      return res.send({
+        message: "req.params.id (followingUser) not found in database",
+      });
     } else {
       //if present in follower array
       if (!currentUser.followings.includes(followingUser.id)) {
@@ -250,17 +258,35 @@ router.put("/follow/:id", verifyJwt, async (req, res) => {
   }
 });
 //follow a user
-router.put("/unfollow/:id", async (req, res) => {
+router.put("/unfollow/:id", verifyJwt, async (req, res) => {
   try {
     //
+    let currentUser;
+    //verifyJwt authentication middleware
+    if (req.userDetail) {
+      //currentUser is the user logged in
+      currentUser = req.userDetail;
+    }
+    //
+    //check if params object id is valid
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.send({ message: "req.params.id - not a valid ObjectId" });
+    }
+    //
     const followingUser = await User.findById(req.params.id);
-    const currentUser = await User.findById(req.body.userId);
+    // currentUser = await User.findById(req.body.userId);
+
+    if (req.params.id == currentUser.id) {
+      return res.send({ message: "can't follow itself" });
+    }
 
     //
     if (!followingUser) {
-      return res.send({ message: " followingUser id not found in database" });
+      return res.send({
+        message: " followingUser(req.params.id) id not found in database",
+      });
     }
-    //
+    //if followingUser Id (req.params.id) - present in  currentUser.followings
     if (currentUser.followings.includes(followingUser.id)) {
       // console.log(followingUser.id, "followingUser.id");
       // console.log(currentUser.id, "currentUser.id");
