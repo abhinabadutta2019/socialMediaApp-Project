@@ -201,6 +201,11 @@ router.get("/:id", async (req, res) => {
 //follow a user
 router.put("/follow/:id", async (req, res) => {
   try {
+    //cant follow same
+    if (req.params.id == req.body.userId) {
+      return res.send({ message: "can't follow itself" });
+    }
+
     //
     const followingUser = await User.findById(req.params.id);
     const currentUser = await User.findById(req.body.userId);
@@ -209,21 +214,6 @@ router.put("/follow/:id", async (req, res) => {
     if (currentUser !== null && req.params.id !== req.body.userId) {
       // console.log("currentUser present");
       // }
-
-      ////////////////////////////////////////////////////////////////////////////////
-      //This logic used in unfollow route
-      // if (!currentUser.followings.includes(followingUser.id)) {
-      //   // console.log(followingUser.id, "followingUser.id");
-      //   // console.log(currentUser.id, "currentUser.id");
-      //   await currentUser.updateOne({ $push: { followings: followingUser.id } });
-      //   await followingUser.updateOne({ $push: { followers: currentUser.id } });
-      //   //
-      //   res.send(followingUser);
-      // } else {
-      //   res.send({ message: "Already following" });
-      // }
-      // console.log(currentUser);
-      /////////////////////////////////////////////////////////////////////////////
 
       //loop to check if (would-be-follower) id present in the array
       let countPresence = 0;
@@ -242,23 +232,19 @@ router.put("/follow/:id", async (req, res) => {
         await currentUser.updateOne({
           $push: { followings: followingUser.id },
         });
-        res.send({ message: "follow successful" });
+        return res.send({ message: "follow successful" });
       }
       //if present in follower array
       else if (countPresence > 0) {
-        res.send({ message: "Already following" });
+        return res.send({ message: "Already following" });
       }
-      //////////////////////////////////////////////////////////////////
-      res.send();
     }
     //if null
     else if (currentUser == null) {
-      res.send({ message: "Not found" });
+      return res.send({ message: "Not found" });
     }
-    //if two ids same
-    else if (req.params.id == req.body.userId) {
-      res.send({ message: "can't follow itself" });
-    }
+    //
+    res.send();
   } catch (e) {
     res.send(e);
   }
@@ -269,6 +255,11 @@ router.put("/unfollow/:id", async (req, res) => {
     //
     const followingUser = await User.findById(req.params.id);
     const currentUser = await User.findById(req.body.userId);
+
+    //
+    if (!followingUser) {
+      return res.send({ message: " followingUser id not found in database" });
+    }
     //
     if (currentUser.followings.includes(followingUser.id)) {
       // console.log(followingUser.id, "followingUser.id");
@@ -276,12 +267,12 @@ router.put("/unfollow/:id", async (req, res) => {
       await currentUser.updateOne({ $pull: { followings: followingUser.id } });
       await followingUser.updateOne({ $pull: { followers: currentUser.id } });
       //
-      res.send(followingUser);
+      return res.send({ message: "unfollow successful" });
     }
 
     //
     else {
-      res.send({ message: "Not following this user" });
+      return res.send({ message: "Not following this user" });
     }
   } catch (e) {
     res.send(e);
