@@ -12,6 +12,8 @@ const router = express.Router();
 //
 const verifyJwt = async (req, res, next) => {
   //
+  // console.log("1");
+  //
   let token;
   //checking if token provided or not
   if (req.headers.authorization) {
@@ -30,7 +32,7 @@ const verifyJwt = async (req, res, next) => {
     } catch (e) {
       return res.status(401).send("Invalid Token");
     }
-
+    // console.log(2);
     // if (!decoded) {
     //   return req.send(`token secret not correct or Invalid token`);
     // }
@@ -51,6 +53,7 @@ const verifyJwt = async (req, res, next) => {
 
     next();
   } catch (e) {
+    console.log(e);
     return res.send(`Invalid Token from verifyJwt-middleware`);
     // next();
   }
@@ -195,15 +198,6 @@ router.get("/verifyToken", verifyJwt, async (req, res) => {
   }
 });
 
-// get one user by id
-router.get("/:id", async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
-    res.send(user);
-  } catch (e) {
-    res.send(e);
-  }
-});
 //--/user
 //follow a user
 router.put("/follow/:id", verifyJwt, async (req, res) => {
@@ -300,6 +294,53 @@ router.put("/unfollow/:id", verifyJwt, async (req, res) => {
     else {
       return res.send({ message: "Not following this user" });
     }
+  } catch (e) {
+    res.send(e);
+  }
+});
+
+//delete user if authenticated
+router.delete("/authDelete", verifyJwt, async (req, res) => {
+  try {
+    //from middleware
+    // req.userDetail
+    //
+    await User.findByIdAndDelete(req.userDetail.id);
+    res.send({ message: `deleted` });
+  } catch (e) {
+    console.log(e);
+    res.send(e);
+  }
+});
+
+//delete user
+router.delete("/delete/:id", async (req, res) => {
+  let user = await User.findById(req.params.id);
+
+  console.log(req.params.id, "req.params.id");
+
+  if (!user) {
+    return res.send({ message: "user not present in database" });
+  }
+
+  // else{}
+
+  try {
+    {
+      await User.findByIdAndDelete(req.params.id);
+      res.send({ message: `deleted  ` });
+    }
+  } catch (e) {
+    res.send(e);
+  }
+});
+//
+//etar jonno error aschilo
+// get one user by id
+router.get("/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    res.send(user);
   } catch (e) {
     res.send(e);
   }
