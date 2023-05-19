@@ -11,8 +11,15 @@ const router = express.Router();
 //jwt.verify--middleware
 //
 const verifyJwt = async (req, res, next) => {
-  //bearer token theke- token part - split
-  const token = req.headers.authorization.split(" ")[1];
+  //
+  let token;
+  //checking if token provided or not
+  if (req.headers.authorization) {
+    token = req.headers.authorization.split(" ")[1];
+  } else if (!token) {
+    return res.send("No token provided");
+  }
+
   //
   try {
     //jwt.verify verify gives id
@@ -199,52 +206,45 @@ router.get("/:id", async (req, res) => {
 });
 //--/user
 //follow a user
-router.put("/follow/:id", async (req, res) => {
+router.put("/follow/:id", verifyJwt, async (req, res) => {
+  // console.log(req.userDetail.id);
+
+  let currentUser;
+  //
+  //verifyJwt authentication middleware
+  if (req.userDetail) {
+    //currentuser( who will follow someone)is who is authenticated with verifyJwt middleware
+    currentUser = req.userDetail;
+    //
+    // console.log(currentUser.id, "currentUser.id");
+  }
+
   try {
     //cant follow same
-    if (req.params.id == req.body.userId) {
+    if (req.params.id == currentUser.id) {
       return res.send({ message: "can't follow itself" });
     }
 
     //
     const followingUser = await User.findById(req.params.id);
-    const currentUser = await User.findById(req.body.userId);
 
-    //currentUser er id- collection e thakte hobe
-    if (currentUser !== null && req.params.id !== req.body.userId) {
-      // console.log("currentUser present");
-      // }
-
-      //loop to check if (would-be-follower) id present in the array
-      let countPresence = 0;
-      for (let i = 0; i < followingUser.followers.length; i++) {
-        const follower = followingUser.followers[i];
-        //
-        if (req.body.userId == follower) {
-          countPresence = countPresence + 1;
-        }
-      }
-      // console.log(countPresence);
-      //if not present in follower array
-      if (countPresence == 0) {
-        //
+    // console.log(countPresence);
+    if (!followingUser) {
+      return res.send({ message: "req.params.id (followingUser) not found" });
+    } else {
+      //if present in follower array
+      if (!currentUser.followings.includes(followingUser.id)) {
         await followingUser.updateOne({ $push: { followers: currentUser.id } });
         await currentUser.updateOne({
           $push: { followings: followingUser.id },
         });
         return res.send({ message: "follow successful" });
+      } else {
+        res.send({ message: "Already following" });
       }
-      //if present in follower array
-      else if (countPresence > 0) {
-        return res.send({ message: "Already following" });
-      }
+
+      res.send();
     }
-    //if null
-    else if (currentUser == null) {
-      return res.send({ message: "Not found" });
-    }
-    //
-    res.send();
   } catch (e) {
     res.send(e);
   }
