@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 dotenv.config();
 const router = express.Router();
-
+const { hashPass } = require("../helper/utils");
 ///////////////////////////////////////////////
 //jwt.verify--middleware
 //
@@ -50,37 +50,41 @@ const verifyLoggedInUser = async (req, res, next) => {
     next(err);
   }
 };
+
+//
+console.log();
 //hashBcrypt middleware
+
 ////////////////////////////////////////////
 //taking passsword from route and converting to hashed password
 
-const hashBcrypt = async (req, res, next) => {
-  try {
-    if (!req.body.password) {
-      console.log("no passsword in req.body--from hashBcrypt middleware ");
-      next();
-    } else {
-      let password = req.body.password;
-      let stringPassword = password.toString();
-      const saltRounds = 10;
-      const hashedPassword = await bcrypt.hash(stringPassword, saltRounds);
-      //
-      req.hashedPassword = hashedPassword;
-      //
-      if (hashedPassword) {
-        console.log("middleware hashedPassword");
-      }
-      next();
-    }
-  } catch (e) {
-    return res.send(`error from hashBcrypt middleware`);
-  }
-};
+// const hashBcrypt = async (req, res, next) => {
+//   try {
+//     if (!req.body.password) {
+//       console.log("no passsword in req.body--from hashBcrypt middleware ");
+//       next();
+//     } else {
+//       let password = req.body.password;
+//       let stringPassword = password.toString();
+//       const saltRounds = 10;
+//       const hashedPassword = await bcrypt.hash(stringPassword, saltRounds);
+//       //
+//       req.hashedPassword = hashedPassword;
+//       //
+//       if (hashedPassword) {
+//         console.log("middleware hashedPassword");
+//       }
+//       next();
+//     }
+//   } catch (e) {
+//     return res.send(`error from hashBcrypt middleware`);
+//   }
+// };
 
 //////////////////////////////////////////////
 //--/user
 //create / register- user
-router.post("/register", hashBcrypt, async (req, res) => {
+router.post("/register", async (req, res) => {
   //req.hashedPassword from hashBcrypt middleware
   let hashedPassword = req.hashedPassword;
 
@@ -140,39 +144,37 @@ router.post("/login", async (req, res) => {
 });
 //
 //update user with user id
-router.post("/update", verifyLoggedInUser, hashBcrypt, async (req, res) => {
+//$2a$10$F/MmgZ0O6HvWlOqVnS8NfuQaaFLtQU8qZBOJcn10A9PRGTZyQ4ngq
+router.post("/update", verifyLoggedInUser, async (req, res) => {
   try {
-    //getting from id---thiw was working-- for this --"/update/:id"-- when sending id with url
-    // let user = await User.findById(req.params.id);
-
-    //try token middleware theke
-
     let user = req.userDetail;
-    if (!user) {
-      return res.send(
-        `verifyJwt middleware - not passing user routeName ${req.url}`
-      );
-    } else {
-      // console.log(`verifyJwt middleware working from ${req.url}`);
+    //
 
-      //if req.body contains password
-      if (req.body.password) {
-        //middleware hash password
-        let hashedPassword = req.hashedPassword;
-        // console.log(`hashBcrypt middleware from routeName ${req.url}`);
-
-        //now set req.body.passsword as hashedPassword
-        req.body.password = hashedPassword;
-      }
-
-      //update whole req.body
-      user = await User.findByIdAndUpdate(user.id, { $set: req.body });
-
-      res.send(user);
+    console.log(user, "user at first");
+    // let newUserObj = { ...user };
+    let newUserObj = user.toObject();
+    //
+    console.log(newUserObj, "newUserObj");
+    //
+    if (req.body.password) {
+      const hashedPassword = await hashPass(req.body.password);
+      newUserObj.password = hashedPassword;
+      // console.log(newUserObj.password, "newUserObj.password");
     }
-  } catch (e) {
-    console.log(e);
-    res.send(e);
+
+    //update whole req.body
+    user = await User.findByIdAndUpdate(
+      user.id,
+      { $set: newUserObj },
+      { new: true }
+    );
+    // console.log(newUserObj, "newUserObj 2");
+    // console.log(user, "user");
+
+    res.json({ user });
+  } catch (err) {
+    console.log(err);
+    res.json({ err: err });
   }
 });
 
