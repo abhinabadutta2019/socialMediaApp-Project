@@ -10,55 +10,47 @@ const router = express.Router();
 ///////////////////////////////////////////////
 //jwt.verify--middleware
 //
-const verifyJwt = async (req, res, next) => {
+const verifyLoggedInUser = async (req, res, next) => {
   //
   // console.log("1");
   //
-  let token;
-  //checking if token provided or not
-  if (req.headers.authorization) {
-    token = req.headers.authorization.split(" ")[1];
-  } else if (!token) {
-    return res.send("No token provided");
-  }
-
-  //
   try {
+    let token;
+    //checking if token provided or not
+    if (req.headers.authorization) {
+      token = req.headers.authorization.split(" ")[1];
+    } else if (!token) {
+      next("No token provided");
+    }
+
+    //
+
     //jwt.verify verify gives id
     let decoded;
     try {
       decoded = jwt.verify(token, `${process.env.JWT_SECRET}`);
       // console.log(decoded, "decoded");
-    } catch (e) {
-      return res.status(401).send("Invalid Token");
+    } catch (err) {
+      next(err.message);
     }
-    // console.log(2);
-    // if (!decoded) {
-    //   return req.send(`token secret not correct or Invalid token`);
-    // }
-    // decoded = "64650010343898cc7e6ff601"; //hard coding userid to test error
-    //
-    // console.log(decoded, "decoded");
-    //
+
     let userDetail;
 
     userDetail = await User.findById({ _id: decoded });
     // console.log(userDetail, "userDetail");
     if (!userDetail) {
-      return res.send("User not found in database");
-      // next(userDetail); //??( ekhane next use kore-- error pass kora ki possible?)
+      next("User not found in database");
     }
     //exporting from middleware to access from route
     req.userDetail = userDetail; //routes are acessing this variable
 
     next();
-  } catch (e) {
-    console.log(e);
-    return res.send(`Invalid Token from verifyJwt-middleware`);
-    // next();
+  } catch (err) {
+    console.log(err);
+    next(err);
   }
 };
-
+//hashBcrypt middleware
 ////////////////////////////////////////////
 //taking passsword from route and converting to hashed password
 
@@ -148,7 +140,7 @@ router.post("/login", async (req, res) => {
 });
 //
 //update user with user id
-router.post("/update", verifyJwt, hashBcrypt, async (req, res) => {
+router.post("/update", verifyLoggedInUser, hashBcrypt, async (req, res) => {
   try {
     //getting from id---thiw was working-- for this --"/update/:id"-- when sending id with url
     // let user = await User.findById(req.params.id);
@@ -185,7 +177,7 @@ router.post("/update", verifyJwt, hashBcrypt, async (req, res) => {
 });
 
 //verify token
-router.get("/verifyToken", verifyJwt, async (req, res) => {
+router.get("/verifyToken", verifyLoggedInUser, async (req, res) => {
   try {
     const user = req.userDetail; //req.userDetail--getting from middleware
     //
@@ -200,14 +192,13 @@ router.get("/verifyToken", verifyJwt, async (req, res) => {
 
 //--/user
 //follow a user
-router.put("/follow/:id", verifyJwt, async (req, res) => {
+router.put("/follow/:id", verifyLoggedInUser, async (req, res) => {
   // console.log(req.userDetail.id);
 
   let currentUser;
   //
-  //verifyJwt authentication middleware
+
   if (req.userDetail) {
-    //currentuser( who will follow someone)is who is authenticated with verifyJwt middleware
     currentUser = req.userDetail;
     //
     // console.log(currentUser.id, "currentUser.id");
@@ -252,7 +243,7 @@ router.put("/follow/:id", verifyJwt, async (req, res) => {
   }
 });
 //follow a user
-router.put("/unfollow/:id", verifyJwt, async (req, res) => {
+router.put("/unfollow/:id", verifyLoggedInUser, async (req, res) => {
   try {
     //
     let currentUser;
@@ -300,7 +291,7 @@ router.put("/unfollow/:id", verifyJwt, async (req, res) => {
 });
 
 //delete user if authenticated
-router.delete("/authDelete", verifyJwt, async (req, res) => {
+router.delete("/authDelete", verifyLoggedInUser, async (req, res) => {
   try {
     //from middleware
     // req.userDetail
