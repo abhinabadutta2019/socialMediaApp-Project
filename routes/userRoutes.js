@@ -6,52 +6,9 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 dotenv.config();
 const router = express.Router();
+const { verifyLoggedInUser } = require("../middleware/verifyLoggedInUser"); //login middleware
 const { hashPass } = require("../helper/utils");
 ///////////////////////////////////////////////
-//jwt.verify--middleware
-//
-const verifyLoggedInUser = async (req, res, next) => {
-  //
-  // console.log("1");
-  //
-  try {
-    let token;
-    //checking if token provided or not
-    if (req.headers.authorization) {
-      token = req.headers.authorization.split(" ")[1];
-    } else if (!token) {
-      next("No token provided");
-    }
-
-    //
-
-    //jwt.verify verify gives id
-    let decoded;
-    try {
-      decoded = jwt.verify(token, `${process.env.JWT_SECRET}`);
-      // console.log(decoded, "decoded");
-    } catch (err) {
-      next(err.message);
-    }
-
-    let userDetail;
-
-    userDetail = await User.findById({ _id: decoded });
-    // console.log(userDetail, "userDetail");
-    if (!userDetail) {
-      next("User not found in database");
-    }
-    //exporting from middleware to access from route
-    req.userDetail = userDetail; //routes are acessing this variable
-
-    next();
-  } catch (err) {
-    console.log(err);
-    next(err);
-  }
-};
-
-//
 
 //////////////////////////////////////////////
 //--/user
