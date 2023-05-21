@@ -7,9 +7,14 @@ const dotenv = require("dotenv");
 dotenv.config();
 const router = express.Router();
 const { verifyLoggedInUser } = require("../middleware/verifyLoggedInUser"); //login middleware
+const { verifyAdmin } = require("../middleware/verifyAdmin");
 const { hashPass } = require("../helper/utils");
 ///////////////////////////////////////////////
+// {
+//   "username": "vijay",
+//   "password": 124,
 
+// }
 //////////////////////////////////////////////
 //--/user
 //create / register- user
@@ -21,6 +26,7 @@ router.post("/register", async (req, res) => {
     const newUser = new User({
       username: req.body.username,
       password: hashedPassword,
+      isAdmin: req.body.isAdmin,
     });
     //this works
     const user = await newUser.save();
@@ -239,6 +245,34 @@ router.delete("/authDelete", verifyLoggedInUser, async (req, res) => {
   } catch (err) {
     console.log(err);
     res.json({ err: err });
+  }
+});
+
+//delete as admin
+router.get("/adminDelete", verifyAdmin, async (req, res) => {
+  //
+  try {
+    // await User.findByIdAndDelete(req.params.id);
+    let user = req.adminUser;
+
+    //
+    // if (user) {
+
+    // console.log(req.body.id, "req.body.id");
+
+    //find that user if present
+    let tobeDeleteUser = await User.findById(req.body.id);
+
+    if (!tobeDeleteUser) {
+      return res.json({ message: "id not in database" });
+    }
+    //
+    let bodyUser = await User.findByIdAndDelete(req.body.id);
+    console.log("bodyUser deleted");
+    // }
+    res.send(user);
+  } catch (e) {
+    res.send(e);
   }
 });
 
