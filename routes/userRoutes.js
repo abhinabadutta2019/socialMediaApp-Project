@@ -151,24 +151,32 @@ router.post("/update", verifyLoggedInUser, async (req, res) => {
     //
 
     console.log(user, "user at first");
-    // let newUserObj = { ...user };
-    let newUserObj = user.toObject();
+    let newUserObj = { ...user._doc };
+    //this was working
+    // let newUserObj = user.toObject();
     //
-    console.log(newUserObj, "newUserObj");
+    // console.log(newUserObj, "newUserObj");
     //
+
+    //
+    console.log(req.body, "req.body");
+    newUserObj = req.body;
+
+    console.log(newUserObj, "newUserObj 1.5");
+
     if (req.body.password) {
       const hashedPassword = await hashPass(req.body.password);
       newUserObj.password = hashedPassword;
-      // console.log(newUserObj.password, "newUserObj.password");
+      console.log(newUserObj.password, "newUserObj.password");
     }
-
     //update whole req.body
+    //this was working
     user = await User.findByIdAndUpdate(
       user.id,
       { $set: newUserObj },
       { new: true }
     );
-    // console.log(newUserObj, "newUserObj 2");
+    console.log(newUserObj, "newUserObj 2");
     // console.log(user, "user");
 
     res.json({ user });
