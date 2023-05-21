@@ -176,98 +176,98 @@ router.get("/verifyToken", verifyLoggedInUser, async (req, res) => {
 router.put("/follow/:id", verifyLoggedInUser, async (req, res) => {
   // console.log(req.userDetail.id);
 
-  let currentUser;
-  //
-
-  if (req.userDetail) {
-    currentUser = req.userDetail;
-    //
-    // console.log(currentUser.id, "currentUser.id");
-  }
-
   try {
-    //cant follow same
-    if (req.params.id == currentUser.id) {
-      return res.send({ message: "can't follow itself" });
-    }
-
-    //
-    //
+    let currentUser = req.userDetail;
+    //to test
+    // console.log(currentUser.id, "currentUser.id");
+    // console.log(currentUser._id.toString(), "currentUser._id.toString()");
 
     //check if params object id is valid
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return res.send({ message: "req.params.id - not a valid ObjectId" });
+      return res.json({ message: "req.params.id - not a valid ObjectId" });
     }
+
+    //cant follow same
+    if (req.params.id == currentUser._id.toString()) {
+      return res.json({ message: "can't follow itself" });
+    }
+    //finding jei user k follow korte chai
     const followingUser = await User.findById(req.params.id);
 
-    // console.log(countPresence);
-    if (followingUser == null) {
-      return res.send({
+    //if (followingUser==null)
+    if (!followingUser) {
+      return res.json({
         message: "req.params.id (followingUser) not found in database",
       });
-    } else {
-      //if present in follower array
-      if (!currentUser.followings.includes(followingUser.id)) {
-        await followingUser.updateOne({ $push: { followers: currentUser.id } });
-        await currentUser.updateOne({
-          $push: { followings: followingUser.id },
-        });
-        return res.send({ message: "follow successful" });
-      } else {
-        res.send({ message: "Already following" });
-      }
-
-      res.send();
     }
-  } catch (e) {
-    res.send(e);
+    //
+    // console.log(followingUser.id, "followingUser.id");
+    // console.log(followingUser._id.toString(), "followingUser._id.toString()");
+    //if not present in follower array
+    if (currentUser.followings.includes(followingUser._id.toString())) {
+      return res.json({ message: "Already following" });
+    }
+    //eta genarel ( else block)- koyekta if(!) logic baad diye eta tei asbe
+    await followingUser.updateOne({
+      $push: { followers: currentUser._id.toString() },
+    });
+    await currentUser.updateOne({
+      $push: { followings: followingUser._id.toString() },
+    });
+    return res.json({ message: "follow successful" });
+  } catch (err) {
+    console.log(err);
+    res.json({
+      err: err,
+    });
   }
 });
 //follow a user
 router.put("/unfollow/:id", verifyLoggedInUser, async (req, res) => {
   try {
     //
-    let currentUser;
-    //verifyJwt authentication middleware
-    if (req.userDetail) {
-      //currentUser is the user logged in
-      currentUser = req.userDetail;
-    }
-    //
+    let currentUser = req.userDetail;
+
     //check if params object id is valid
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return res.send({ message: "req.params.id - not a valid ObjectId" });
+      return res.json({ message: "req.params.id - not a valid ObjectId" });
+    }
+
+    if (req.params.id == currentUser._id.toString()) {
+      return res.json({ message: "can't follow itself" });
     }
     //
     const followingUser = await User.findById(req.params.id);
     // currentUser = await User.findById(req.body.userId);
 
-    if (req.params.id == currentUser.id) {
-      return res.send({ message: "can't follow itself" });
-    }
-
-    //
+    //if (followingUser==null)
     if (!followingUser) {
-      return res.send({
+      return res.json({
         message: " followingUser(req.params.id) id not found in database",
       });
     }
     //if followingUser Id (req.params.id) - present in  currentUser.followings
-    if (currentUser.followings.includes(followingUser.id)) {
-      // console.log(followingUser.id, "followingUser.id");
-      // console.log(currentUser.id, "currentUser.id");
-      await currentUser.updateOne({ $pull: { followings: followingUser.id } });
-      await followingUser.updateOne({ $pull: { followers: currentUser.id } });
-      //
-      return res.send({ message: "unfollow successful" });
+    if (!currentUser.followings.includes(followingUser.id)) {
+      return res.json({ message: "Not following this user" });
     }
+    // console.log(followingUser.id, "followingUser.id");
+    // console.log(followingUser._id.toString(), "followingUser._id.toString()");
+    // console.log(currentUser.id, "currentUser.id");
 
     //
-    else {
-      return res.send({ message: "Not following this user" });
-    }
-  } catch (e) {
-    res.send(e);
+
+    //eta genarel ( else block)- koyekta if(!) logic baad diye eta tei asbe
+    await currentUser.updateOne({
+      $pull: { followings: followingUser._id.toString() },
+    });
+    await followingUser.updateOne({
+      $pull: { followers: currentUser._id.toString() },
+    });
+    //
+    return res.json({ message: "unfollow successful" });
+  } catch (err) {
+    console.log(err);
+    res.json({ err: err });
   }
 });
 
@@ -278,10 +278,10 @@ router.delete("/authDelete", verifyLoggedInUser, async (req, res) => {
     // req.userDetail
     //
     await User.findByIdAndDelete(req.userDetail.id);
-    res.send({ message: `deleted` });
-  } catch (e) {
-    console.log(e);
-    res.send(e);
+    res.json({ message: `deleted` });
+  } catch (err) {
+    console.log(err);
+    res.json({ err: err });
   }
 });
 
