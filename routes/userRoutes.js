@@ -38,6 +38,7 @@ router.post("/register", async (req, res) => {
     res.json({ err: err });
   }
 });
+//
 /////////////////////////////////////////////
 //login route ( it is to check password and genarate token)
 router.post("/login", async (req, res) => {
