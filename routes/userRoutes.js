@@ -52,69 +52,40 @@ const verifyLoggedInUser = async (req, res, next) => {
 };
 
 //
-console.log();
-//hashBcrypt middleware
-
-////////////////////////////////////////////
-//taking passsword from route and converting to hashed password
-
-// const hashBcrypt = async (req, res, next) => {
-//   try {
-//     if (!req.body.password) {
-//       console.log("no passsword in req.body--from hashBcrypt middleware ");
-//       next();
-//     } else {
-//       let password = req.body.password;
-//       let stringPassword = password.toString();
-//       const saltRounds = 10;
-//       const hashedPassword = await bcrypt.hash(stringPassword, saltRounds);
-//       //
-//       req.hashedPassword = hashedPassword;
-//       //
-//       if (hashedPassword) {
-//         console.log("middleware hashedPassword");
-//       }
-//       next();
-//     }
-//   } catch (e) {
-//     return res.send(`error from hashBcrypt middleware`);
-//   }
-// };
 
 //////////////////////////////////////////////
 //--/user
 //create / register- user
 router.post("/register", async (req, res) => {
-  //req.hashedPassword from hashBcrypt middleware
-  let hashedPassword = req.hashedPassword;
-
-  const newUser = new User({
-    username: req.body.username,
-    password: hashedPassword,
-  });
-  // console.log(newUser.password);
-  //
   try {
+    //comming from helper/utils/hashPass function
+    let hashedPassword = await hashPass(req.body.password);
+
+    const newUser = new User({
+      username: req.body.username,
+      password: hashedPassword,
+    });
+    //this works
     const user = await newUser.save();
-    res.send(user);
+
+    res.json({ user: user });
     // res.send();
-  } catch (e) {
-    //trying basic error handeling
-    // console.log(`error.code-${e.code},Reason-Duplicate Username`);
-    res.send(e);
+  } catch (err) {
+    console.log(err);
+    res.json({ err: err });
   }
 });
 /////////////////////////////////////////////
 //login route ( it is to check password and genarate token)
 router.post("/login", async (req, res) => {
-  const inputUsername = req.body.username;
-  let inputPassword = req.body.password;
-  let stringPassword = inputPassword.toString(); //password converted to string
-
   try {
+    const inputUsername = req.body.username;
+    let inputPassword = req.body.password;
+    let stringPassword = inputPassword.toString(); //password converted to string
+    //
     const user = await User.findOne({ username: inputUsername });
     if (!user) {
-      return res.send({ message: "username not found" });
+      return res.json({ message: "username not found" });
       //
     } else {
       // console.log(user);
@@ -126,7 +97,7 @@ router.post("/login", async (req, res) => {
 
       // checking if password is correct
       if (!match) {
-        return res.send({ message: "passsword not matched" });
+        return res.json({ message: "passsword not matched" });
       } else {
         //jwt.sign()
         let payload = user.id;
@@ -134,12 +105,12 @@ router.post("/login", async (req, res) => {
         const token = jwt.sign(payload, `${process.env.JWT_SECRET}`);
         // console.log(token, "token");
 
-        res.send({ user: user, token: token }); //sending token from here
+        res.json({ user: user, token: token }); //sending token from here
       }
     }
-  } catch (e) {
-    console.log(e);
-    res.send(e);
+  } catch (err) {
+    console.log(err);
+    res.json({ err: err });
   }
 });
 //
