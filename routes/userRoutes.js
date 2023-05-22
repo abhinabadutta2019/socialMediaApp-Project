@@ -117,31 +117,47 @@ router.post("/update", verifyLoggedInUser, async (req, res) => {
 //update as admin
 router.post("/adminUpdate", verifyLoggedInUser, async (req, res) => {
   try {
-    let user = req.userDetail;
+    const user = req.userDetail;
     //
-    console.log(user, "user at first");
 
-    let newUserObj = { ...user._doc };
+    //check if admin
+    if (!user.isAdmin == true) {
+      return res.json({ message: "user is not an admin" });
+    }
+    //Body te thakbe jei id ke update korte chai
 
-    //if password updated
-    if (req.body.password) {
-      const hashedPassword = await hashPass(req.body.password);
-      newUserObj.password = hashedPassword;
-      // console.log(newUserObj.password, "newUserObj.password");
+    //check if valid ObjectId ( )
+    if (!mongoose.Types.ObjectId.isValid(req.body.id)) {
+      return res.json({ message: "req.body.id - not a valid ObjectId" });
+    }
+    //
+    const bodyUser = await User.findById(req.body.id);
+    //
+    if (!bodyUser) {
+      return res.json({ message: "req.body.id not present in database" });
     }
 
+    //
+    const newUserObj = { ...bodyUser._doc };
+
+    //
     if (req.body.username) {
       newUserObj.username = req.body.username;
-      // console.log(newUserObj.username, "newUserObj.username");
     }
-    //this was working
-    user = await User.findByIdAndUpdate(
-      user.id,
-      { $set: newUserObj },
-      { new: true }
-    );
-    console.log(newUserObj, "newUserObj- after update");
-    // console.log(user, "user");
+
+    //hashPass function- my created from helper/utlis
+    if (req.body.password) {
+      newUserObj.password = await hashPass(req.body.password);
+    }
+
+    //make other user admin
+    if (req.body.isAdmin) {
+      newUserObj.isAdmin = req.body.isAdmin;
+    }
+
+    console.log(newUserObj, "newUserObj");
+
+    console.log("Hi");
 
     res.json({ user });
   } catch (err) {
