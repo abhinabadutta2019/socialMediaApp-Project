@@ -250,32 +250,25 @@ router.delete("/authDelete", verifyLoggedInUser, async (req, res) => {
 });
 
 //delete as admin
-router.get("/adminDelete", verifyAdmin, async (req, res) => {
-  //
-  try {
-    // await User.findByIdAndDelete(req.params.id);
-    let user = req.adminUser;
-
+router.get(
+  "/adminDelete",
+  verifyLoggedInUser,
+  verifyAdmin,
+  async (req, res) => {
     //
-    // if (user) {
+    try {
+      //
+      const user = req.adminUser;
 
-    // console.log(req.body.id, "req.body.id");
-
-    //find that user if present
-    let tobeDeleteUser = await User.findById(req.body.id);
-
-    if (!tobeDeleteUser) {
-      return res.json({ message: "id not in database" });
+      // if (!user) {
+      //   console.log("Hi");
+      // }
+      res.send(user);
+    } catch (e) {
+      res.send(e);
     }
-    //
-    let bodyUser = await User.findByIdAndDelete(req.body.id);
-    console.log("bodyUser deleted");
-    // }
-    res.send(user);
-  } catch (e) {
-    res.send(e);
   }
-});
+);
 
 //delete user
 router.delete("/delete/:id", async (req, res) => {
