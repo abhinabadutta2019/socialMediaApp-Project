@@ -79,39 +79,68 @@ router.post("/login", async (req, res) => {
 });
 //
 //update user with user id
-//$2a$10$F/MmgZ0O6HvWlOqVnS8NfuQaaFLtQU8qZBOJcn10A9PRGTZyQ4ngq
 router.post("/update", verifyLoggedInUser, async (req, res) => {
   try {
     let user = req.userDetail;
     //
-
     console.log(user, "user at first");
+
     let newUserObj = { ...user._doc };
-    //this was working
-    // let newUserObj = user.toObject();
-    //
-    // console.log(newUserObj, "newUserObj");
-    //
 
-    //
-    console.log(req.body, "req.body");
-    newUserObj = req.body;
-
-    console.log(newUserObj, "newUserObj 1.5");
-
+    //if password updated
     if (req.body.password) {
       const hashedPassword = await hashPass(req.body.password);
       newUserObj.password = hashedPassword;
-      console.log(newUserObj.password, "newUserObj.password");
+      // console.log(newUserObj.password, "newUserObj.password");
     }
-    //update whole req.body
+
+    if (req.body.username) {
+      newUserObj.username = req.body.username;
+      // console.log(newUserObj.username, "newUserObj.username");
+    }
     //this was working
     user = await User.findByIdAndUpdate(
       user.id,
       { $set: newUserObj },
       { new: true }
     );
-    console.log(newUserObj, "newUserObj 2");
+    console.log(newUserObj, "newUserObj- after update");
+    // console.log(user, "user");
+
+    res.json({ user });
+  } catch (err) {
+    console.log(err);
+    res.json({ err: err });
+  }
+});
+
+//update as admin
+router.post("/adminUpdate", verifyLoggedInUser, async (req, res) => {
+  try {
+    let user = req.userDetail;
+    //
+    console.log(user, "user at first");
+
+    let newUserObj = { ...user._doc };
+
+    //if password updated
+    if (req.body.password) {
+      const hashedPassword = await hashPass(req.body.password);
+      newUserObj.password = hashedPassword;
+      // console.log(newUserObj.password, "newUserObj.password");
+    }
+
+    if (req.body.username) {
+      newUserObj.username = req.body.username;
+      // console.log(newUserObj.username, "newUserObj.username");
+    }
+    //this was working
+    user = await User.findByIdAndUpdate(
+      user.id,
+      { $set: newUserObj },
+      { new: true }
+    );
+    console.log(newUserObj, "newUserObj- after update");
     // console.log(user, "user");
 
     res.json({ user });
