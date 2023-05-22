@@ -8,6 +8,9 @@ const verifyAdmin = async (req, res, next) => {
     const user = req.userDetail;
 
     if (!user.isAdmin === true) {
+      //
+      // console.log(req.userDetail);
+      // req.userDetail = user;
       next("User is not an admin");
     }
     //

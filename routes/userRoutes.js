@@ -235,7 +235,7 @@ router.put("/unfollow/:id", verifyLoggedInUser, async (req, res) => {
   }
 });
 
-//delete user if authenticated
+//delete user if authenticated/ or user logged in
 router.delete("/authDelete", verifyLoggedInUser, async (req, res) => {
   try {
     //from middleware
@@ -250,25 +250,43 @@ router.delete("/authDelete", verifyLoggedInUser, async (req, res) => {
 });
 
 //delete as admin
-router.get(
-  "/adminDelete",
-  verifyLoggedInUser,
-  verifyAdmin,
-  async (req, res) => {
-    //
-    try {
-      //
-      const user = req.adminUser;
+router.get("/adminDelete", verifyLoggedInUser, async (req, res) => {
+  //
+  try {
+    //ei part ta login token theke asbe (req.userDetail)
+    const user = req.userDetail;
 
-      // if (!user) {
-      //   console.log("Hi");
-      // }
-      res.send(user);
-    } catch (e) {
-      res.send(e);
+    //
+    if (!user.isAdmin == true) {
+      // console.log(req.body.id);
+      return res.json({
+        message: "only admin can use this route to delete other user",
+      });
     }
+
+    //check if valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(req.body.id)) {
+      return res.json({ message: "req.body.id - not a valid ObjectId" });
+    }
+
+    const bodyUser = await User.findById(req.body.id);
+    //
+    if (!bodyUser) {
+      return res.json({ message: "req.body.id not present in database" });
+    }
+
+    //deleted user
+    const deletedUser = await User.findByIdAndDelete(req.body.id);
+
+    //deleted by--custom keys
+    const { _id, password, ...others } = user._doc;
+    // console.log({ deletedBy: others, user: user });
+
+    res.json({ deletedBy: others, deletedUser });
+  } catch (err) {
+    res.json({ err });
   }
-);
+});
 
 //delete user
 router.delete("/delete/:id", async (req, res) => {
