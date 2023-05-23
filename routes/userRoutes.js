@@ -10,12 +10,7 @@ const { verifyLoggedInUser } = require("../middleware/verifyLoggedInUser"); //lo
 const { verifyAdmin } = require("../middleware/verifyAdmin");
 const { hashPass } = require("../helper/utils");
 ///////////////////////////////////////////////
-// {
-//   "username": "vijay",
-//   "password": 124,
 
-// }
-//////////////////////////////////////////////
 //--/user
 //create / register- user
 router.post("/register", async (req, res) => {
@@ -78,7 +73,7 @@ router.post("/login", async (req, res) => {
   }
 });
 //
-//update user with user id
+//update user with login token
 router.post("/update", verifyLoggedInUser, async (req, res) => {
   try {
     let user = req.userDetail;
@@ -151,17 +146,21 @@ router.post("/adminUpdate", verifyLoggedInUser, async (req, res) => {
     }
 
     //make other user admin
+    //true/false set korte--"isAdmin": "true", "isAdmin": "false"--"string er moddhe pathate hobe"
     if (req.body.isAdmin) {
       newUserObj.isAdmin = req.body.isAdmin;
     }
 
-    console.log(newUserObj, "newUserObj");
+    //
+    const userUpdatedAs = await User.findByIdAndUpdate(
+      bodyUser.id,
+      { $set: newUserObj },
+      { new: true }
+    );
 
-    console.log("Hi");
-
-    res.json({ user });
+    res.json({ updatedBy: user, userUpdatedAs: userUpdatedAs });
   } catch (err) {
-    console.log(err);
+    console.log(err, "err");
     res.json({ err: err });
   }
 });
