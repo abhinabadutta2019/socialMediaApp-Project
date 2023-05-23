@@ -20,7 +20,7 @@ let hashPass = async (passString) => {
 };
 
 //used in /authDelete route
-//used to delete - 'deleteUserid', from all users followers array and followings array
+//used to delete - 'deleteUserid', from all users followers array and followings array-
 const deleteFromUserArray = async function (deleteUserid) {
   try {
     //

@@ -319,25 +319,34 @@ router.get("/adminDelete", verifyLoggedInUser, async (req, res) => {
       });
     }
 
+    const deleteUserid = req.body.id;
+
     //check if valid ObjectId
-    if (!mongoose.Types.ObjectId.isValid(req.body.id)) {
+    if (!mongoose.Types.ObjectId.isValid(deleteUserid)) {
       return res.json({ message: "req.body.id - not a valid ObjectId" });
     }
 
-    const bodyUser = await User.findById(req.body.id);
+    const bodyUser = await User.findById(deleteUserid);
     //
     if (!bodyUser) {
       return res.json({ message: "req.body.id not present in database" });
     }
 
     //deleted user
-    const deletedUser = await User.findByIdAndDelete(req.body.id);
+    const deletedUser = await User.findByIdAndDelete(deleteUserid);
 
-    //deleted by--custom keys
+    //deleted by--details of that admin who has deleted
     const { _id, password, ...others } = user._doc;
+
     // console.log({ deletedBy: others, user: user });
 
+    //
+    //used to delete - 'deleteUserid', from all users followers array and followings array
+    //calling from helper/utlis
+    deleteFromUserArray(deleteUserid);
+
     res.json({ deletedBy: others, deletedUser });
+    // res.send();
   } catch (err) {
     res.json({ err });
   }
