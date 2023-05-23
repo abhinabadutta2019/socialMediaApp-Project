@@ -282,11 +282,39 @@ router.put("/unfollow/:id", verifyLoggedInUser, async (req, res) => {
 //delete user if authenticated/ or user logged in
 router.delete("/authDelete", verifyLoggedInUser, async (req, res) => {
   try {
-    //from middleware
-    // req.userDetail
+    //req.userDetail from middleware
+    //deleteUserid to string
+    const deleteUserid = req.userDetail._id.toString();
+
+    //this user is to delete
+    const thisUserGetsDeleted = await User.findByIdAndDelete(deleteUserid);
+
+    //from this--
+    const allUsers = await User.find({});
     //
-    await User.findByIdAndDelete(req.userDetail.id);
-    res.json({ message: `deleted` });
+    for (let index = 0; index < allUsers.length; index++) {
+      const oneUser = allUsers[index];
+
+      //delete from any users follower array
+      if (oneUser.followers.includes(deleteUserid)) {
+        //
+        await oneUser.updateOne({
+          $pull: { followers: deleteUserid },
+        });
+      }
+
+      //delete from any users following array
+      if (oneUser.followings.includes(deleteUserid)) {
+        //
+        await oneUser.updateOne({
+          $pull: { followings: deleteUserid },
+        });
+      }
+    }
+
+    // console.log(allUsers);
+
+    res.json({ thisUserGetsDeleted: thisUserGetsDeleted });
   } catch (err) {
     console.log(err);
     res.json({ err: err });
