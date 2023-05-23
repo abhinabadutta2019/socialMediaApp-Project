@@ -8,8 +8,11 @@ dotenv.config();
 const router = express.Router();
 const { verifyLoggedInUser } = require("../middleware/verifyLoggedInUser"); //login middleware
 const { verifyAdmin } = require("../middleware/verifyAdmin");
-const { hashPass } = require("../helper/utils");
+const { hashPass, deleteFromUserArray } = require("../helper/utils");
 ///////////////////////////////////////////////
+
+//
+//
 
 //--/user
 //create / register- user
@@ -289,30 +292,10 @@ router.delete("/authDelete", verifyLoggedInUser, async (req, res) => {
     //this user is to delete
     const thisUserGetsDeleted = await User.findByIdAndDelete(deleteUserid);
 
-    //from this--
-    const allUsers = await User.find({});
-    //
-    for (let index = 0; index < allUsers.length; index++) {
-      const oneUser = allUsers[index];
+    //used to delete - 'deleteUserid', from all users followers array and followings array
+    //calling from helper/utlis
 
-      //delete from any users follower array
-      if (oneUser.followers.includes(deleteUserid)) {
-        //
-        await oneUser.updateOne({
-          $pull: { followers: deleteUserid },
-        });
-      }
-
-      //delete from any users following array
-      if (oneUser.followings.includes(deleteUserid)) {
-        //
-        await oneUser.updateOne({
-          $pull: { followings: deleteUserid },
-        });
-      }
-    }
-
-    // console.log(allUsers);
+    deleteFromUserArray(deleteUserid);
 
     res.json({ thisUserGetsDeleted: thisUserGetsDeleted });
   } catch (err) {
