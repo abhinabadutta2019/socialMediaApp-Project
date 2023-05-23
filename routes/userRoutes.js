@@ -19,7 +19,7 @@ const { hashPass, deleteFromUserArray } = require("../helper/utils");
 router.post("/register", async (req, res) => {
   try {
     //comming from helper/utils/hashPass function
-    let hashedPassword = await hashPass(req.body.password);
+    const hashedPassword = await hashPass(req.body.password);
 
     const newUser = new User({
       username: req.body.username,
@@ -42,8 +42,8 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const inputUsername = req.body.username;
-    let inputPassword = req.body.password;
-    let stringPassword = inputPassword.toString(); //password converted to string
+    const inputPassword = req.body.password;
+    const stringPassword = inputPassword.toString(); //password converted to string
     //
     const user = await User.findOne({ username: inputUsername });
     if (!user) {
@@ -80,10 +80,8 @@ router.post("/login", async (req, res) => {
 router.post("/update", verifyLoggedInUser, async (req, res) => {
   try {
     let user = req.userDetail;
-    //
-    console.log(user, "user at first");
-
-    let newUserObj = { ...user._doc };
+    // console.log(user, "user at first");
+    const newUserObj = { ...user._doc };
 
     //if password updated
     if (req.body.password) {
@@ -102,7 +100,7 @@ router.post("/update", verifyLoggedInUser, async (req, res) => {
       { $set: newUserObj },
       { new: true }
     );
-    console.log(newUserObj, "newUserObj- after update");
+    // console.log(newUserObj, "newUserObj- after update");
     // console.log(user, "user");
 
     res.json({ user });
@@ -161,7 +159,7 @@ router.post("/adminUpdate", verifyLoggedInUser, async (req, res) => {
       { new: true }
     );
 
-    res.json({ updatedBy: user, userUpdatedAs: userUpdatedAs });
+    res.json({ userUpdatedAs: userUpdatedAs, updatedBy: user });
   } catch (err) {
     console.log(err, "err");
     res.json({ err: err });
@@ -188,7 +186,7 @@ router.put("/follow/:id", verifyLoggedInUser, async (req, res) => {
   // console.log(req.userDetail.id);
 
   try {
-    let currentUser = req.userDetail;
+    const currentUser = req.userDetail;
     //to test
     // console.log(currentUser.id, "currentUser.id");
     // console.log(currentUser._id.toString(), "currentUser._id.toString()");
@@ -237,7 +235,7 @@ router.put("/follow/:id", verifyLoggedInUser, async (req, res) => {
 router.put("/unfollow/:id", verifyLoggedInUser, async (req, res) => {
   try {
     //
-    let currentUser = req.userDetail;
+    const currentUser = req.userDetail;
 
     //check if params object id is valid
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -345,7 +343,7 @@ router.get("/adminDelete", verifyLoggedInUser, async (req, res) => {
     //calling from helper/utlis
     deleteFromUserArray(deleteUserid);
 
-    res.json({ deletedBy: others, deletedUser });
+    res.json({ deletedUser, deletedBy: others });
     // res.send();
   } catch (err) {
     res.json({ err });
