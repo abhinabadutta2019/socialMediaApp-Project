@@ -8,7 +8,7 @@ const { verifyLoggedInUser } = require("../middleware/verifyLoggedInUser");
 router.post("/create", verifyLoggedInUser, async (req, res) => {
   try {
     //user login (route) token required to create post
-    console.log(req.url, "req.url");
+    // console.log(req.url, "req.url");
     //
     const user = req.userDetail;
 
@@ -22,10 +22,10 @@ router.post("/create", verifyLoggedInUser, async (req, res) => {
       description: req.body.description,
     });
     //save to database
-    // const post = await newPost.save();
+    const post = await newPost.save();
 
-    // res.json({ post });
-    res.send();
+    res.json({ post });
+    // res.send();
   } catch (err) {
     console.log(err);
     res.json(err);
@@ -87,6 +87,43 @@ router.put("/update/:id", verifyLoggedInUser, async (req, res) => {
     res.json(err);
   }
 });
+
+//delete a post
+router.delete("/delete/:id", verifyLoggedInUser, async (req, res) => {
+  try {
+    // console.log(req.params.id);
+    const user = req.userDetail;
+    //
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.json({ message: "req.params.id - not a valid ObjectId" });
+    }
+    //
+    const post = await Post.findById(req.params.id);
+    //
+    if (!post) {
+      return res.json({
+        message: "req.params.id not found in Post collection ",
+      });
+    }
+    //if not User's post or user is not ADMIN
+    if (post.userId.toString() !== user.id && user.isAdmin !== true) {
+      // console.log(user.isAdmin == true);
+      return res.json({
+        message: "post (req.params.id) is not created by this user",
+      });
+    }
+    //
+    const deletedPost = await Post.findByIdAndDelete(post._id.toString());
+    // console.log(deletedPost._id);
+
+    res.json({ deletedPost: deletedPost, deletedBy: user });
+  } catch (err) {
+    console.log(err);
+    res.json(err);
+  }
+});
+
+//
 
 //reference link-for syntax-
 //https://stackoverflow.com/questions/38051977/what-does-populate-in-mongoose-mean

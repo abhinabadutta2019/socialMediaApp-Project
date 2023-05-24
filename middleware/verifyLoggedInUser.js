@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const verifyLoggedInUser = async (req, res, next) => {
   try {
     // console.log(req.headers.authorization, "req.headers.authorization");
-    //this check not working - if no token provided
+    //this next() --works on- res.json() - if no token provided-- echarao token na thakle - console e - error dei
     if (!req.headers.authorization) {
       next("No token provided");
     }
