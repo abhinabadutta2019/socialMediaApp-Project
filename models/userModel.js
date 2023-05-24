@@ -10,6 +10,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
   followers: {
     type: Array,
     default: [],
@@ -17,10 +21,6 @@ const userSchema = new mongoose.Schema({
   followings: {
     type: Array,
     default: [],
-  },
-  isAdmin: {
-    type: Boolean,
-    default: false,
   },
 });
 

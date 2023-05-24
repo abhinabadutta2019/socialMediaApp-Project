@@ -9,8 +9,13 @@ const postSchema = new mongoose.Schema({
   description: {
     type: String,
   },
+  likes: {
+    type: Array,
+    default: [],
+  },
 });
 
 //
 const Post = mongoose.model("Post", postSchema);
+//
 module.exports = Post;
