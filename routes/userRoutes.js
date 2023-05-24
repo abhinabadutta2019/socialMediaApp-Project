@@ -350,6 +350,7 @@ router.get("/adminDelete", verifyLoggedInUser, async (req, res) => {
   }
 });
 
+//user delete hole-- post er liked array thke -- sei user er id delete hoye jabe-- eta-- user er delete block e korte hobe
 //delete user
 router.delete("/delete/:id", async (req, res) => {
   let user = await User.findById(req.params.id);

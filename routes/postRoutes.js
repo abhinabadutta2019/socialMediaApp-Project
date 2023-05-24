@@ -123,7 +123,53 @@ router.delete("/delete/:id", verifyLoggedInUser, async (req, res) => {
   }
 });
 
-//
+//like a post
+router.put("/like/:id", verifyLoggedInUser, async (req, res) => {
+  try {
+    const user = req.userDetail;
+    // console.log(req.params);
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.json({ message: "req.params.id - not a valid ObjectId" });
+    }
+
+    const post = await Post.findById(req.params.id);
+
+    if (!post) {
+      return res.json({
+        message: " req.params.id not found in post collection",
+      });
+    }
+    //
+    if (user._id.toString() == post.userId.toString()) {
+      return res.json({ message: "User cant like own Post" });
+      // console.log(user._id.toString(), "user._id.toString()");
+      // console.log(post.userId.toString(), "post.userId.toString()");
+    }
+    //
+    // console.log(post.likes, "Array - post.likes");
+
+    //jodi thake Un-Like
+    if (post.likes.includes(user._id.toString())) {
+      await post.updateOne({
+        $pull: { likes: user._id.toString() },
+      });
+
+      return res.json({ message: "un-liked" });
+    }
+
+    //for  Like in genarel block
+    await post.updateOne({
+      $push: { likes: user._id.toString() },
+    });
+
+    res.json({ message: "Liked", post: post });
+  } catch (err) {
+    console.log(err);
+    res.json(err);
+  }
+});
+
+//user delete hole-- post er liked array thke -- sei user er id delete hoye jabe-- eta-- user er delete block e korte hobe
 
 //reference link-for syntax-
 //https://stackoverflow.com/questions/38051977/what-does-populate-in-mongoose-mean
@@ -137,7 +183,7 @@ router.get("/populate/:id", async (req, res) => {
   }
 });
 
-// get one user by id
+// get one post by id
 router.get("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
