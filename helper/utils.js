@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
 const User = require("../models/userModel");
+const Post = require("../models/postModel");
 
 //
 let hashPass = async (passString) => {
@@ -44,6 +45,21 @@ const deleteFromUserArray = async function (deleteUserid) {
         await oneUser.updateOne({
           $pull: { followings: deleteUserid },
         });
+      }
+    }
+    //........................
+    //delete user._id from all the post.likes array -
+    const allPosts = await Post.find({});
+    //
+
+    for (let j = 0; j < allPosts.length; j++) {
+      const onePost = allPosts[j];
+      //if likes-array has - - deleteUserid
+      if (onePost.likes.includes(deleteUserid)) {
+        await onePost.updateOne({
+          $pull: { likes: deleteUserid },
+        });
+        // console.log("Hi");
       }
     }
   } catch (e) {
