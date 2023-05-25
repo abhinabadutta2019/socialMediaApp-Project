@@ -157,7 +157,7 @@ router.put("/like/:id", verifyLoggedInUser, async (req, res) => {
       return res.json({ message: "un-liked" });
     }
 
-    //for  Like in genarel block
+    //for  Like in general block
     await post.updateOne({
       $push: { likes: user._id.toString() },
     });
@@ -171,6 +171,51 @@ router.put("/like/:id", verifyLoggedInUser, async (req, res) => {
 
 //user delete hole-- post er liked array thke -- sei user er id delete hoye jabe-- eta-- user er delete block e korte hobe
 
+//timeline
+router.get("/timeline/all", verifyLoggedInUser, async (req, res) => {
+  try {
+    const user = req.userDetail;
+    //
+    const newUser = { ...user._doc };
+    // console.log(newUser);
+    const { _id, password, __v, ...visiblePart } = newUser;
+    // console.log(visiblePart);
+
+    //user's own post
+    const userPosts = await Post.find({ userId: user._id.toString() });
+    //...............
+
+    //posts of Users it follows
+    const allPosts = await Post.find({});
+    //araay- of ids that user is following
+    const userFollowings = user.followings;
+    // console.log(userFollowings);
+
+    // posts of Users it follows
+    const followingsPostArray = [];
+    for (let i = 0; i < allPosts.length; i++) {
+      const onePost = allPosts[i];
+      // console.log(onePost.userId);
+      //
+      if (userFollowings.includes(onePost.userId.toString())) {
+        // console.log(onePost);
+        followingsPostArray.push(onePost);
+      }
+    }
+    // console.log(allPosts);
+    //
+    // console.log(followingsPostArray, "followingsPostArray");
+
+    res.json({
+      userProfile: visiblePart,
+      userPosts: userPosts,
+      postsByYouFollow: followingsPostArray,
+    });
+  } catch (err) {
+    console.log(err);
+    res.json(err);
+  }
+});
 //reference link-for syntax-
 //https://stackoverflow.com/questions/38051977/what-does-populate-in-mongoose-mean
 // populate method test( working)
