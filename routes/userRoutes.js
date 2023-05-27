@@ -11,11 +11,18 @@ const { verifyLoggedInUser } = require("../middleware/verifyLoggedInUser"); //lo
 const { hashPass, deleteFromUserArray } = require("../helper/utils");
 ///////////////////////////////////////////////
 
-//
+//--/user
 //frontend routes
 router.get("/register", async (req, res) => {
   res.render("register");
 });
+
+//
+router.get("/login", async (req, res) => {
+  res.render("login");
+});
+
+//
 
 //--/user
 //create / register- user
@@ -69,7 +76,8 @@ router.post("/login", async (req, res) => {
         let payload = user.id;
         // const token = jwt.sign(payload, "secret");
         const token = jwt.sign(payload, `${process.env.JWT_SECRET}`);
-        // console.log(token, "token");
+        //
+        console.log(token, "token");
 
         res.json({ user: user, token: token }); //sending token from here
       }

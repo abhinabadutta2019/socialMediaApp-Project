@@ -5,10 +5,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: true,
     unique: true,
+    minlength: 3,
   },
   password: {
     type: String,
     required: true,
+    minlength: 3,
   },
   isAdmin: {
     type: Boolean,

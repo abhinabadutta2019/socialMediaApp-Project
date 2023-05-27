@@ -1,7 +1,7 @@
-<h1>Register</h1>
+<h2>Register</h2>
 
 <form action="#">
-  <!-- Register -->
+  <!-- username -->
   <label for="username">Username</label>
   <input type="text" id="registerUsername" required />
   <!-- password -->
@@ -32,9 +32,11 @@
       });
       //
       const result = await response.json();
+      //ei line- browser er console e pront hocche
       console.log(result, "result");
 
-      //   location = window.location;
+      //page reload korbe
+      location = window.location;
 
       //
     } catch (err) {
