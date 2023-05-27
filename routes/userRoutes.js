@@ -7,12 +7,15 @@ const dotenv = require("dotenv");
 dotenv.config();
 const router = express.Router();
 const { verifyLoggedInUser } = require("../middleware/verifyLoggedInUser"); //login middleware
-const { verifyAdmin } = require("../middleware/verifyAdmin");
+// const { verifyAdmin } = require("../middleware/verifyAdmin");//admin login middleware
 const { hashPass, deleteFromUserArray } = require("../helper/utils");
 ///////////////////////////////////////////////
 
 //
-//
+//frontend routes
+router.get("/register", async (req, res) => {
+  res.render("Hi");
+});
 
 //--/user
 //create / register- user
