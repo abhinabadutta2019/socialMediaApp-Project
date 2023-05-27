@@ -33,12 +33,12 @@ router.get("/login", async (req, res) => {
 });
 
 //
-router.get("/details", verifyLoggedInUser, async (req, res) => {
+router.get("/personalDetails", verifyLoggedInUser, async (req, res) => {
   try {
     //from middleware
     const user = req.userDetail;
 
-    res.render("details", { user: user });
+    res.render("personalDetails", { user: user });
   } catch (err) {
     console.log(err);
     res.json(err);
@@ -52,7 +52,6 @@ router.get("/allUsers", verifyLoggedInUser, async (req, res) => {
     const user = req.userDetail;
 
     const allUsers = await User.find({});
-
     // res.json(allUsers);
     res.render("allUsers", { allUsers: allUsers });
   } catch (err) {
@@ -427,6 +426,22 @@ router.delete("/delete/:id", async (req, res) => {
   }
 });
 //
+
+//
+//
+router.get("/getUser/:id", async (req, res) => {
+  try {
+    console.log(req.params, "req.params");
+    const user = await User.findById(req.params.id);
+    // console.log(user, "user");
+
+    res.render("getUser", { user: user });
+    // res.render("getUser");
+  } catch (err) {
+    console.log(err);
+    res.json(err);
+  }
+});
 //etar jonno error aschilo
 // get one user by id
 router.get("/:id", async (req, res) => {

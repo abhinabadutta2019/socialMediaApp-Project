@@ -1,3 +1,5 @@
+<%- include('partials/header') %>
+
 <h2>All Users</h2>
 
 <div>
@@ -9,7 +11,32 @@
     <p>followers:<%= allUsers[i].followers %></p>
     <p>followings:<%= allUsers[i].followings %></p>
     <!--user details button -->
-    <button id="<%= allUsers[i]._id %>">Details</button>
+    <button id="<%= allUsers[i]._id %>" onclick="getUser()">Details</button>
   </li>
   <% } %>
 </div>
+
+<script>
+  //get user detail from all user page
+  async function getUser() {
+    try {
+      const id = event.srcElement.id;
+      //   console.log(id);
+
+      await fetch(`http://localhost:3003/user/getUser/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(window.location.href);
+      //
+      //   window.location.href = `${window.location.origin}/user/getUser`;
+      //   console.log(`${window.location.origin}/user/getUser`);
+      //
+      window.location.href = `${window.location.origin}/user/getUser/${id}`;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+</script>
