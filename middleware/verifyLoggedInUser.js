@@ -7,12 +7,15 @@ const verifyLoggedInUser = async (req, res, next) => {
     // console.log(req.headers.authorization, "req.headers.authorization");
     //this next() --works on- res.json() - if no token provided-- echarao token na thakle - console e - error dei
 
-    if (!req.cookies.jwt) {
-      next("No token provided");
-    }
+    // if (!req.cookies.jwt) {
+    //   next("No token provided");
+    // }
 
     //get token -- for browser
-    const token = req.cookies.jwt;
+    // const token = req.cookies.jwt;
+
+    //ekhane browser + postman dutor j kono ekta jate paoa jai
+    const token = req.cookies.jwt || req.headers.authorization.split(" ")[1];
 
     // if (!req.headers.authorization) {
     //   next("No token provided");
