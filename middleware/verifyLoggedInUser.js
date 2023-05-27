@@ -6,12 +6,20 @@ const verifyLoggedInUser = async (req, res, next) => {
   try {
     // console.log(req.headers.authorization, "req.headers.authorization");
     //this next() --works on- res.json() - if no token provided-- echarao token na thakle - console e - error dei
-    if (!req.headers.authorization) {
+
+    if (!req.cookies.jwt) {
       next("No token provided");
     }
 
-    const token = req.headers.authorization.split(" ")[1];
-    //
+    //get token -- for browser
+    const token = req.cookies.jwt;
+
+    // if (!req.headers.authorization) {
+    //   next("No token provided");
+    // }
+
+    //get token -- for postman
+    // const token = req.headers.authorization.split(" ")[1];
 
     //jwt.verify verify gives id
     let decoded;

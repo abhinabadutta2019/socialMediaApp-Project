@@ -23,6 +23,12 @@ router.get("/login", async (req, res) => {
 });
 
 //
+router.get("/details", verifyLoggedInUser, async (req, res) => {
+  //from middleware
+  const user = req.userDetail;
+
+  res.render("details", { user: user });
+});
 
 //--/user
 //create / register- user
@@ -77,9 +83,15 @@ router.post("/login", async (req, res) => {
         // const token = jwt.sign(payload, "secret");
         const token = jwt.sign(payload, `${process.env.JWT_SECRET}`);
         //
+        res.cookie("jwt", token);
+        //
         console.log(token, "token");
 
-        res.json({ user: user, token: token }); //sending token from here
+        //for postman
+        // res.json({ user: user, token: token }); //sending token from here
+
+        //frontend ejs
+        res.render("details", { user: user });
       }
     }
   } catch (err) {
