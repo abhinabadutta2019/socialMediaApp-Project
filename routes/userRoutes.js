@@ -33,6 +33,16 @@ router.get("/login", async (req, res) => {
 });
 
 //
+router.get("/loginSuccess", verifyLoggedInUser, async (req, res) => {
+  try {
+    res.render("loginSuccess");
+  } catch (err) {
+    console.log(err);
+    res.json(err);
+  }
+});
+
+//login (post) fire hole
 router.get("/personalDetails", verifyLoggedInUser, async (req, res) => {
   try {
     //from middleware
@@ -117,10 +127,8 @@ router.post("/login", async (req, res) => {
         console.log(token, "token");
 
         //for postman
-        // res.json({ user: user, token: token }); //sending token from here
-
-        //frontend ejs
-        res.render("details", { user: user });
+        res.json({ user: user, token: token }); //sending token from here
+        //ekhan theke render korle-- res.render marle ---error asbe -
       }
     }
   } catch (err) {

@@ -5,13 +5,13 @@
 <div>
   <% for( let i = 0; i < allUsers.length; i++ ) { %>
 
-  <li>
+  <li id="<%= allUsers[i]._id %>">
     <p>userName:<%= allUsers[i].username %></p>
     <p>isAdmin:<%= allUsers[i].isAdmin %></p>
     <p>followers:<%= allUsers[i].followers %></p>
     <p>followings:<%= allUsers[i].followings %></p>
     <!--user details button -->
-    <button id="<%= allUsers[i]._id %>" onclick="getUser()">Details</button>
+    <button onclick="getUser()">Details</button>
   </li>
   <% } %>
 </div>
@@ -20,8 +20,16 @@
   //get user detail from all user page
   async function getUser() {
     try {
-      const id = event.srcElement.id;
+      //   const id = event.target.id;
       //   console.log(id);
+      const buttonDetail = event.target;
+      //to get the id of the <li>
+      const buttonParent = buttonDetail.parentElement;
+      //   console.log(buttonDetail);
+
+      const id = buttonParent.id;
+
+      //   console.log(id, "id");
 
       await fetch(`http://localhost:3003/user/getUser/${id}`, {
         method: "GET",
@@ -29,9 +37,7 @@
           "Content-Type": "application/json",
         },
       });
-      console.log(window.location.href);
-      //
-      //   window.location.href = `${window.location.origin}/user/getUser`;
+
       //   console.log(`${window.location.origin}/user/getUser`);
       //
       window.location.href = `${window.location.origin}/user/getUser/${id}`;
