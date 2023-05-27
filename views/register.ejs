@@ -1,0 +1,44 @@
+<h1>Register</h1>
+
+<form action="#">
+  <!-- Register -->
+  <label for="username">Username</label>
+  <input type="text" id="registerUsername" required />
+  <!-- password -->
+  <label for="password">Password</label>
+  <input type="password" id="registerPassword" required />
+</form>
+<!-- form Button -->
+<button id="registerButton" onclick="onRegisterButton()">Submit</button>
+
+<script>
+  async function onRegisterButton() {
+    //
+    try {
+      const username = document.getElementById("registerUsername").value;
+      const password = document.getElementById("registerPassword").value;
+
+      const data = { username: username, password: password };
+      //   console.log(username, "username");
+      // console.log(password, "password");
+
+      const response = await fetch("http://localhost:3003/user/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify(data),
+      });
+      //
+      const result = await response.json();
+      console.log(result, "result");
+
+      //   location = window.location;
+
+      //
+    } catch (err) {
+      console.log(err);
+    }
+  }
+</script>

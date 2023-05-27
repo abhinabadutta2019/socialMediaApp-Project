@@ -14,7 +14,7 @@ const { hashPass, deleteFromUserArray } = require("../helper/utils");
 //
 //frontend routes
 router.get("/register", async (req, res) => {
-  res.render("Hi");
+  res.render("register");
 });
 
 //--/user
@@ -27,8 +27,9 @@ router.post("/register", async (req, res) => {
     const newUser = new User({
       username: req.body.username,
       password: hashedPassword,
-      isAdmin: req.body.isAdmin,
+      // isAdmin: req.body.isAdmin,
     });
+
     //this works
     const user = await newUser.save();
 
