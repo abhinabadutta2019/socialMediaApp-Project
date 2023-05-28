@@ -37,7 +37,10 @@
       console.log(result);
       //
 
-      window.location.href = `${window.location.origin}/user/loginSuccess`;
+      //redirect to login success page
+      if (result.message == "login success") {
+        window.location.href = `${window.location.origin}/user/loginSuccess`;
+      }
 
       //
     } catch (err) {
