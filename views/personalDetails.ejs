@@ -7,4 +7,36 @@
   <p>admin:<%= user.isAdmin %></p>
   <p>followers:<%= user.followers %></p>
   <p>followings:<%= user.followings %></p>
+  <!-- delete user -->
+  <button onclick="deleteUser()">deleteUser</button>
 </div>
+
+<script>
+  async function deleteUser() {
+    try {
+      const deleteButton = event.target;
+      const parentDeleteButton = deleteButton.parentElement;
+      const delParentId = parentDeleteButton.id;
+      // console.log(delParentId, "delParentId");
+      const responseDelete = await fetch(
+        `http://localhost:3003/user/authDelete`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      //result of the fetch/await
+      const delResult = await responseDelete.json();
+      //checking if success
+      if (delResult.message == "delete successful") {
+        console.log(delResult);
+        //this redirects--to login- page
+        window.location.href = `${window.location.origin}/user/login`;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+</script>

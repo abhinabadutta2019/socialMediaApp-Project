@@ -349,16 +349,26 @@ router.delete("/authDelete", verifyLoggedInUser, async (req, res) => {
     //req.userDetail from middleware
     //deleteUserid to string
     const deleteUserid = req.userDetail._id.toString();
+    //
 
     //this user is to delete
     const thisUserGetsDeleted = await User.findByIdAndDelete(deleteUserid);
 
     //used to delete - 'deleteUserid', from all users followers array and followings array
     //calling from helper/utlis
-
     deleteFromUserArray(deleteUserid);
 
-    res.json({ thisUserGetsDeleted: thisUserGetsDeleted });
+    //just a paylode - that would get deleted
+    let payload = "deleteJwt";
+    //
+    const token = jwt.sign(payload, `${process.env.JWT_SECRET}`);
+    //to delete the token from browser
+    res.cookie("jwt", token, {
+      maxAge: 1,
+    });
+
+    // res.json({ thisUserGetsDeleted: thisUserGetsDeleted });
+    return res.json({ message: "delete successful" });
   } catch (err) {
     console.log(err);
     res.json({ err: err });
