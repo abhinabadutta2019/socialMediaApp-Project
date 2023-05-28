@@ -14,11 +14,42 @@
     <button onclick="getUser()">Details</button>
     <!-- follow button -->
     <button onclick="followUser()">Follow</button>
+    <!--  -->
+    <button onclick="unFollowUser()">unFollow</button>
   </li>
   <% } %>
 </div>
 
 <script>
+  //
+  async function unFollowUser() {
+    try {
+      const unFollowButton = event.target;
+      const unFollowButtonParent = unFollowButton.parentElement;
+      const unParentId = unFollowButtonParent.id;
+      // console.log(unParentId, "unParentId");
+      const response = await fetch(
+        `http://localhost:3003/user/unfollow/${unParentId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      //result of the fetch/await
+      const result = await response.json();
+
+      //follow successful hole tokhon e reload
+      if (result.message == "unfollow successful") {
+        window.location.href = window.location.href;
+      }
+      //general else block
+      console.log(result, "result");
+    } catch (err) {
+      console.log(err);
+    }
+  }
   //
   async function followUser() {
     try {
@@ -35,12 +66,14 @@
           },
         }
       );
-      // console.log(parentId, "parentId");
+      //result of the fetch/await
       const result = await response.json();
-      // console.log(result.message, "result");
+
+      //follow successful hole tokhon e reload
       if (result.message == "follow successful") {
         window.location.href = window.location.href;
       }
+      //general else block
       console.log(result, "result");
       //
     } catch (err) {

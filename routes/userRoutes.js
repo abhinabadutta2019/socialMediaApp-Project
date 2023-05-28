@@ -306,7 +306,7 @@ router.put("/unfollow/:id", verifyLoggedInUser, async (req, res) => {
     }
 
     if (req.params.id == currentUser._id.toString()) {
-      return res.json({ message: "can't follow itself" });
+      return res.json({ message: "can't unfollow itself" });
     }
     //
     const followingUser = await User.findById(req.params.id);
