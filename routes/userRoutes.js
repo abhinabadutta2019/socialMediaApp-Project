@@ -247,6 +247,8 @@ router.put("/follow/:id", verifyLoggedInUser, async (req, res) => {
   // console.log(req.userDetail.id);
 
   try {
+    // console.log(req.params.id);
+    //////
     const currentUser = req.userDetail;
     //to test
     // console.log(currentUser.id, "currentUser.id");
@@ -436,10 +438,10 @@ router.delete("/delete/:id", async (req, res) => {
 //
 
 //
-//
+//all user page - theke - details e click korle - eta fire hobe
 router.get("/getUser/:id", async (req, res) => {
   try {
-    console.log(req.params, "req.params");
+    // console.log(req.params, "req.params");
     const user = await User.findById(req.params.id);
     // console.log(user, "user");
 

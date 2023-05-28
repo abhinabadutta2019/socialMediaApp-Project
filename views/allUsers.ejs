@@ -12,12 +12,43 @@
     <p>followings:<%= allUsers[i].followings %></p>
     <!--user details button -->
     <button onclick="getUser()">Details</button>
+    <!-- follow button -->
+    <button onclick="followUser()">Follow</button>
   </li>
   <% } %>
 </div>
 
 <script>
-  //get user detail from all user page
+  //
+  async function followUser() {
+    try {
+      const followButton = event.target;
+      const followButtonParent = followButton.parentElement;
+      const parentId = followButtonParent.id;
+      //
+      const response = await fetch(
+        `http://localhost:3003/user/follow/${parentId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      // console.log(parentId, "parentId");
+      const result = await response.json();
+      // console.log(result.message, "result");
+      if (result.message == "follow successful") {
+        window.location.href = window.location.href;
+      }
+      console.log(result, "result");
+      //
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  //Details button = get user detail from all user page
   async function getUser() {
     try {
       //   const id = event.target.id;
