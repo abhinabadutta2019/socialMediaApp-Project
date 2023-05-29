@@ -34,12 +34,29 @@
 
       //error hocche
       const result = await response.json();
-      console.log(result);
+      // console.log(result.message);
       //
 
       //redirect to login success page
       if (result.message == "login success") {
-        window.location.href = `${window.location.origin}/user/loginSuccess`;
+        // window.location.href = `${window.location.origin}/user/loginSuccess`;
+        // console.log("Hello Login");
+        const loginResponse = await fetch(
+          "http://localhost:3003/user/personalDetails",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        // window.location.href = `${window.location.origin}/user/personalDetails`;
+        //
+        // console.log(loginResponse);
+        if (loginResponse.url) {
+          window.location.href = loginResponse.url;
+          // console.log(response.url);
+        }
       }
 
       //

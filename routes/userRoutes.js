@@ -45,6 +45,7 @@ router.get("/loginSuccess", verifyLoggedInUser, async (req, res) => {
 //login (post) fire hole
 router.get("/personalDetails", verifyLoggedInUser, async (req, res) => {
   try {
+    console.log("from /personalDetails route");
     //from middleware
     const user = req.userDetail;
 
@@ -127,9 +128,10 @@ router.post("/login", async (req, res) => {
         console.log(token, "token");
 
         //for postman
-        // res.json({ user: user, token: token }); //sending token from here
+        res.json({ user: user, token: token, message: "login success" }); //sending token from here
         //ekhan theke render korle-- res.render marle ---error asbe -
-        res.json({ message: "login success" });
+        //it was working with login success page
+        // res.json({ message: "login success" });
       }
     }
   } catch (err) {
