@@ -12,50 +12,53 @@
 </div>
 <br /><br /><br /><br />
 <div>
-  <h3>Update form</h3>
+  <h3>Update Password</h3>
 
   <!-- <h4>Message:Fill existing username or password to update</h4> -->
   <br />
   <form action="#">
     <!--  -->
     <p>message : You have to login again - if you press update buttons</p>
-    <label for="updateUsername">updateUsername</label>
-    <input type="text" id="updateUsername" required />
     <!-- password -->
     <label for="updatePassword">updatePassword</label>
     <input type="password" id="updatePassword" required />
   </form>
   <!-- form Button -->
-  <button id="updateButton" onclick="onUpdateButton()">updateButton</button>
+  <button id="updatePasswordButton" onclick="onUpdatePasswordButton()">
+    updatePassword
+  </button>
 </div>
 
 <script>
-  async function onUpdateButton() {
+  async function onUpdatePasswordButton() {
     try {
-      const username = document.getElementById("updateUsername").value;
       const password = document.getElementById("updatePassword").value;
 
-      const data = { username: username, password: password };
+      const data = { password: password };
       // console.log(data, "data");
       //
-      const response = await fetch("http://localhost:3003/user/update", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-        //
-      });
+      const response = await fetch(
+        "http://localhost:3003/user/updatePassword",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+          //
+        }
+      );
       //
       const result = await response.json();
 
+      console.log(result);
       if (result.message == "success") {
         //redirect to login page
-        window.location.href = `${window.location.origin}/user/login`;
+        // window.location.href = `${window.location.origin}/user/login`;
+        setTimeout(function () {
+          window.location.href = `${window.location.origin}/user/login`;
+        }, 2000);
       }
-
-      // update successful hote-- trying to delete token and login again
-      console.log(result);
     } catch (err) {
       console.log(err);
     }

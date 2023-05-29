@@ -130,39 +130,22 @@ router.post("/login", async (req, res) => {
 //
 //update user with login token
 
-router.post("/update", verifyLoggedInUser, async (req, res) => {
+router.post("/updatePassword", verifyLoggedInUser, async (req, res) => {
   try {
-    // console.log(req.body.username.length, "req.body.username-outside");
-    // console.log(req.body.password, "req.body.username-outside");
     //
     let user = req.userDetail;
     // console.log(user, "user at first");
     const newUserObj = { ...user._doc };
 
-    //if password updated
-    if (req.body.password) {
-      //check if length less than 3
-      if (req.body.password.length < 3) {
-        return res.send({ message: "password length cant be less than 3" });
-      }
-      // console.log(req.body.password, "req.body.passsword");
-      //
-      const hashedPassword = await hashPass(req.body.password);
-      newUserObj.password = hashedPassword;
-      // console.log(newUserObj.password, "newUserObj.password");
+    if (req.body.password.length < 3) {
+      return res.send({ message: "password length cant be less than 3" });
     }
 
-    if (req.body.username) {
-      //check if length less than 3
-      if (req.body.username.length < 3) {
-        return res.send({ message: "username length cant be less than 3" });
-      }
-      //
-      // console.log(req.body.username, "req.body.username");
-      //
-      newUserObj.username = req.body.username;
-      // console.log(newUserObj.username, "newUserObj.username");
-    }
+    //hashPass-my written middleware
+    const hashedPassword = await hashPass(req.body.password);
+    newUserObj.password = hashedPassword;
+    // console.log(newUserObj.password, "newUserObj.password");
+
     //this was working
     let updatedUser = await User.findByIdAndUpdate(
       user.id,
