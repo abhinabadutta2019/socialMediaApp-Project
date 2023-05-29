@@ -32,16 +32,6 @@ router.get("/login", async (req, res) => {
   }
 });
 
-//login success page route
-router.get("/loginSuccess", verifyLoggedInUser, async (req, res) => {
-  try {
-    res.render("loginSuccess");
-  } catch (err) {
-    console.log(err);
-    res.json(err);
-  }
-});
-
 //login (post) fire hole
 router.get("/personalDetails", verifyLoggedInUser, async (req, res) => {
   try {
@@ -127,11 +117,9 @@ router.post("/login", async (req, res) => {
         //
         console.log(token, "token");
 
-        //for postman
-        res.json({ user: user, token: token, message: "login success" }); //sending token from here
-        //ekhan theke render korle-- res.render marle ---error asbe -
-        //it was working with login success page
-        // res.json({ message: "login success" });
+        //trying redirect from here
+        // res.render("personalDetails", { user: user });
+        res.json({ message: "success" });
       }
     }
   } catch (err) {
@@ -503,5 +491,15 @@ router.get("/:id", async (req, res) => {
     res.send(e);
   }
 });
+//
+//login success page route
+// router.get("/loginSuccess", verifyLoggedInUser, async (req, res) => {
+//   try {
+//     res.render("loginSuccess");
+//   } catch (err) {
+//     console.log(err);
+//     res.json(err);
+//   }
+// });
 //
 module.exports = router;

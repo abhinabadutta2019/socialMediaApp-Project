@@ -32,31 +32,16 @@
         //
       });
 
-      //error hocche
+      //fetch () er result hocche- - login (post) rout er - res.json()-- e jeta set kora hocche( by me)
       const result = await response.json();
-      // console.log(result.message);
-      //
 
-      //redirect to login success page
-      if (result.message == "login success") {
-        // window.location.href = `${window.location.origin}/user/loginSuccess`;
-        // console.log("Hello Login");
-        const loginResponse = await fetch(
-          "http://localhost:3003/user/personalDetails",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        // window.location.href = `${window.location.origin}/user/personalDetails`;
-        //
-        // console.log(loginResponse);
-        if (loginResponse.url) {
-          window.location.href = loginResponse.url;
-          // console.log(response.url);
-        }
+      //this line important to get the messages in browser(console)
+      console.log(result);
+
+      if (result.message == "success") {
+        //this line is fireing- router.get("/personalDetails"..
+        //etar jonno redirect o hocche - after - get request -- fire hocche
+        window.location.href = `${window.location.origin}/user/personalDetails`;
       }
 
       //
