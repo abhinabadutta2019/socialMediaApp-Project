@@ -6,6 +6,7 @@
   <!-- username -->
   <label for="username">Username</label>
   <input type="text" id="registerUsername" required />
+  <br />
   <!-- password -->
   <label for="password">Password</label>
   <input type="password" id="registerPassword" required />
@@ -36,6 +37,13 @@
       const result = await response.json();
       //ei line- browser er console e pront hocche
       console.log(result, "result");
+
+      if (result.message == "user created") {
+        setTimeout(function () {
+          //
+          window.location.href = `${window.location.origin}/user/personalDetails`;
+        }, 2000);
+      }
 
       //page reload korbe
       //   location = window.location;

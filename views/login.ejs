@@ -6,6 +6,7 @@
   <!-- Register -->
   <label for="username">Username</label>
   <input type="text" id="loginUsername" required />
+  <br />
   <!-- password -->
   <label for="password">Password</label>
   <input type="password" id="loginPassword" required />
@@ -41,7 +42,10 @@
       if (result.message == "success") {
         //this line is fireing- router.get("/personalDetails"..
         //etar jonno redirect o hocche - after - get request -- fire hocche
-        window.location.href = `${window.location.origin}/user/personalDetails`;
+        setTimeout(function () {
+          //
+          window.location.href = `${window.location.origin}/user/personalDetails`;
+        }, 2000);
       }
 
       //

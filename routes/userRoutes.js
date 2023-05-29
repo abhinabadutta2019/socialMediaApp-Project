@@ -76,7 +76,16 @@ router.post("/register", async (req, res) => {
     //this works
     const user = await newUser.save();
 
-    res.json({ user: user });
+    //creating token
+
+    let payload = user.id;
+
+    // const token = jwt.sign(payload, "secret");
+    const token = jwt.sign(payload, `${process.env.JWT_SECRET}`);
+
+    res.cookie("jwt", token);
+
+    res.json({ message: "user created" });
     // res.send();
   } catch (err) {
     console.log(err);
@@ -129,7 +138,6 @@ router.post("/login", async (req, res) => {
 });
 //
 //update user with login token
-
 router.post("/updatePassword", verifyLoggedInUser, async (req, res) => {
   try {
     //
