@@ -43,16 +43,9 @@ router.get("/logout", async (req, res) => {
     res.cookie("jwt", token, {
       maxAge: 1,
     });
-    // console.log(req.protocol + "://" + req.get("host") + req.originalUrl);
-    // //
-    // console.log(req.protocol, "req.protocol");
-    // console.log(req.get("host"), "req.get('host')");
-    // console.log(req.originalUrl, " req.originalUrl");
-    // console.log(req.get, "req.get");
-    // res.render("login");
 
     //this to redirect
-    res.redirect(`${req.protocol}://${req.get("host")}/user/login`);
+    res.json({ message: "logout success" });
   } catch (err) {
     console.log(err);
     res.json(err);

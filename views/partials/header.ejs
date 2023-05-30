@@ -4,8 +4,39 @@
       <li><a href="/user/personalDetails">personalDetails</a></li>
       <li><a href="/user/register">Register</a></li>
       <li><a href="/user/login">LogIn</a></li>
-      <li><a href="/user/logout">Logout</a></li>
       <li><a href="/user/allUsers">All-Users</a></li>
     </h3>
+    <button onclick="logoutUser()">Logout</button>
   </ul>
 </nav>
+
+<script>
+  async function logoutUser() {
+    try {
+      const responseLogout = await fetch(
+        `${window.location.origin}/user/logout`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+
+          //
+        }
+      );
+      //
+      const logoutResult = await responseLogout.json();
+      //
+      console.log(logoutResult);
+      if (logoutResult.message == "logout success") {
+        setTimeout(function () {
+          //
+          window.location.href = `${window.location.origin}/user/login`;
+        }, 1000);
+      }
+    } catch (err) {
+      console.log(err);
+      res.json(err);
+    }
+  }
+</script>

@@ -25,7 +25,7 @@
       //   console.log(username, "username");
       // console.log(password, "password");
 
-      const response = await fetch("http://localhost:3003/user/register", {
+      const response = await fetch(`${window.location.origin}/user/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -42,7 +42,7 @@
         setTimeout(function () {
           //
           window.location.href = `${window.location.origin}/user/personalDetails`;
-        }, 2000);
+        }, 1000);
       }
 
       //page reload korbe
