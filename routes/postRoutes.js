@@ -57,9 +57,10 @@ router.post("/create", verifyLoggedInUser, async (req, res) => {
   }
 });
 //users- own -posts
-router.get("/ownpost", potmanLoginMiddleware, async (req, res) => {
+router.get("/ownposts", verifyLoggedInUser, async (req, res) => {
   //
   try {
+    console.log(req.url, "req.url");
     //
     const user = req.userDetail;
 
@@ -73,13 +74,17 @@ router.get("/ownpost", potmanLoginMiddleware, async (req, res) => {
       const onePost = myPosts[i];
       //
       if (user._id.toString() == onePost.userId.toString()) {
-        const { __v, _id, userId, ...others } = onePost._doc;
+        const { __v, userId, ...others } = onePost._doc;
         // console.log(others, "others");
         myArray.push(others);
       }
     }
-    res.json({ myArray: myArray });
-    res.json();
+    // res.json();
+    if (myArray.length == 0) {
+      return res.json({ message: "this user has no post" });
+    }
+    // res.json({ myArray: myArray });
+    res.render("ownPosts", { myArray: myArray });
   } catch (err) {
     res.json(err);
   }
