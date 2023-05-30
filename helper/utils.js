@@ -1,8 +1,9 @@
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const User = require("../models/userModel");
 const Post = require("../models/postModel");
-
 //
 let hashPass = async (passString) => {
   try {
@@ -67,6 +68,8 @@ const deleteFromUserArray = async function (deleteUserid) {
     res.send(e);
   }
 };
+
+//cookie/ token -related
 
 module.exports = {
   hashPass,

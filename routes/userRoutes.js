@@ -32,6 +32,33 @@ router.get("/login", async (req, res) => {
   }
 });
 
+//logging out
+router.get("/logout", async (req, res) => {
+  try {
+    //just a paylode - that would get deleted
+    let payload = "deleteJwt";
+    //
+    const token = jwt.sign(payload, `${process.env.JWT_SECRET}`);
+    //to delete the token from browser
+    res.cookie("jwt", token, {
+      maxAge: 1,
+    });
+    // console.log(req.protocol + "://" + req.get("host") + req.originalUrl);
+    // //
+    // console.log(req.protocol, "req.protocol");
+    // console.log(req.get("host"), "req.get('host')");
+    // console.log(req.originalUrl, " req.originalUrl");
+    // console.log(req.get, "req.get");
+    // res.render("login");
+
+    //this to redirect
+    res.redirect(`${req.protocol}://${req.get("host")}/user/login`);
+  } catch (err) {
+    console.log(err);
+    res.json(err);
+  }
+});
+
 //login (post) fire hole
 router.get("/personalDetails", verifyLoggedInUser, async (req, res) => {
   try {
@@ -78,12 +105,13 @@ router.post("/register", async (req, res) => {
 
     //creating token
 
-    let payload = user.id;
+    const payload = user._id.toString();
 
     // const token = jwt.sign(payload, "secret");
     const token = jwt.sign(payload, `${process.env.JWT_SECRET}`);
 
     res.cookie("jwt", token);
+    //
 
     res.json({ message: "user created" });
     // res.send();
