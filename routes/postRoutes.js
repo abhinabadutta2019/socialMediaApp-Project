@@ -3,6 +3,10 @@ const mongoose = require("mongoose");
 const Post = require("../models/postModel");
 const router = express.Router();
 const { verifyLoggedInUser } = require("../middleware/verifyLoggedInUser");
+
+const {
+  potmanLoginMiddleware,
+} = require("../middleware/potmanLoginMiddleware");
 //
 //----/post
 //
@@ -52,15 +56,40 @@ router.post("/create", verifyLoggedInUser, async (req, res) => {
     res.json(err);
   }
 });
+//users- own -posts
+router.get("/ownpost", potmanLoginMiddleware, async (req, res) => {
+  //
+  try {
+    //
+    const user = req.userDetail;
 
+    // console.log(user._id.toString());
+
+    const myPosts = await Post.find({});
+
+    // //
+    const myArray = [];
+    for (let i = 0; i < myPosts.length; i++) {
+      const onePost = myPosts[i];
+      //
+      if (user._id.toString() == onePost.userId.toString()) {
+        const { __v, _id, userId, ...others } = onePost._doc;
+        // console.log(others, "others");
+        myArray.push(others);
+      }
+    }
+    res.json({ myArray: myArray });
+    res.json();
+  } catch (err) {
+    res.json(err);
+  }
+});
 //update a post
 
 router.put("/update/:id", verifyLoggedInUser, async (req, res) => {
   try {
     // console.log(req.params.id, "req.params");
     const user = req.userDetail;
-
-    //
 
     //check if params object id is valid
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
