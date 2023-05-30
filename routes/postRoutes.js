@@ -3,6 +3,19 @@ const mongoose = require("mongoose");
 const Post = require("../models/postModel");
 const router = express.Router();
 const { verifyLoggedInUser } = require("../middleware/verifyLoggedInUser");
+//
+//----/post
+//
+router.get("/create", verifyLoggedInUser, async (req, res) => {
+  //
+  try {
+    res.render("createPost");
+  } catch (err) {
+    console.log(err);
+    res.json(err);
+  }
+});
+//
 //----/post
 //create a post
 router.post("/create", verifyLoggedInUser, async (req, res) => {
@@ -16,6 +29,13 @@ router.post("/create", verifyLoggedInUser, async (req, res) => {
       return res.json("User not logged in");
     }
 
+    //
+    // console.log(req.body, "req.body");
+
+    if (req.body.description.length < 3) {
+      return res.json({ message: "post description is too short" });
+    }
+
     //create new post
     const newPost = new Post({
       userId: user._id.toString(),
@@ -24,7 +44,8 @@ router.post("/create", verifyLoggedInUser, async (req, res) => {
     //save to database
     const post = await newPost.save();
 
-    res.json({ post });
+    // res.json({ post });
+    res.json({ message: "post created" });
     // res.send();
   } catch (err) {
     console.log(err);
