@@ -5,8 +5,8 @@ const router = express.Router();
 const { verifyLoggedInUser } = require("../middleware/verifyLoggedInUser");
 
 const {
-  potmanLoginMiddleware,
-} = require("../middleware/potmanLoginMiddleware");
+  postmanLoginMiddleware,
+} = require("../middleware/postmanLoginMiddleware");
 //
 //----/post
 //

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 
-const potmanLoginMiddleware = async (req, res, next) => {
+const postmanLoginMiddleware = async (req, res, next) => {
   try {
     // console.log(req.headers.authorization, "req.headers.authorization");
     //this next() --works on- res.json() - if no token provided-- echarao token na thakle - console e - error dei
@@ -50,4 +50,4 @@ const potmanLoginMiddleware = async (req, res, next) => {
 };
 
 //
-module.exports = { potmanLoginMiddleware };
+module.exports = { postmanLoginMiddleware };

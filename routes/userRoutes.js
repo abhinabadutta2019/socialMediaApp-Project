@@ -9,8 +9,8 @@ const router = express.Router();
 const { verifyLoggedInUser } = require("../middleware/verifyLoggedInUser"); //login middleware
 // const { verifyAdmin } = require("../middleware/verifyAdmin");//admin login middleware
 const {
-  potmanLoginMiddleware,
-} = require("../middleware/potmanLoginMiddleware");
+  postmanLoginMiddleware,
+} = require("../middleware/postmanLoginMiddleware");
 const { hashPass, deleteFromUserArray } = require("../helper/utils");
 ///////////////////////////////////////////////
 
