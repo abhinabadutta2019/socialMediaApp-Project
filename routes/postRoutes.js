@@ -252,25 +252,37 @@ router.get("/timeline/all", verifyLoggedInUser, async (req, res) => {
     const userFollowings = user.followings;
     // console.log(userFollowings);
 
-    // posts of Users it follows
-    const followingsPostArray = [];
+    // if not own post
+    // const followingsPostArray = [];
+    const notOwnPost = [];
     for (let i = 0; i < allPosts.length; i++) {
       const onePost = allPosts[i];
       // console.log(onePost.userId);
       //
-      if (userFollowings.includes(onePost.userId.toString())) {
-        // console.log(onePost);
-        followingsPostArray.push(onePost);
+      // if (userFollowings.includes(onePost.userId.toString())) {
+      //   // console.log(onePost);
+      //   followingsPostArray.push(onePost);
+      // }
+
+      // if not own post
+      if (onePost.userId !== user._id.toString()) {
+        notOwnPost.push(onePost);
       }
     }
     // console.log(allPosts);
     //
     // console.log(followingsPostArray, "followingsPostArray");
 
-    res.json({
+    // const resultObject = {
+    //   userProfile: visiblePart,
+    //   userPosts: userPosts,
+    //   postsNotByYou: notOwnPost,
+    // };
+
+    res.render("timeline", {
       userProfile: visiblePart,
       userPosts: userPosts,
-      postsByYouFollow: followingsPostArray,
+      postsNotByYou: notOwnPost,
     });
   } catch (err) {
     console.log(err);

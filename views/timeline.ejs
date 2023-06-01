@@ -1,0 +1,33 @@
+<h2>Timeline</h2>
+<!--  -->
+<div>
+  <h4>User info</h4>
+  <p>username:<%= userProfile.username %></p>
+</div>
+<div>
+  <h4>Users's own posts</h4>
+  <% for( let index = 0; index < userPosts.length; index++ ) { %>
+  <!--  -->
+
+  <li id="<%=userPosts[index]._id %>">
+    <p>description : <%=userPosts[index].description %></p>
+    <!-- likes array er length pathalam -->
+    <p>likes : <%=userPosts[index].likes.length %></p>
+  </li>
+  <% } %>
+</div>
+<!--  -->
+<hr />
+<div>
+  <h4>other's posts</h4>
+  <!--  -->
+  <% for( let index = 0; index < postsNotByYou.length; index++ ) { %>
+
+  <li id="<%=postsNotByYou[index]._id %>">
+    <p>description : <%=postsNotByYou[index].description %></p>
+    <!-- likes array er length pathalam -->
+    <p>likes : <%=postsNotByYou[index].likes.length %></p>
+  </li>
+
+  <% } %>
+</div>
