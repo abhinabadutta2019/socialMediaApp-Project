@@ -6,6 +6,44 @@
   <li id="<%=myArray[index]._id %>">
     <p>description : <%=myArray[index].description %></p>
     <p>likes : <%=myArray[index].likes %></p>
+    <button onclick="deletePost()">DeletePost</button>
   </li>
+
   <% } %>
 </div>
+<script>
+  async function deletePost() {
+    //
+    try {
+      const deleteButton = event.target;
+      const deleteButtonParent = deleteButton.parentElement;
+      const deleteParentId = deleteButtonParent.id;
+      // console.log(deleteParentId, "deleteParentId");
+
+      const responseDelete = await fetch(
+        `${window.location.origin}/post/delete/${deleteParentId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      //
+      const deleteResult = await responseDelete.json();
+
+      console.log(deleteResult, "deleteResult");
+
+      if (deleteResult.message == "post delete success") {
+        setTimeout(function () {
+          //de
+          window.location.href = `${window.location.origin}/post/ownposts`;
+        }, 2000);
+      }
+
+      // window.location.href = `${window.location.origin}/post/ownposts`;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+</script>

@@ -28,10 +28,13 @@
           //
         }
       );
+
       //
       // const resultUserPosts = await responseUserPosts.json();
-      window.location.href = `${window.location.origin}/post/ownposts`;
+
       // console.log(resultUserPosts, "resultUserPosts");
+
+      window.location.href = `${window.location.origin}/post/ownposts`;
     } catch (err) {
       console.log(err);
     }
@@ -60,8 +63,8 @@
       console.log(postSubmitResult, "postSubmitResult");
       if (postSubmitResult.message == "post created") {
         setTimeout(function () {
-          //
-          window.location.href = `${window.location.origin}/post/create`;
+          //de
+          window.location.href = `${window.location.origin}/post/ownposts`;
         }, 2000);
       }
       //

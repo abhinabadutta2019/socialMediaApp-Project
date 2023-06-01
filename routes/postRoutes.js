@@ -82,6 +82,7 @@ router.get("/ownposts", verifyLoggedInUser, async (req, res) => {
     // res.json();
     if (myArray.length == 0) {
       return res.json({ message: "this user has no post" });
+      // res.render("ownPosts");
     }
     // res.json({ myArray: myArray });
     res.render("ownPosts", { myArray: myArray });
@@ -146,7 +147,9 @@ router.put("/update/:id", verifyLoggedInUser, async (req, res) => {
 //delete a post
 router.delete("/delete/:id", verifyLoggedInUser, async (req, res) => {
   try {
-    // console.log(req.params.id);
+    console.log(req.url, "deleteParentId");
+    // console.log();
+    //
     const user = req.userDetail;
     //
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -171,7 +174,10 @@ router.delete("/delete/:id", verifyLoggedInUser, async (req, res) => {
     const deletedPost = await Post.findByIdAndDelete(post._id.toString());
     // console.log(deletedPost._id);
 
-    res.json({ deletedPost: deletedPost, deletedBy: user });
+    // res.json({ deletedPost: deletedPost, deletedBy: user });
+
+    res.json({ message: "post delete success" });
+    // res.send(post);
   } catch (err) {
     console.log(err);
     res.json(err);
