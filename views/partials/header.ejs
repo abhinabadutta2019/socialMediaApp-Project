@@ -8,11 +8,28 @@
 
       <li><a href="/post/create">Create-Post</a></li>
     </h3>
+    <!-- logout Button -->
     <button onclick="logoutUser()">Logout</button>
+    <!-- button to see users own posts -->
+    <button id="seeYourPosts" onclick="seeYourPostButton()">
+      seeYourPosts
+    </button>
   </ul>
 </nav>
 
 <script>
+  //
+  async function seeYourPostButton() {
+    try {
+      // button to see users own posts
+      //just using for redirection
+
+      window.location.href = `${window.location.origin}/post/ownposts`;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  //
   async function logoutUser() {
     try {
       const responseLogout = await fetch(

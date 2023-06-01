@@ -8,37 +8,9 @@
   <button id="postSubmit" onclick="onPostSubmit()">submitPost</button>
 </div>
 <br /><br /><br />
-<div>
-  <h4>See all your posts</h4>
-  <button id="seeYourPosts" onclick="seeYourPostButton()">seeYourPosts</button>
-</div>
 
 <!--  -->
 <script>
-  async function seeYourPostButton() {
-    try {
-      const responseUserPosts = await fetch(
-        `${window.location.origin}/post/ownposts`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-
-          //
-        }
-      );
-
-      //
-      // const resultUserPosts = await responseUserPosts.json();
-
-      // console.log(resultUserPosts, "resultUserPosts");
-
-      window.location.href = `${window.location.origin}/post/ownposts`;
-    } catch (err) {
-      console.log(err);
-    }
-  }
   //
   async function onPostSubmit() {
     //
