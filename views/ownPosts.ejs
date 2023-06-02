@@ -1,7 +1,8 @@
 <%- include('partials/header') %>
 <h2>Your own posts</h2>
 <div>
-  <% for( let index = 0; index < myArray.length; index++ ) { %>
+  <% if ( myArray.length>0) { %> <% for( let index = 0; index < myArray.length;
+  index++ ) { %>
 
   <li id="<%=myArray[index]._id %>">
     <p>description : <%=myArray[index].description %></p>
@@ -9,7 +10,9 @@
     <button onclick="deletePost()">DeletePost</button>
   </li>
 
-  <% } %>
+  <% } %> <% } else{%>
+  <p>No post created by user</p>
+  <%}%>
 </div>
 <script>
   async function deletePost() {

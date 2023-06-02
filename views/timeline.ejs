@@ -10,7 +10,8 @@
 </div>
 <div>
   <h4>Users's own posts</h4>
-  <% for( let index = 0; index < userPosts.length; index++ ) { %>
+  <% if (userPosts.length>0) { %> <% for( let index = 0; index <
+  userPosts.length; index++ ) { %>
   <!--  -->
 
   <li id="<%=userPosts[index]._id %>">
@@ -18,6 +19,8 @@
     <!-- likes array er length pathalam -->
     <p>likes : <%=userPosts[index].likes.length %></p>
   </li>
+  <% } %> <% } else{%>
+  <p>No post of user's own</p>
   <% } %>
 </div>
 <!--  -->
@@ -25,7 +28,8 @@
 <div>
   <h4>other's posts</h4>
   <!--  -->
-  <% for( let index = 0; index < postsNotByYou.length; index++ ) { %>
+  <%if(postsNotByYou.length>0){%> <% for( let index = 0; index <
+  postsNotByYou.length; index++ ) { %>
 
   <li id="<%=postsNotByYou[index]._id %>">
     <p>description : <%=postsNotByYou[index].description %></p>
@@ -34,7 +38,9 @@
     <button onclick="likePostButton()">likePost</button>
   </li>
 
-  <% } %>
+  <% } %> <%}else{%>
+  <p>no post by others</p>
+  <%}%>
 </div>
 <!--  -->
 <script>

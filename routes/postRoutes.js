@@ -80,10 +80,10 @@ router.get("/ownposts", verifyLoggedInUser, async (req, res) => {
       }
     }
     // res.json();
-    if (myArray.length == 0) {
-      return res.json({ message: "this user has no post" });
-      // res.render("ownPosts");
-    }
+    // if (myArray.length == 0) {
+    //   return res.json({ message: "this user has no post" });
+    //   // res.render("ownPosts");
+    // }
     // res.json({ myArray: myArray });
     res.render("ownPosts", { myArray: myArray });
   } catch (err) {

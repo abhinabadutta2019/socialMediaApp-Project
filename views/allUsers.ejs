@@ -3,11 +3,12 @@
 <h2>All Users</h2>
 
 <div>
-  <% for( let i = 0; i < allUsers.length; i++ ) { %>
+  <% if (allUsers.length>0) { %> <% for( let i = 0; i < allUsers.length; i++ ) {
+  %>
 
   <li id="<%= allUsers[i]._id %>">
     <p>userName:<%= allUsers[i].username %></p>
-    <p>isAdmin:<%= allUsers[i].isAdmin %></p>
+
     <p>followers:<%= allUsers[i].followers %></p>
     <p>followings:<%= allUsers[i].followings %></p>
     <!--user details button -->
@@ -17,7 +18,9 @@
     <!--  -->
     <button onclick="unFollowUser()">unFollow</button>
   </li>
-  <% } %>
+  <% } %> <% } else{%>
+  <p>No user found</p>
+  <%}%>
 </div>
 
 <script>
