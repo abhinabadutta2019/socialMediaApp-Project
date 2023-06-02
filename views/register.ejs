@@ -20,6 +20,8 @@
   async function onRegisterButton() {
     //
     try {
+      message.textContent = "";
+      //
       const username = document.getElementById("registerUsername").value;
       const password = document.getElementById("registerPassword").value;
 
@@ -44,7 +46,7 @@
       //
       if (result.message == "user created") {
         //
-        console.log(result, "result");
+
         message.textContent = result.message;
         //
         setTimeout(function () {
@@ -54,7 +56,6 @@
       }
       //
       else if (result.message) {
-        console.log(result, "result");
         message.textContent = result.message;
         //
         setTimeout(function () {

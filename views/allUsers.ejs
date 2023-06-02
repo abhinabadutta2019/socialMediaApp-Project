@@ -25,6 +25,9 @@
 
 <script>
   //
+  let message = document.getElementById("message");
+  message.textContent = "";
+  //
   async function unFollowUser() {
     try {
       const unFollowButton = event.target;
@@ -43,12 +46,28 @@
       //result of the fetch/await
       const result = await response.json();
 
+      console.log(result, "result");
+
       //follow successful hole tokhon e reload
       if (result.message == "unfollow successful") {
-        window.location.href = window.location.href;
+        //
+        message.textContent = result.message;
+        //
+        setTimeout(function () {
+          //
+          window.location.href = window.location.href;
+        }, 1000);
       }
-      //general else block
-      console.log(result, "result");
+      //
+      else if (result.message) {
+        //
+        message.textContent = result.message;
+        //
+        setTimeout(function () {
+          //
+          window.location.href = window.location.href;
+        }, 1000);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -71,13 +90,29 @@
       );
       //result of the fetch/await
       const result = await response.json();
-
+      //
+      console.log(result, "result");
       //follow successful hole tokhon e reload
       if (result.message == "follow successful") {
-        window.location.href = window.location.href;
+        //
+        message.textContent = result.message;
+        //
+        setTimeout(function () {
+          //
+          window.location.href = window.location.href;
+        }, 1000);
       }
-      //general else block
-      console.log(result, "result");
+      //
+      else if (result.message) {
+        //
+        message.textContent = result.message;
+        //
+        setTimeout(function () {
+          //
+          window.location.href = window.location.href;
+        }, 1000);
+      }
+
       //
     } catch (err) {
       console.log(err);
@@ -98,7 +133,7 @@
 
       //   console.log(id, "id");
 
-      await fetch(`http://localhost:3003/user/getUser/${id}`, {
+      await fetch(`${window.location.origin}/user/getUser/${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
