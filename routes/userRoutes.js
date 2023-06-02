@@ -87,6 +87,11 @@ router.get("/allUsers", verifyLoggedInUser, async (req, res) => {
 //create / register- user
 router.post("/register", async (req, res) => {
   try {
+    //
+    if (req.body.username.length < 3 || req.body.password.length < 3) {
+      return res.json({ message: "username or password is too small" });
+    }
+
     //comming from helper/utils/hashPass function
     const hashedPassword = await hashPass(req.body.password);
 
