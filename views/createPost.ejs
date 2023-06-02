@@ -12,6 +12,9 @@
 <!--  -->
 <script>
   //
+  let message = document.getElementById("message");
+  message.textContent = "";
+  //
   async function onPostSubmit() {
     //
     try {
@@ -31,13 +34,29 @@
         }
       );
       const postSubmitResult = await postSubmitResponse.json();
+
+      //
+      console.log(postSubmitResult, "postSubmitResult");
       //
       console.log(postSubmitResult, "postSubmitResult");
       if (postSubmitResult.message == "post created") {
+        //
+        message.textContent = postSubmitResult.message;
+        //
         setTimeout(function () {
-          //de
+          //
           window.location.href = `${window.location.origin}/post/ownposts`;
         }, 2000);
+      }
+      //
+      else if (postSubmitResult.message) {
+        //
+        message.textContent = postSubmitResult.message;
+        //
+        setTimeout(function () {
+          //
+          window.location.href = window.location.href;
+        }, 1000);
       }
       //
     } catch (err) {
