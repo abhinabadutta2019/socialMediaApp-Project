@@ -30,5 +30,15 @@ app.listen(process.env.PORT, () => {
   console.log(`Server Started at ${process.env.PORT}`);
 });
 
+//home page would redirect to login url
+app.get("/", (req, res) => {
+  try {
+    res.redirect("/user/login");
+  } catch (err) {
+    console.log(err);
+    res.json(err);
+  }
+});
+//
 app.use("/user", userRoutes);
 app.use("/post", postRoutes);

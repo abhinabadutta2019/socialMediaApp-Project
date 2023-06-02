@@ -152,7 +152,7 @@ router.post("/login", async (req, res) => {
 
         //trying redirect from here
         // res.render("personalDetails", { user: user });
-        res.json({ message: "success" });
+        res.json({ message: "login success" });
       }
     }
   } catch (err) {

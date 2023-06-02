@@ -9,8 +9,8 @@
   <li id="<%= allUsers[i]._id %>">
     <p>userName:<%= allUsers[i].username %></p>
 
-    <p>followers:<%= allUsers[i].followers %></p>
-    <p>followings:<%= allUsers[i].followings %></p>
+    <p>followers:<%= allUsers[i].followers.length %></p>
+    <p>followings:<%= allUsers[i].followings.length %></p>
     <!--user details button -->
     <button onclick="getUser()">Details</button>
     <!-- follow button -->
