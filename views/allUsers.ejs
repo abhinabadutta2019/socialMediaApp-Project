@@ -8,7 +8,6 @@
 
   <li id="<%= allUsers[i]._id %>">
     <p>userName:<%= allUsers[i].username %></p>
-
     <p>followers:<%= allUsers[i].followers.length %></p>
     <p>followings:<%= allUsers[i].followings.length %></p>
     <!--user details button -->
@@ -48,18 +47,7 @@
 
       console.log(result, "result");
 
-      //follow successful hole tokhon e reload
-      if (result.message == "unfollow successful") {
-        //
-        message.textContent = result.message;
-        //
-        setTimeout(function () {
-          //
-          window.location.href = window.location.href;
-        }, 1000);
-      }
-      //
-      else if (result.message) {
+      if (result.message) {
         //
         message.textContent = result.message;
         //
@@ -93,17 +81,9 @@
       //
       console.log(result, "result");
       //follow successful hole tokhon e reload
-      if (result.message == "follow successful") {
-        //
-        message.textContent = result.message;
-        //
-        setTimeout(function () {
-          //
-          window.location.href = window.location.href;
-        }, 1000);
-      }
+
       //
-      else if (result.message) {
+      if (result.message) {
         //
         message.textContent = result.message;
         //
