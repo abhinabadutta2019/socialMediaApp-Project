@@ -175,7 +175,7 @@ router.post("/updatePassword", verifyLoggedInUser, async (req, res) => {
     const newUserObj = { ...user._doc };
 
     if (req.body.password.length < 3) {
-      return res.send({ message: "password length cant be less than 3" });
+      return res.send({ message: "password is too small" });
     }
 
     //hashPass-my written middleware
@@ -203,7 +203,7 @@ router.post("/updatePassword", verifyLoggedInUser, async (req, res) => {
     // update successful hote-- trying to delete token and login again
 
     // console.log(newUserObj, "newUserObj- after update");
-    res.json({ message: "success" });
+    res.json({ message: "password updated" });
   } catch (err) {
     console.log(err);
     res.json({ err: err });

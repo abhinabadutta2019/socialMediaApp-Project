@@ -30,6 +30,10 @@
 </div>
 
 <script>
+  //
+  let message = document.getElementById("message");
+  message.textContent = "";
+  //
   async function onUpdatePasswordButton() {
     try {
       const password = document.getElementById("updatePassword").value;
@@ -52,11 +56,23 @@
       const result = await response.json();
 
       console.log(result);
-      if (result.message == "success") {
-        //redirect to login page
-        // window.location.href = `${window.location.origin}/user/login`;
+      //
+      if (result.message == "password updated") {
+        //
+        message.textContent = result.message;
+        //
         setTimeout(function () {
           window.location.href = `${window.location.origin}/user/login`;
+        }, 1000);
+      }
+      //
+      else if (result.message) {
+        //
+        message.textContent = result.message;
+        //
+        setTimeout(function () {
+          //
+          window.location.href = window.location.href;
         }, 2000);
       }
     } catch (err) {
@@ -81,11 +97,17 @@
       );
       //result of the fetch/await
       const delResult = await responseDelete.json();
+      console.log(delResult, "delResult");
       //checking if success
       if (delResult.message == "delete successful") {
-        console.log(delResult);
+        //
+        //
+        message.textContent = delResult.message;
         //this redirects--to login- page
-        window.location.href = `${window.location.origin}/user/login`;
+        setTimeout(function () {
+          //
+          window.location.href = `${window.location.origin}/user/login`;
+        }, 2000);
       }
     } catch (err) {
       console.log(err);
