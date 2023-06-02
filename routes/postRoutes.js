@@ -223,7 +223,7 @@ router.put("/like/:id", verifyLoggedInUser, async (req, res) => {
       $push: { likes: user._id.toString() },
     });
 
-    res.json({ message: "Liked", post: post });
+    res.json({ message: "Liked" });
   } catch (err) {
     console.log(err);
     res.json(err);

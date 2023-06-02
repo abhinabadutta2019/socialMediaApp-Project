@@ -38,7 +38,7 @@
       // console.log(data, "data");
       //
       const response = await fetch(
-        "http://localhost:3003/user/updatePassword",
+        `${window.location.origin}/user/updatePassword`,
         {
           method: "POST",
           headers: {
@@ -71,7 +71,7 @@
       const delParentId = parentDeleteButton.id;
       // console.log(delParentId, "delParentId");
       const responseDelete = await fetch(
-        `http://localhost:3003/user/authDelete`,
+        `${window.location.origin}/user/authDelete`,
         {
           method: "DELETE",
           headers: {

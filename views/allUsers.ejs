@@ -29,7 +29,7 @@
       const unParentId = unFollowButtonParent.id;
       // console.log(unParentId, "unParentId");
       const response = await fetch(
-        `http://localhost:3003/user/unfollow/${unParentId}`,
+        `${window.location.origin}/user/unfollow/${unParentId}`,
         {
           method: "PUT",
           headers: {
@@ -58,7 +58,7 @@
       const parentId = followButtonParent.id;
       //
       const response = await fetch(
-        `http://localhost:3003/user/follow/${parentId}`,
+        `${window.location.origin}/user/follow/${parentId}`,
         {
           method: "PUT",
           headers: {
