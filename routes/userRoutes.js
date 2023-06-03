@@ -494,11 +494,63 @@ router.get("/getUser/:id", async (req, res) => {
     const user = await User.findById(req.params.id);
     // console.log(user, "user");
 
+    //
     res.render("getUser", { user: user });
     // res.json({ user: user });
   } catch (err) {
     console.log(err);
     res.json(err);
+  }
+});
+
+//users followingsList
+router.get("/followingsList/:id", async (req, res) => {
+  //
+  try {
+    console.log(req.url);
+    //
+    const user = await User.findById(req.params.id);
+    //
+    // console.log(user.followings, "user.followings");
+
+    //
+    // Convert string IDs to ObjectId
+    const followingIds = user.followings.map(
+      (id) => new mongoose.Types.ObjectId(id)
+    );
+
+    console.log(followingIds, "followingIds");
+
+    //
+    const followingsAggregate = await User.aggregate([
+      //
+      {
+        $match: {
+          _id: { $in: followingIds },
+        },
+      },
+      //
+      {
+        $project: {
+          _id: 1,
+          username: 1,
+          followers: 1,
+          followings: 1,
+          // Add other fields you want to retrieve
+        },
+      },
+    ]);
+
+    // console.log(followingsAggregate, "followingsAggregate");
+
+    // res.json({ followingsAggregate: followingsAggregate });
+    res.render("followingsDetails", {
+      followingsAggregate: followingsAggregate,
+    });
+  } catch (err) {
+    //
+    console.log(err);
+    res.json({ err });
   }
 });
 //etar jonno error aschilo

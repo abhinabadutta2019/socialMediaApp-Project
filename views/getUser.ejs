@@ -4,17 +4,56 @@
 
 <div id="<%= user._id %>">
   <p>username:<%= user.username %></p>
-  <p>followers:<%= user.followers %></p>
-  <p>followings:<%= user.followings %></p>
+  <p>followers:<%= user.followers.length %></p>
   <!--  -->
+  <button>followers Details</button>
+  <!--  -->
+  <p>followings:<%= user.followings.length %></p>
+  <!--  -->
+  <button onclick="followingsDetails()">followings Details</button>
+  <!--  -->
+  <br /><br />
   <button onclick="followUser()">Follow</button>
-  <!--  -->
+
   <button onclick="unFollowUser()">unFollow</button>
 </div>
 
 <script>
   let message = document.getElementById("message");
   message.textContent = "";
+  ////////////////
+  async function followingsDetails() {
+    //
+    try {
+      const followingsDetailsButton = event.target;
+      const followingsDetailsButtonParent =
+        followingsDetailsButton.parentElement;
+      const followingsDetailsButtonParentId = followingsDetailsButtonParent.id;
+      //
+      // console.log(
+      //   followingsDetailsButtonParentId,
+      //   "followingsDetailsButtonParentId"
+      // );
+      //
+      const response = await fetch(
+        `${window.location.origin}/user/followingsList/${followingsDetailsButtonParentId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      //
+      // const result = await response.json();
+      // console.log(result, "result");
+
+      //redirect
+      window.location.href = `${window.location.origin}/user/followingsList/${followingsDetailsButtonParentId}`;
+    } catch (err) {
+      console.log(err);
+    }
+  }
   //
   async function unFollowUser() {
     try {

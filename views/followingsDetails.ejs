@@ -1,0 +1,52 @@
+<%- include('partials/header') %>
+<!--  -->
+<h2>followings details</h2>
+
+<div>
+  <!--  -->
+  <% if (followingsAggregate.length>0) { %> <% for( let i = 0; i <
+  followingsAggregate.length; i++ ) { %>
+
+  <!--  -->
+  <li id="<%= followingsAggregate[i]._id %>">
+    <p>userName:<%= followingsAggregate[i].username %></p>
+    <p>followers:<%= followingsAggregate[i].followers.length %></p>
+    <p>followings:<%= followingsAggregate[i].followings.length %></p>
+    <button onclick="getUser()">Details</button>
+  </li>
+  <% } %> <% } else{%>
+  <p>No followings found</p>
+  <%}%>
+</div>
+
+<script>
+  //
+  //Details button = get user detail from all user page
+  async function getUser() {
+    try {
+      //   const id = event.target.id;
+      //   console.log(id);
+      const buttonDetail = event.target;
+      //to get the id of the <li>
+      const buttonParent = buttonDetail.parentElement;
+      //   console.log(buttonDetail);
+
+      const id = buttonParent.id;
+
+      //   console.log(id, "id");
+
+      await fetch(`${window.location.origin}/user/getUser/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      //   console.log(`${window.location.origin}/user/getUser`);
+      //
+      window.location.href = `${window.location.origin}/user/getUser/${id}`;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+</script>
