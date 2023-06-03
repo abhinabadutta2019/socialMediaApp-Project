@@ -44,6 +44,10 @@
 </div>
 <!--  -->
 <script>
+  //
+  let message = document.getElementById("message");
+  message.textContent = "";
+  //
   async function likePostButton() {
     //
     try {
@@ -68,6 +72,8 @@
       //
       console.log(likeResult, "likeResult");
       if (likeResult.message == "un-liked" || likeResult.message == "Liked") {
+        //
+        message.textContent = likeResult.message;
         //
         setTimeout(function () {
           //de

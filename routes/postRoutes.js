@@ -249,35 +249,20 @@ router.get("/timeline/all", verifyLoggedInUser, async (req, res) => {
     //posts of Users it follows
     const allPosts = await Post.find({});
     //araay- of ids that user is following
-    const userFollowings = user.followings;
-    // console.log(userFollowings);
 
     // if not own post
     // const followingsPostArray = [];
     const notOwnPost = [];
     for (let i = 0; i < allPosts.length; i++) {
       const onePost = allPosts[i];
-      // console.log(onePost.userId);
-      //
-      // if (userFollowings.includes(onePost.userId.toString())) {
-      //   // console.log(onePost);
-      //   followingsPostArray.push(onePost);
-      // }
 
       // if not own post
       if (onePost.userId !== user._id.toString()) {
         notOwnPost.push(onePost);
       }
     }
-    // console.log(allPosts);
-    //
-    // console.log(followingsPostArray, "followingsPostArray");
 
-    // const resultObject = {
-    //   userProfile: visiblePart,
-    //   userPosts: userPosts,
-    //   postsNotByYou: notOwnPost,
-    // };
+    //
 
     res.render("timeline", {
       userProfile: visiblePart,
@@ -295,6 +280,8 @@ router.get("/timeline/all", verifyLoggedInUser, async (req, res) => {
 router.get("/populate/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id).populate("userId");
+    //
+    console.log(post.userId._id.toString(), "post.userId._id.toString()");
     res.send(post);
   } catch (e) {
     res.send(e);
