@@ -490,12 +490,12 @@ router.delete("/delete/:id", async (req, res) => {
 //all user page - theke - details e click korle - eta fire hobe
 router.get("/getUser/:id", async (req, res) => {
   try {
-    // console.log(req.params, "req.params");
+    console.log(req.params, "req.params");
     const user = await User.findById(req.params.id);
     // console.log(user, "user");
 
     res.render("getUser", { user: user });
-    // res.render("getUser");
+    // res.json({ user: user });
   } catch (err) {
     console.log(err);
     res.json(err);

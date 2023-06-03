@@ -33,7 +33,13 @@
 
   <li id="<%=postsNotByYou[index]._id %>">
     <p>description : <%=postsNotByYou[index].description %></p>
-    <!-- likes array er length pathalam -->
+    <!--  -->
+    <p>postedBy:<%=postsNotByYou[index].userId.username %></p>
+    <!--  -->
+    <div id="<%= postsNotByYou[index].userId._id %>">
+      <button onclick="postedByInfo()">postedByDetails</button>
+    </div>
+    <!--  -->
     <p>likes : <%=postsNotByYou[index].likes.length %></p>
     <button onclick="likePostButton()">likePost</button>
   </li>
@@ -44,9 +50,33 @@
 </div>
 <!--  -->
 <script>
-  //
   let message = document.getElementById("message");
   message.textContent = "";
+  //
+  async function postedByInfo() {
+    try {
+      const buttonPostedBy = event.target;
+      const buttonPostedByParent = buttonPostedBy.parentElement;
+      const buttonPostedByParentId = buttonPostedByParent.id;
+      // console.log(buttonPostedByParentId, "buttonPostedByParentId");
+      const response = await fetch(
+        `${window.location.origin}/user/getUser/${buttonPostedByParentId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      //
+      window.location.href = `${window.location.origin}/user/getUser/${buttonPostedByParentId}`;
+      // const result = await response.json();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  //
+
   //
   async function likePostButton() {
     //
@@ -67,6 +97,8 @@
           },
         }
       );
+      //
+
       //
       const likeResult = await response.json();
       //
