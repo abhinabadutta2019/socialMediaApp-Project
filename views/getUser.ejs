@@ -2,9 +2,90 @@
 
 <h2>getUser</h2>
 
-<div>
+<div id="<%= user._id %>">
   <p>username:<%= user.username %></p>
-  <p>admin:<%= user.isAdmin %></p>
   <p>followers:<%= user.followers %></p>
   <p>followings:<%= user.followings %></p>
+  <!--  -->
+  <button onclick="followUser()">Follow</button>
+  <!--  -->
+  <button onclick="unFollowUser()">unFollow</button>
 </div>
+
+<script>
+  let message = document.getElementById("message");
+  message.textContent = "";
+  //
+  async function unFollowUser() {
+    try {
+      const unFollowButton = event.target;
+      const unFollowButtonParent = unFollowButton.parentElement;
+      const unParentId = unFollowButtonParent.id;
+      // console.log(unParentId, "unParentId");
+      const response = await fetch(
+        `${window.location.origin}/user/unfollow/${unParentId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      //result of the fetch/await
+      const result = await response.json();
+
+      console.log(result, "result");
+
+      if (result.message) {
+        //
+        message.textContent = result.message;
+        //
+        setTimeout(function () {
+          //
+          window.location.href = window.location.href;
+        }, 1000);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  //
+  async function followUser() {
+    try {
+      const followButton = event.target;
+      const followButtonParent = followButton.parentElement;
+      const parentId = followButtonParent.id;
+      //
+      const response = await fetch(
+        `${window.location.origin}/user/follow/${parentId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      //result of the fetch/await
+      const result = await response.json();
+      //
+      console.log(result, "result");
+      //follow successful hole tokhon e reload
+
+      //
+      if (result.message) {
+        //
+        message.textContent = result.message;
+        //
+        setTimeout(function () {
+          //
+          window.location.href = window.location.href;
+        }, 1000);
+      }
+
+      //
+    } catch (err) {
+      console.log(err);
+    }
+  }
+</script>
