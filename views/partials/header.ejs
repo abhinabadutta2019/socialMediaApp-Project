@@ -29,6 +29,8 @@
 
 <script>
   //
+  message = document.getElementById("message");
+  //
   async function seeYourPostButton() {
     try {
       // button to see users own posts
@@ -58,6 +60,9 @@
       //
       console.log(logoutResult);
       if (logoutResult.message == "logout success") {
+        //
+        message.textContent = logoutResult.message;
+        //
         setTimeout(function () {
           //
           window.location.href = `${window.location.origin}/user/login`;
