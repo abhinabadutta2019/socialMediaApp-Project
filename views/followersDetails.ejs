@@ -1,0 +1,52 @@
+<%- include('partials/header') %>
+<!--  -->
+<h2>followers details</h2>
+
+<div>
+  <!--  -->
+  <% if (followersList.length>0) { %> <% for( let i = 0; i <
+  followersList.length; i++ ) { %>
+
+  <!--  -->
+  <li id="<%= followersList[i]._id %>">
+    <p>userName:<%= followersList[i].username %></p>
+    <p>followers:<%= followersList[i].followers.length %></p>
+    <p>followings:<%= followersList[i].followings.length %></p>
+    <button onclick="getUser()">Details</button>
+  </li>
+  <% } %> <% } else{%>
+  <p>No followings found</p>
+  <%}%>
+</div>
+
+<script>
+  //
+  //Details button = get user detail from all user page
+  async function getUser() {
+    try {
+      //   const id = event.target.id;
+      //   console.log(id);
+      const buttonDetail = event.target;
+      //to get the id of the <li>
+      const buttonParent = buttonDetail.parentElement;
+      //   console.log(buttonDetail);
+
+      const id = buttonParent.id;
+
+      //   console.log(id, "id");
+
+      await fetch(`${window.location.origin}/user/getUser/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      //   console.log(`${window.location.origin}/user/getUser`);
+      //
+      window.location.href = `${window.location.origin}/user/getUser/${id}`;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+</script>

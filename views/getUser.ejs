@@ -6,7 +6,8 @@
   <p>username:<%= user.username %></p>
   <p>followers:<%= user.followers.length %></p>
   <!--  -->
-  <button>followers Details</button>
+  <button onclick="followersDetails()">followers Details</button>
+  <!--  -->
   <!--  -->
   <p>followings:<%= user.followings.length %></p>
   <!--  -->
@@ -22,6 +23,33 @@
   let message = document.getElementById("message");
   message.textContent = "";
   ////////////////
+  //
+  async function followersDetails() {
+    try {
+      //
+      const followersDetailButton = event.target;
+      const followersDetailParent = followersDetailButton.parentElement;
+      const followersDetailParentId = followersDetailParent.id;
+      //
+      // console.log(followersDetailParentId, "followersDetailParentId");
+      //
+      const response = await fetch(
+        `${window.location.origin}/user/followersList/${followersDetailParentId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      //
+      //redirect
+      window.location.href = `${window.location.origin}/user/followersList/${followersDetailParentId}`;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  //
   async function followingsDetails() {
     //
     try {

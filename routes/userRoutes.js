@@ -554,14 +554,18 @@ router.get("/followingsList/:id", async (req, res) => {
   }
 });
 
-//
+//used populate method
 router.get("/followersList/:id", async (req, res) => {
   try {
+    console.log(req.url);
+    //
     const user = await User.findById(req.params.id).populate("followers");
 
-    console.log(user.followers, "user.followers");
+    // console.log(user.followers, "user.followers");
     //
-    res.json(user);
+    const followersList = user.followers;
+    //
+    res.render("followersDetails", { followersList: followersList });
   } catch (err) {
     console.log(err);
     res.json(err);
