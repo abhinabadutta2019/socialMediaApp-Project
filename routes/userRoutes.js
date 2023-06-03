@@ -553,6 +553,21 @@ router.get("/followingsList/:id", async (req, res) => {
     res.json({ err });
   }
 });
+
+//
+router.get("/followersList/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).populate("followers");
+
+    console.log(user.followers, "user.followers");
+    //
+    res.json(user);
+  } catch (err) {
+    console.log(err);
+    res.json(err);
+  }
+});
+
 //etar jonno error aschilo
 // get one user by id
 router.get("/:id", async (req, res) => {
