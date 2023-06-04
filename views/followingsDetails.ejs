@@ -4,14 +4,18 @@
 
 <div>
   <!--  -->
-  <% if (followingsAggregate.length>0) { %> <% for( let i = 0; i <
-  followingsAggregate.length; i++ ) { %>
+  <% if (userFollowings[0].followings_info.length>0) { %> <% for( let i = 0; i <
+  userFollowings[0].followings_info.length; i++ ) { %>
 
   <!--  -->
-  <li id="<%= followingsAggregate[i]._id %>">
-    <p>userName:<%= followingsAggregate[i].username %></p>
-    <p>followers:<%= followingsAggregate[i].followers.length %></p>
-    <p>followings:<%= followingsAggregate[i].followings.length %></p>
+  <li id="<%= userFollowings[0].followings_info[i]._id %>">
+    <p>userName:<%= userFollowings[0].followings_info[i].username %></p>
+    <p>
+      followers:<%= userFollowings[0].followings_info[i].followers.length %>
+    </p>
+    <p>
+      followings:<%= userFollowings[0].followings_info[i].followings.length %>
+    </p>
     <button onclick="getUser()">Details</button>
   </li>
   <% } %> <% } else{%>

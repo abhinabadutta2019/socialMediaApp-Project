@@ -503,50 +503,47 @@ router.get("/getUser/:id", async (req, res) => {
   }
 });
 
-//users followingsList
+//aggregate lookup method used
 router.get("/followingsList/:id", async (req, res) => {
   //
   try {
-    console.log(req.url);
-    //
-    const user = await User.findById(req.params.id);
-    //
-    // console.log(user.followings, "user.followings");
+    // console.log(req.params.id, "req.params.id");
+
+    const createdId = new mongoose.Types.ObjectId(`${req.params.id}`);
+
+    // console.log(typeof createdId, "createdId");
+    // //
 
     //
-    // Convert string IDs to ObjectId
-    const followingIds = user.followings.map(
-      (id) => new mongoose.Types.ObjectId(id)
-    );
-
-    console.log(followingIds, "followingIds");
-
-    //
-    const followingsAggregate = await User.aggregate([
+    const userFollowings = await User.aggregate([
       //
       {
-        $match: {
-          _id: { $in: followingIds },
-        },
+        $match: { _id: createdId },
       },
-      //
+
       {
-        $project: {
-          _id: 1,
-          username: 1,
-          followers: 1,
-          followings: 1,
-          // Add other fields you want to retrieve
+        $lookup: {
+          from: "users",
+          localField: "followings",
+          foreignField: "_id",
+          as: "followings_info",
         },
       },
     ]);
+    //
+    // console.log(userFollowings[0].followings_info, "user");
 
-    // console.log(followingsAggregate, "followingsAggregate");
+    // for (
+    //   let index = 0;
+    //   index < userFollowings[0].followings_info.length;
+    //   index++
+    // ) {
+    //   const element = userFollowings[0].followings_info[index];
+    //   console.log(element, "element");
+    // }
 
-    // res.json({ followingsAggregate: followingsAggregate });
-    res.render("followingsDetails", {
-      followingsAggregate: followingsAggregate,
-    });
+    // res.json(userFollowings);
+    res.render("followingsDetails", { userFollowings: userFollowings });
   } catch (err) {
     //
     console.log(err);
