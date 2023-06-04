@@ -39,8 +39,14 @@
     <div id="<%= postsNotByYou[index].userId._id %>">
       <button onclick="postedByInfo()">postedByDetails</button>
     </div>
+
     <!--  -->
     <p>likes : <%=postsNotByYou[index].likes.length %></p>
+    <!--  -->
+    <div>
+      <button onclick="postLikedByButton()">postLikedBy</button>
+    </div>
+    <br /><br />
     <button onclick="likePostButton()">likePost</button>
   </li>
 
@@ -52,6 +58,26 @@
 <script>
   let message = document.getElementById("message");
   message.textContent = "";
+  //
+  async function postLikedByButton() {
+    //
+    try {
+      //
+      const postLikedButton = event.target;
+      const postLikedButtonParent = postLikedButton.parentElement;
+      const postLikedButtonGrandParent = postLikedButtonParent.parentElement;
+      //
+      const postLikedButtonGPId = postLikedButtonGrandParent.id;
+      //
+      // console.log(postLikedButtonGPId, "postLikedButtonGPId");
+
+      //redirect
+      window.location.href = `${window.location.origin}/post/postLiked/${postLikedButtonGPId}`;
+      //
+    } catch (err) {
+      console.log(err);
+    }
+  }
   //
   async function postedByInfo() {
     try {

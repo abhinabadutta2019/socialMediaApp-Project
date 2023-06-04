@@ -284,6 +284,7 @@ router.get("/timeline/all", verifyLoggedInUser, async (req, res) => {
 router.get("/postLiked/:id", async (req, res) => {
   //
   try {
+    console.log(req.url, "req.url");
     //from string to object id
     const postObjectId = new mongoose.Types.ObjectId(`${req.params.id}`);
     //
@@ -302,10 +303,10 @@ router.get("/postLiked/:id", async (req, res) => {
       },
     ]);
     // console.log(postLikedBy[0].likes, "postLikedBy");
-    for (let i = 0; i < postLikedBy[0].likedBy_info.length; i++) {
-      const element = postLikedBy[0].likedBy_info[i];
-      console.log(element, "element");
-    }
+    // for (let i = 0; i < postLikedBy[0].likedBy_info.length; i++) {
+    //   const element = postLikedBy[0].likedBy_info[i];
+    //   console.log(element, "element");
+    // }
     res.render("postLiked", { postLikedBy: postLikedBy });
   } catch (err) {
     console.log(err);

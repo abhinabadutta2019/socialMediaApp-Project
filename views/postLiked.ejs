@@ -4,15 +4,37 @@
 
 <div>
   <!--  -->
-  <% for( let i = 0; i < postLikedBy[0].likedBy_info.length; i++ ) { %>
+  <% if (postLikedBy[0].likedBy_info.length>0) { %> <% for( let i = 0; i <
+  postLikedBy[0].likedBy_info.length; i++ ) { %>
 
   <!--  -->
   <li id="<%=postLikedBy[0].likedBy_info[i]._id  %>">
     <p>userName:<%= postLikedBy[0].likedBy_info[i].username %></p>
     <p>followers:<%= postLikedBy[0].likedBy_info[i].followers.length %></p>
     <p>followings:<%= postLikedBy[0].likedBy_info[i].followings.length %></p>
-    <button>Details</button>
+    <button onclick="getUser()">Details</button>
   </li>
 
-  <% } %>
+  <% } %> <% } else { %>
+  <p>Not liked by anyone</p>
+  <%}%>
 </div>
+
+<script>
+  async function getUser() {
+    try {
+      //
+      const buttonDetail = event.target;
+      //
+      const buttonParent = buttonDetail.parentElement;
+      const id = buttonParent.id;
+      //
+      //   console.log(id, "id");
+      //redirect
+      window.location.href = `${window.location.origin}/user/getUser/${id}`;
+      //
+    } catch (err) {
+      console.log(err);
+    }
+  }
+</script>
