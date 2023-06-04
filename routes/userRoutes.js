@@ -508,7 +508,7 @@ router.get("/followingsList/:id", async (req, res) => {
   //
   try {
     // console.log(req.params.id, "req.params.id");
-
+    //from string to object id
     const createdId = new mongoose.Types.ObjectId(`${req.params.id}`);
 
     // console.log(typeof createdId, "createdId");
@@ -555,6 +555,7 @@ router.get("/followingsList/:id", async (req, res) => {
 router.get("/followersList/:id", async (req, res) => {
   try {
     console.log(req.url);
+    //
     //
     const user = await User.findById(req.params.id).populate("followers");
 

@@ -279,6 +279,40 @@ router.get("/timeline/all", verifyLoggedInUser, async (req, res) => {
     res.json(err);
   }
 });
+
+//post liked users details
+router.get("/postLiked/:id", async (req, res) => {
+  //
+  try {
+    //from string to object id
+    const postObjectId = new mongoose.Types.ObjectId(`${req.params.id}`);
+    //
+    const postLikedBy = await Post.aggregate([
+      //
+      {
+        $match: { _id: postObjectId },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "likes",
+          foreignField: "_id",
+          as: "likedBy_info",
+        },
+      },
+    ]);
+    // console.log(postLikedBy[0].likes, "postLikedBy");
+    for (let i = 0; i < postLikedBy[0].likedBy_info.length; i++) {
+      const element = postLikedBy[0].likedBy_info[i];
+      console.log(element, "element");
+    }
+    res.render("postLiked", { postLikedBy: postLikedBy });
+  } catch (err) {
+    console.log(err);
+    res.json(err);
+  }
+});
+
 //reference link-for syntax-
 //https://stackoverflow.com/questions/38051977/what-does-populate-in-mongoose-mean
 // populate method test( working)

@@ -1,0 +1,18 @@
+<%- include('partials/header') %>
+<!--  -->
+<h2>post liked by</h2>
+
+<div>
+  <!--  -->
+  <% for( let i = 0; i < postLikedBy[0].likedBy_info.length; i++ ) { %>
+
+  <!--  -->
+  <li id="<%=postLikedBy[0].likedBy_info[i]._id  %>">
+    <p>userName:<%= postLikedBy[0].likedBy_info[i].username %></p>
+    <p>followers:<%= postLikedBy[0].likedBy_info[i].followers.length %></p>
+    <p>followings:<%= postLikedBy[0].likedBy_info[i].followings.length %></p>
+    <button>Details</button>
+  </li>
+
+  <% } %>
+</div>
