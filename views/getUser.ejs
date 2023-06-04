@@ -33,16 +33,18 @@
       //
       // console.log(followersDetailParentId, "followersDetailParentId");
       //
-      const response = await fetch(
-        `${window.location.origin}/user/followersList/${followersDetailParentId}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      // const response = await fetch(
+      //   `${window.location.origin}/user/followersList/${followersDetailParentId}`,
+      //   {
+      //     method: "GET",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //   }
+      // );
       //
+      // const result = await response.json();
+
       //redirect
       window.location.href = `${window.location.origin}/user/followersList/${followersDetailParentId}`;
     } catch (err) {
