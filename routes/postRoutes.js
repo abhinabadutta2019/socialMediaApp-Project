@@ -243,10 +243,30 @@ router.get("/timeline/all", verifyLoggedInUser, async (req, res) => {
     // console.log(newUser);
     const { _id, password, __v, ...visiblePart } = newUser;
     // console.log(visiblePart);
+    ///////////////////////////////////////////////
 
     //user's own post
-    const userPosts = await Post.find({ userId: user._id.toString() });
-    //...............
+    let userPosts = await Post.find({ userId: user._id.toString() });
+
+    //sorting
+    userPosts.sort(function (a, b) {
+      const random = 0.5 - Math.random();
+      if (random < 0) {
+        return -1;
+      } else if (random > 0) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+
+    //just 2 would be shown
+    if (userPosts.length > 2) {
+      userPosts = userPosts.slice(0, 2);
+    }
+
+    //
+    /////////////////////////////////
 
     //populating post - with userId
     const allPosts = await Post.find({}).populate("userId");
