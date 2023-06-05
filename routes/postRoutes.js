@@ -106,10 +106,22 @@ router.get("/update/:id", async (req, res) => {
 
 //update a post
 
-router.put("/update/:id", postmanLoginMiddleware, async (req, res) => {
+router.put("/update/:id", verifyLoggedInUser, async (req, res) => {
   try {
-    // console.log(req.params.id, "req.params");
+    //
+    // console.log(req.url, "req.url");
     const user = req.userDetail;
+    //
+    // console.log(user.id);
+
+    //
+
+    if (req.body.description.length < 3) {
+      return res.json({ message: "post description is too short" });
+    }
+
+    // console.log(req.body, "req.body");
+    //
 
     //check if params object id is valid
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -117,6 +129,9 @@ router.put("/update/:id", postmanLoginMiddleware, async (req, res) => {
     }
     //
     const post = await Post.findById(req.params.id);
+
+    //
+    // console.log(post.userId.toString(), "post.userId.toString()");
     //if post id not found in collection
     if (!post) {
       return res.json({ message: "req.params.id not found in database" });
@@ -136,9 +151,9 @@ router.put("/update/:id", postmanLoginMiddleware, async (req, res) => {
     const copyPost = { ...post._doc };
     //
 
-    if (!req.body.description) {
-      return res.json({ message: "req.body.description is not defined " });
-    }
+    // if (!req.body.description) {
+    //   return res.json({ message: "req.body.description is not defined " });
+    // }
     //updating the description
     copyPost.description = req.body.description;
 
@@ -151,7 +166,8 @@ router.put("/update/:id", postmanLoginMiddleware, async (req, res) => {
       { new: true }
     );
 
-    res.json({ updatedPost });
+    // res.json({ updatedPost });
+    res.json({ message: "post updated" });
   } catch (err) {
     console.log(err);
     res.json(err);

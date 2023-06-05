@@ -5,5 +5,64 @@
     <label for="description">description</label>
     <input type="text" id="postDescription" required />
   </form>
-  <button id="postSubmit" onclick="onPostSubmit()">submitPost</button>
+  <button id="postUpdate" onclick="onPostUpdate()">updatePost</button>
 </div>
+
+<script>
+  //
+  let message = document.getElementById("message");
+  message.textContent = "";
+  //
+  async function onPostUpdate() {
+    //
+    try {
+      const splitForId = window.location.href.split("/");
+      const postId = splitForId[5];
+      //   console.log(postId, "postId");
+      //
+      const description = document.getElementById("postDescription").value;
+      //
+      const data = { description: description };
+      //   console.log(data, "data");
+      //
+      const updateResponse = await fetch(
+        `${window.location.origin}/post/update/${postId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+      //
+      const updateResponseResult = await updateResponse.json();
+      //
+      console.log(updateResponseResult, "updateResponseResult");
+      //
+      if (updateResponseResult.message == "post updated") {
+        //
+        message.textContent = updateResponseResult.message;
+        //
+        setTimeout(function () {
+          //
+          window.location.href = `${window.location.origin}/post/ownposts`;
+        }, 2000);
+      }
+      //
+      else if (updateResponseResult.message) {
+        //
+        message.textContent = updateResponseResult.message;
+        //
+        setTimeout(function () {
+          //
+          window.location.href = window.location.href;
+        }, 1000);
+      }
+
+      //
+    } catch (err) {
+      console.log(err);
+    }
+  }
+</script>
