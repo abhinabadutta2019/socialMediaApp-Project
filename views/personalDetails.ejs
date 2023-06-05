@@ -5,10 +5,18 @@
 <div id="<%= user._id %>">
   <p>username:<%= user.username %></p>
 
-  <p>followers:<%= user.followers %></p>
-  <p>followings:<%= user.followings %></p>
+  <p>followers:<%= user.followers.length %></p>
+  <!--  -->
+  <button onclick="followersDetails()">followers Details</button>
+  <!--  -->
+
+  <p>followings:<%= user.followings.length %></p>
+  <!--  -->
+  <button onclick="followingsDetails()">followings Details</button>
+  <!--  -->
+  <br /><br />
   <!-- delete user -->
-  <button onclick="deleteUser()">deleteUser</button>
+  <button onclick="deleteUser()">deleteYourProfile</button>
 </div>
 <br /><br /><br /><br />
 <div>
@@ -33,6 +41,39 @@
   //
   let message = document.getElementById("message");
   message.textContent = "";
+  //
+
+  async function followersDetails() {
+    try {
+      //
+      const followersDetailButton = event.target;
+      const followersDetailParent = followersDetailButton.parentElement;
+      const followersDetailParentId = followersDetailParent.id;
+      //
+
+      //redirect
+      window.location.href = `${window.location.origin}/user/followersList/${followersDetailParentId}`;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  //
+  async function followingsDetails() {
+    //
+    try {
+      const followingsDetailsButton = event.target;
+      const followingsDetailsButtonParent =
+        followingsDetailsButton.parentElement;
+      const followingsDetailsButtonParentId = followingsDetailsButtonParent.id;
+      //
+
+      //redirect
+      window.location.href = `${window.location.origin}/user/followingsList/${followingsDetailsButtonParentId}`;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   //
   async function onUpdatePasswordButton() {
     try {
