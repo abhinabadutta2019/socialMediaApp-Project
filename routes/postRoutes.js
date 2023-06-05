@@ -56,6 +56,9 @@ router.post("/create", verifyLoggedInUser, async (req, res) => {
     res.json(err);
   }
 });
+
+//
+
 //users- own -posts
 router.get("/ownposts", verifyLoggedInUser, async (req, res) => {
   //
@@ -90,9 +93,20 @@ router.get("/ownposts", verifyLoggedInUser, async (req, res) => {
     res.json(err);
   }
 });
+
+//update post frontend (get request)
+router.get("/update/:id", async (req, res) => {
+  try {
+    res.render("updatePost");
+  } catch (err) {
+    console.log(err);
+    res.json(err);
+  }
+});
+
 //update a post
 
-router.put("/update/:id", verifyLoggedInUser, async (req, res) => {
+router.put("/update/:id", postmanLoginMiddleware, async (req, res) => {
   try {
     // console.log(req.params.id, "req.params");
     const user = req.userDetail;
