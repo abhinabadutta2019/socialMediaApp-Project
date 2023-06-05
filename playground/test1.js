@@ -38,3 +38,43 @@
 
 // console.log(k);
 ///////////////////////////////
+const myArray = [
+  "tom",
+  "huck",
+  "hamlet",
+  "horetio",
+  "harry",
+  "ron",
+  "alaska",
+  "theodor",
+  "finch",
+  "violet",
+  "macbeth",
+  "othello",
+  "rodrigo",
+];
+
+//
+const shuffled = myArray.sort(function (a, b) {
+  const random = 0.5 - Math.random();
+  if (random < 0) {
+    return -1;
+  } else if (random > 0) {
+    return 1;
+  } else {
+    return 0;
+  }
+});
+
+// console.log(shuffled, "shuffled");
+// console.log(myArray, "myArray");
+
+//
+// let countex = 0;
+// for (let i = 0; i < shuffled.length; i++) {
+//   //   const element = shuffled[i];
+//   if (myArray.includes(shuffled[i])) {
+//     countex = countex + 1;
+//   }
+// }
+// console.log(countex, "countex");

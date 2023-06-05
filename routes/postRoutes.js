@@ -266,6 +266,8 @@ router.get("/timeline/all", verifyLoggedInUser, async (req, res) => {
 
     //
 
+    //
+
     res.render("timeline", {
       userProfile: visiblePart,
       userPosts: userPosts,
