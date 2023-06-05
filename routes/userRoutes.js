@@ -462,33 +462,9 @@ router.get("/adminDelete", verifyLoggedInUser, async (req, res) => {
   }
 });
 
-//user delete hole-- post er liked array thke -- sei user er id delete hoye jabe-- eta-- user er delete block e korte hobe
-//delete user
-router.delete("/delete/:id", async (req, res) => {
-  let user = await User.findById(req.params.id);
-
-  console.log(req.params.id, "req.params.id");
-
-  if (!user) {
-    return res.send({ message: "user not present in database" });
-  }
-
-  // else{}
-
-  try {
-    {
-      await User.findByIdAndDelete(req.params.id);
-      res.send({ message: `deleted  ` });
-    }
-  } catch (e) {
-    res.send(e);
-  }
-});
-//
-
 //
 //all user page - theke - details e click korle - eta fire hobe
-router.get("/getUser/:id", async (req, res) => {
+router.get("/getUser/:id", verifyLoggedInUser, async (req, res) => {
   try {
     console.log(req.params, "req.params");
     const user = await User.findById(req.params.id);
@@ -504,7 +480,7 @@ router.get("/getUser/:id", async (req, res) => {
 });
 
 //aggregate lookup method used
-router.get("/followingsList/:id", async (req, res) => {
+router.get("/followingsList/:id", verifyLoggedInUser, async (req, res) => {
   //
   try {
     // console.log(req.params.id, "req.params.id");
@@ -552,7 +528,7 @@ router.get("/followingsList/:id", async (req, res) => {
 });
 
 //used populate method
-router.get("/followersList/:id", async (req, res) => {
+router.get("/followersList/:id", verifyLoggedInUser, async (req, res) => {
   try {
     console.log(req.url);
     //
@@ -570,16 +546,41 @@ router.get("/followersList/:id", async (req, res) => {
   }
 });
 
+///////////////////////////////////////////////
 //etar jonno error aschilo
 // get one user by id
-router.get("/:id", async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
-    res.send(user);
-  } catch (e) {
-    res.send(e);
-  }
-});
+// router.get("/:id", async (req, res) => {
+//   try {
+//     const user = await User.findById(req.params.id);
+//     res.send(user);
+//   } catch (e) {
+//     res.send(e);
+//   }
+// });
+//
+//
+//user delete hole-- post er liked array thke -- sei user er id delete hoye jabe-- eta-- user er delete block e korte hobe
+//delete user
+// router.delete("/delete/:id", async (req, res) => {
+//   let user = await User.findById(req.params.id);
+
+//   console.log(req.params.id, "req.params.id");
+
+//   if (!user) {
+//     return res.send({ message: "user not present in database" });
+//   }
+
+//   // else{}
+
+//   try {
+//     {
+//       await User.findByIdAndDelete(req.params.id);
+//       res.send({ message: `deleted  ` });
+//     }
+//   } catch (e) {
+//     res.send(e);
+//   }
+// });
 //
 //login success page route
 // router.get("/loginSuccess", verifyLoggedInUser, async (req, res) => {

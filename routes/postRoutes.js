@@ -95,7 +95,7 @@ router.get("/ownposts", verifyLoggedInUser, async (req, res) => {
 });
 
 //update post frontend (get request)
-router.get("/update/:id", async (req, res) => {
+router.get("/update/:id", verifyLoggedInUser, async (req, res) => {
   try {
     res.render("updatePost");
   } catch (err) {
@@ -355,7 +355,7 @@ router.get("/timeline/all", verifyLoggedInUser, async (req, res) => {
 });
 
 //post liked users details
-router.get("/postLiked/:id", async (req, res) => {
+router.get("/postLiked/:id", verifyLoggedInUser, async (req, res) => {
   //
   try {
     console.log(req.url, "req.url");
@@ -391,25 +391,25 @@ router.get("/postLiked/:id", async (req, res) => {
 //reference link-for syntax-
 //https://stackoverflow.com/questions/38051977/what-does-populate-in-mongoose-mean
 // populate method test( working)
-router.get("/populate/:id", async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id).populate("userId");
-    //
-    console.log(post.userId._id.toString(), "post.userId._id.toString()");
-    res.send(post);
-  } catch (e) {
-    res.send(e);
-  }
-});
+// router.get("/populate/:id", async (req, res) => {
+//   try {
+//     const post = await Post.findById(req.params.id).populate("userId");
+//     //
+//     console.log(post.userId._id.toString(), "post.userId._id.toString()");
+//     res.send(post);
+//   } catch (e) {
+//     res.send(e);
+//   }
+// });
 
 // get one post by id
-router.get("/:id", async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id);
-    res.send(post);
-  } catch (e) {
-    res.send(e);
-  }
-});
+// router.get("/:id", async (req, res) => {
+//   try {
+//     const post = await Post.findById(req.params.id);
+//     res.send(post);
+//   } catch (e) {
+//     res.send(e);
+//   }
+// });
 //
 module.exports = router;
