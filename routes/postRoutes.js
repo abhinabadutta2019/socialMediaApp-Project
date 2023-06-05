@@ -235,6 +235,8 @@ router.put("/like/:id", verifyLoggedInUser, async (req, res) => {
 //timeline
 router.get("/timeline/all", verifyLoggedInUser, async (req, res) => {
   try {
+    console.log(req.url, "req.url");
+    //
     const user = req.userDetail;
     //
     const newUser = { ...user._doc };
@@ -253,7 +255,7 @@ router.get("/timeline/all", verifyLoggedInUser, async (req, res) => {
     //araay- of ids that user is following
 
     // if not own post
-    const notOwnPost = [];
+    let notOwnPost = [];
     for (let i = 0; i < allPosts.length; i++) {
       const onePost = allPosts[i];
 
@@ -262,6 +264,26 @@ router.get("/timeline/all", verifyLoggedInUser, async (req, res) => {
         notOwnPost.push(onePost);
       }
       // console.log(onePost.userId.username);
+    }
+    // console.log(notOwnPost, "notOwnPost before");
+
+    // //sorting
+    notOwnPost.sort(function (a, b) {
+      const random = 0.5 - Math.random();
+      if (random < 0) {
+        return -1;
+      } else if (random > 0) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    // //
+    // console.log(notOwnPost, "notOwnPost after");
+
+    //length 10 er beshi hole - just 10 would be shown
+    if (notOwnPost.length > 10) {
+      notOwnPost = notOwnPost.slice(0, 10);
     }
 
     //
