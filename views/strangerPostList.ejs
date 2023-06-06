@@ -1,0 +1,26 @@
+<%- include('partials/header') %>
+<h2>Users posts</h2>
+
+<div>
+  <!--  -->
+  <% for( let i = 0; i < userPosts.length; i++ ) { %>
+
+  <li id="<%=userPosts[i]._id  %>">
+    <p>description:<%= userPosts[i].description %></p>
+    <!--  -->
+    <p>postedBy:<%=userPosts[i].userId.username %></p>
+
+    <div>
+      <button onclick="postedByInfo()">postedByDetails</button>
+    </div>
+
+    <!--  -->
+    <p>likes:<%= userPosts[i].likes.length %></p>
+    <!--  -->
+    <div>
+      <button onclick="postLikedByButton()">postLikedBy</button>
+    </div>
+  </li>
+
+  <% } %>
+</div>

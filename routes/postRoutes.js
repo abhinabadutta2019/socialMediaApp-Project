@@ -388,6 +388,37 @@ router.get("/postLiked/:id", verifyLoggedInUser, async (req, res) => {
   }
 });
 
+//someone's all posts
+router.get("/strangerOwnPost/:id", async (req, res) => {
+  //
+  try {
+    //
+    const peopleId = req.params.id;
+    //
+    const allPosts = await Post.find({}).populate("userId");
+    //
+
+    // const userPosts = await Post.find({ userId: req.params.id });
+
+    let userPosts = [];
+    for (let index = 0; index < allPosts.length; index++) {
+      const onePost = allPosts[index];
+      //
+      if (onePost.userId._id.toString() == peopleId) {
+        userPosts.push(onePost);
+      }
+    }
+
+    // console.log(userPosts, "userPosts");
+    res.render("strangerPostList", { userPosts: userPosts });
+    // res.json({ userPosts: userPosts });
+    //
+  } catch (err) {
+    console.log(err);
+    res.json(err);
+  }
+});
+
 //reference link-for syntax-
 //https://stackoverflow.com/questions/38051977/what-does-populate-in-mongoose-mean
 // populate method test( working)

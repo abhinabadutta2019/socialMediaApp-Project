@@ -17,12 +17,33 @@
   <button onclick="followUser()">Follow</button>
 
   <button onclick="unFollowUser()">unFollow</button>
+
+  <br /><br />
+
+  <button onclick="userPostsButton()">userPosts</button>
 </div>
 
 <script>
   let message = document.getElementById("message");
   message.textContent = "";
   ////////////////
+  //
+  async function userPostsButton() {
+    //
+    try {
+      const userPostsButton = event.target;
+      const userPostsButtonParent = userPostsButton.parentElement;
+      const userPostsButtonParentId = userPostsButtonParent.id;
+      //
+      // console.log(userPostsButtonParentId, "userPostsButtonParentId");
+
+      //
+      //redirect
+      window.location.href = `${window.location.origin}/post/strangerOwnPost/${userPostsButtonParentId}`;
+    } catch (err) {
+      res.json(err);
+    }
+  }
   //
   async function followersDetails() {
     try {
