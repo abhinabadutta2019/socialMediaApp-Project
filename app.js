@@ -26,10 +26,6 @@ mongoose.connect(uri, {
   useUnifiedTopology: true,
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server Started at ${process.env.PORT}`);
-});
-
 //home page would redirect to login url
 app.get("/", (req, res) => {
   try {
@@ -42,3 +38,12 @@ app.get("/", (req, res) => {
 //
 app.use("/user", userRoutes);
 app.use("/post", postRoutes);
+
+//
+app.use((req, res, next) => {
+  res.status(404).render("404"); // Assuming you have a view called "404.ejs" for the error page
+});
+
+app.listen(process.env.PORT, () => {
+  console.log(`Server Started at ${process.env.PORT}`);
+});
