@@ -518,8 +518,8 @@ router.get("/followingsList/:id", verifyLoggedInUser, async (req, res) => {
     //   console.log(element, "element");
     // }
 
-    // res.json(userFollowings);
-    res.render("followingsDetails", { userFollowings: userFollowings });
+    res.json(userFollowings);
+    // res.render("followingsDetails", { userFollowings: userFollowings });
   } catch (err) {
     //
     console.log(err);

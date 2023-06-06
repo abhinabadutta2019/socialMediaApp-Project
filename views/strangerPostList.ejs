@@ -3,7 +3,8 @@
 
 <div>
   <!--  -->
-  <% for( let i = 0; i < userPosts.length; i++ ) { %>
+  <% if (userPosts.length>0) { %> <% for( let i = 0; i < userPosts.length; i++ )
+  { %>
 
   <li id="<%=userPosts[i]._id  %>">
     <p>description:<%= userPosts[i].description %></p>
@@ -20,7 +21,89 @@
     <div>
       <button onclick="postLikedByButton()">postLikedBy</button>
     </div>
+    <br /><br />
+    <button onclick="likePostButton()">likePost</button>
   </li>
-
+  <% } %> <% } else{%>
+  <p>No post created by this User</p>
   <% } %>
 </div>
+
+<script>
+  //
+  let message = document.getElementById("message");
+  message.textContent = "";
+  //
+  async function likePostButton() {
+    //
+    try {
+      //
+      const buttonLikePost = event.target;
+      const buttonLikePostParent = buttonLikePost.parentElement;
+      const buttonParentId = buttonLikePostParent.id;
+
+      // console.log(buttonParentId, "buttonParentId");
+      //
+      const response = await fetch(
+        `${window.location.origin}/post/like/${buttonParentId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      //
+
+      //
+      const likeResult = await response.json();
+      //
+      console.log(likeResult, "likeResult");
+      if (likeResult.message == "un-liked" || likeResult.message == "Liked") {
+        //
+        message.textContent = likeResult.message;
+        //
+        setTimeout(function () {
+          //de
+          window.location.href = window.location.href;
+        }, 1000);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  //
+  async function postLikedByButton() {
+    //
+    try {
+      //
+      const postLikedButton = event.target;
+      const postLikedButtonParent = postLikedButton.parentElement;
+      const postLikedButtonGrandParent = postLikedButtonParent.parentElement;
+      //
+      const postLikedButtonGPId = postLikedButtonGrandParent.id;
+      //
+      // console.log(postLikedButtonGPId, "postLikedButtonGPId");
+
+      //redirect
+      window.location.href = `${window.location.origin}/post/postLiked/${postLikedButtonGPId}`;
+      //
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  //
+  async function postedByInfo() {
+    try {
+      //   console.log(window.location.href.split("/")[5], "window.location.href");
+
+      const creatorIdFromUrl = window.location.href.split("/")[5];
+
+      //
+      //   //redirecting
+      window.location.href = `${window.location.origin}/user/getUser/${creatorIdFromUrl}`;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+</script>
