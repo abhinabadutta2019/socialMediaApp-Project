@@ -75,7 +75,41 @@ router.get("/allUsers", verifyLoggedInUser, async (req, res) => {
     //from middleware
     const user = req.userDetail;
 
-    const allUsers = await User.find({});
+    // console.log(user._id.toString(), "user._id.toString()");
+
+    //get all user
+    const eachUser = await User.find({});
+
+    let allUsers = [];
+    //loggeged in user out of the list
+    for (let index = 0; index < eachUser.length; index++) {
+      const oneUser = eachUser[index];
+      // console.log(oneUser, "oneUser");
+      if (oneUser._id.toString() !== user._id.toString()) {
+        //
+        // console.log(oneUser._id.toString(), "oneUser._id.toString()");
+
+        allUsers.push(oneUser);
+      }
+    }
+
+    //now sort all user
+    allUsers.sort(function (a, b) {
+      const random = 0.5 - Math.random();
+      if (random < 0) {
+        return -1;
+      } else if (random > 0) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+
+    //just 2 would be shown
+    if (allUsers.length > 2) {
+      allUsers = allUsers.slice(0, 2);
+    }
+
     // res.json(allUsers);
     res.render("allUsers", { allUsers: allUsers });
   } catch (err) {
@@ -518,8 +552,8 @@ router.get("/followingsList/:id", verifyLoggedInUser, async (req, res) => {
     //   console.log(element, "element");
     // }
 
-    res.json(userFollowings);
-    // res.render("followingsDetails", { userFollowings: userFollowings });
+    // res.json(userFollowings);
+    res.render("followingsDetails", { userFollowings: userFollowings });
   } catch (err) {
     //
     console.log(err);
