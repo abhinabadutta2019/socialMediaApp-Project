@@ -12,9 +12,61 @@ const {
   postmanLoginMiddleware,
 } = require("../middleware/postmanLoginMiddleware");
 const { hashPass, deleteFromUserArray } = require("../helper/utils");
-///////////////////////////////////////////////
 
+//
+const path = require("path");
+
+// Import the Image model
+const Image = require("../models/imageModel");
+
+// Import the upload middleware from app.js
+// const upload = require("../app");
+
+///////////////////////////////////////////////
 //--/user
+
+//
+router.get("/upload", (req, res) => {
+  try {
+    res.render("upload");
+  } catch (err) {
+    res.json(err);
+  }
+});
+//
+router.post("/upload", async (req, res) => {
+  try {
+    const uploadMiddleware = req.upload.single("image");
+
+    uploadMiddleware(req, res, async (err) => {
+      if (err) {
+        return res.status(400).json({ error: "Upload failed." });
+      }
+
+      const imagePath = `/images/${req.file.filename}`; // Get the relative path of the image
+      // Save the imagePath to MongoDB
+      const newImage = new Image({
+        imagePath: imagePath,
+      });
+      const image = await newImage.save();
+      res.send({ image: image });
+    });
+  } catch (err) {
+    res.json(err);
+  }
+});
+
+//
+router.get("/showImage/:id", async (req, res) => {
+  try {
+    console.log(req.url, "req.url");
+    const oneImage = await Image.findById(req.params.id);
+    res.render("showImage", { imagePath: oneImage.imagePath });
+  } catch (err) {
+    res.json(err);
+  }
+});
+
 //frontend routes
 router.get("/register", async (req, res) => {
   try {

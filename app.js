@@ -29,9 +29,21 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage: storage });
+
+//exporting the multer from here
+module.exports = upload;
+//
+
 //////////////////////////////////////////////
 const app = express();
 app.use(express.json());
+
+//
+// multer Middleware to make upload available in all routes
+app.use((req, res, next) => {
+  req.upload = upload;
+  next();
+});
 
 //
 dotenv.config();
@@ -60,43 +72,7 @@ app.get("/", (req, res) => {
     res.json(err);
   }
 });
-//geeks for geeks- to see uploaded file on browser
-// app.use("/images", express.static("images"));
-//
-app.get("/upload", (req, res) => {
-  try {
-    res.render("upload");
-  } catch (err) {
-    res.json(err);
-  }
-});
-//
-app.post("/upload", upload.single("image"), async (req, res) => {
-  try {
-    const imagePath = `/images/${req.file.filename}`; // Get the relative path of the image
-    //
-    console.log(imagePath, "imagePath");
 
-    // Save the imagePath to MongoDB
-    const newImage = new Image({
-      imagePath: imagePath,
-    });
-    const image = await newImage.save();
-    res.send({ image: image });
-  } catch (err) {
-    res.json(err);
-  }
-});
-//
-app.get("/showImage/:id", async (req, res) => {
-  try {
-    const oneImage = await Image.findById(req.params.id);
-    res.render("showImage", { imagePath: oneImage.imagePath });
-  } catch (err) {
-    res.json(err);
-  }
-});
-//
 app.use("/user", userRoutes);
 app.use("/post", postRoutes);
 
