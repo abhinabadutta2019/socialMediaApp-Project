@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 const imageSchema = new mongoose.Schema({
-  image: {
-    data: Buffer,
-    contentType: String,
+  imagePath: {
+    type: String, // Store the local path as a string
+    required: true,
   },
 });
 

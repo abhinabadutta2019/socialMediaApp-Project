@@ -1,4 +1,7 @@
 <!-- showImage.ejs -->
+<%- include('partials/header') %>
 
-<h3>Show Image</h3>
-<img src="/images/<%= oneImage._id %>-<%= oneImage.image.data %>" alt="Image" />
+<h2>Show image</h2>
+<div>
+  <img src="<%= imagePath %>" alt="Image" />
+</div>

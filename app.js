@@ -3,35 +3,42 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 //
+// const fs = require("fs");
+
+//
 const Image = require("./models/imageModel");
 
 //
 const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoutes");
+
 //
 const path = require("path");
+
+//
+
 //////////////////////////////////////////
 const multer = require("multer");
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "images");
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, "images"));
   },
-  filename: (req, file, cb) => {
+  filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    const fileExtension = path.extname(file.originalname);
-    const filename = req.params.id + "-" + uniqueSuffix + fileExtension;
-    cb(null, filename);
+    cb(null, file.fieldname + "-" + uniqueSuffix);
   },
 });
 const upload = multer({ storage: storage });
 //////////////////////////////////////////////
 const app = express();
 app.use(express.json());
+
 //
 dotenv.config();
 
-//middlewares- of recently installed npm's
-app.use(express.static("public"));
+//this line was vital to show image on frontend
+app.use("/images", express.static(path.join(__dirname, "images")));
+
 app.use(cookieParser());
 // view engine
 app.set("view engine", "ejs");
@@ -54,7 +61,7 @@ app.get("/", (req, res) => {
   }
 });
 //geeks for geeks- to see uploaded file on browser
-app.use("/images", express.static("images"));
+// app.use("/images", express.static("images"));
 //
 app.get("/upload", (req, res) => {
   try {
@@ -66,11 +73,13 @@ app.get("/upload", (req, res) => {
 //
 app.post("/upload", upload.single("image"), async (req, res) => {
   try {
+    const imagePath = `/images/${req.file.filename}`; // Get the relative path of the image
+    //
+    console.log(imagePath, "imagePath");
+
+    // Save the imagePath to MongoDB
     const newImage = new Image({
-      image: {
-        data: req.file.filename, // Save the file name
-        contentType: req.file.mimetype, // Use the actual file's content type
-      },
+      imagePath: imagePath,
     });
     const image = await newImage.save();
     res.send({ image: image });
@@ -82,9 +91,7 @@ app.post("/upload", upload.single("image"), async (req, res) => {
 app.get("/showImage/:id", async (req, res) => {
   try {
     const oneImage = await Image.findById(req.params.id);
-    const imageBase64 = oneImage.image.data.toString("base64");
-    const imageSrc = `data:${oneImage.image.contentType};base64,${imageBase64}`;
-    res.render("showImage", { imageSrc });
+    res.render("showImage", { imagePath: oneImage.imagePath });
   } catch (err) {
     res.json(err);
   }
