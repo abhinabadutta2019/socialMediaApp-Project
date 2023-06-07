@@ -18,7 +18,7 @@ const path = require("path");
 
 // Import the Image model
 const Image = require("../models/imageModel");
-
+const upload = require("../middleware/multer");
 // Import the upload middleware from app.js
 // const upload = require("../app");
 
@@ -34,28 +34,18 @@ router.get("/upload", (req, res) => {
   }
 });
 //
-router.post("/upload", async (req, res) => {
+router.post("/upload", upload.single("image"), async (req, res) => {
   try {
-    const uploadMiddleware = req.upload.single("image");
-
-    uploadMiddleware(req, res, async (err) => {
-      if (err) {
-        return res.status(400).json({ error: "Upload failed." });
-      }
-
-      const imagePath = `/images/${req.file.filename}`; // Get the relative path of the image
-      // Save the imagePath to MongoDB
-      const newImage = new Image({
-        imagePath: imagePath,
-      });
-      const image = await newImage.save();
-      res.send({ image: image });
+    const imagePath = `/images/${req.file.filename}`;
+    const newImage = new Image({
+      imagePath: imagePath,
     });
+    const image = await newImage.save();
+    res.send({ image: image });
   } catch (err) {
     res.json(err);
   }
 });
-
 //
 router.get("/showImage/:id", async (req, res) => {
   try {

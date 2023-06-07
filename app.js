@@ -18,32 +18,12 @@ const path = require("path");
 //
 
 //////////////////////////////////////////
-const multer = require("multer");
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "images"));
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, file.fieldname + "-" + uniqueSuffix);
-  },
-});
-const upload = multer({ storage: storage });
-
-//exporting the multer from here
-module.exports = upload;
-//
 
 //////////////////////////////////////////////
 const app = express();
 app.use(express.json());
 
 //
-// multer Middleware to make upload available in all routes
-app.use((req, res, next) => {
-  req.upload = upload;
-  next();
-});
 
 //
 dotenv.config();
