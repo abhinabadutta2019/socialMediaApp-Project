@@ -7,6 +7,9 @@ const { verifyLoggedInUser } = require("../middleware/verifyLoggedInUser");
 const {
   postmanLoginMiddleware,
 } = require("../middleware/postmanLoginMiddleware");
+
+//multer
+const upload = require("../middleware/multer");
 //
 //----/post
 //
@@ -25,40 +28,62 @@ router.get("/create", verifyLoggedInUser, async (req, res) => {
 //
 //----/post
 //create a post
-router.post("/create", verifyLoggedInUser, async (req, res) => {
-  try {
-    //user login (route) token required to create post
-    // console.log(req.url, "req.url");
-    //
-    const user = req.userDetail;
+router.post(
+  "/create",
+  verifyLoggedInUser,
+  upload.single("image"),
+  async (req, res) => {
+    try {
+      //user login (route) token required to create post
+      // console.log(req.url, "req.url");
+      //
+      const user = req.userDetail;
+      //
+      console.log(req.body, "req.body");
 
-    if (!user) {
-      return res.json("User not logged in");
+      if (!user) {
+        return res.json("User not logged in");
+      }
+
+      //
+      //if no image
+      let imagePath = null;
+      if (req.file) {
+        // If an image is uploaded, save it and get the image path
+        imagePath = `/images/${req.file.filename}`;
+        // const newImage = new Image({
+        //   imagePath: imagePath,
+        // });
+        // await newImage.save();
+      }
+
+      //
+      // console.log(req.body, "req.body");
+
+      if (req.body.description.length < 3) {
+        return res.json({ message: "post description is too short" });
+      }
+
+      //create new post
+      const newPost = new Post({
+        userId: user._id.toString(),
+        description: req.body.description,
+
+        //
+        imagePath: imagePath,
+      });
+      //save to database
+      const post = await newPost.save();
+
+      // res.json({ post });
+      res.json({ message: "post created" });
+      // res.send();
+    } catch (err) {
+      console.log(err);
+      res.json(err);
     }
-
-    //
-    // console.log(req.body, "req.body");
-
-    if (req.body.description.length < 3) {
-      return res.json({ message: "post description is too short" });
-    }
-
-    //create new post
-    const newPost = new Post({
-      userId: user._id.toString(),
-      description: req.body.description,
-    });
-    //save to database
-    const post = await newPost.save();
-
-    // res.json({ post });
-    res.json({ message: "post created" });
-    // res.send();
-  } catch (err) {
-    console.log(err);
-    res.json(err);
   }
-});
+);
 
 //
 

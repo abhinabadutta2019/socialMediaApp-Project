@@ -4,6 +4,11 @@
   <form action="#">
     <label for="description">description</label>
     <input type="text" id="postDescription" required />
+    <!-- image -->
+    <br /><br />
+    <label for="imageUploadLabel">Upload image</label>
+    <br />
+    <input type="file" id="imageUpload" name="imageUpload" />
   </form>
   <button id="postSubmit" onclick="onPostSubmit()">submitPost</button>
 </div>
@@ -20,17 +25,19 @@
     try {
       const description = document.getElementById("postDescription").value;
       //
-      const data = { description: description };
-      console.log(data, "data");
+      const imageUpload = document.getElementById("imageUpload");
+      const imageFile = imageUpload.files[0];
+      //
+      const formData = new FormData();
+      formData.append("description", description);
+      formData.append("image", imageFile);
+      //
 
       const postSubmitResponse = await fetch(
         `${window.location.origin}/post/create`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
+          body: formData,
         }
       );
       const postSubmitResult = await postSubmitResponse.json();
@@ -39,25 +46,25 @@
       console.log(postSubmitResult, "postSubmitResult");
       // //
       // console.log(postSubmitResult, "postSubmitResult");
-      if (postSubmitResult.message == "post created") {
-        //
-        message.textContent = postSubmitResult.message;
-        //
-        setTimeout(function () {
-          //
-          window.location.href = `${window.location.origin}/post/ownposts`;
-        }, 2000);
-      }
+      // if (postSubmitResult.message == "post created") {
+      //   //
+      //   message.textContent = postSubmitResult.message;
+      //   //
+      //   setTimeout(function () {
+      //     //
+      //     window.location.href = `${window.location.origin}/post/ownposts`;
+      //   }, 2000);
+      // }
       //
-      else if (postSubmitResult.message) {
-        //
-        message.textContent = postSubmitResult.message;
-        //
-        setTimeout(function () {
-          //
-          window.location.href = window.location.href;
-        }, 1000);
-      }
+      // else if (postSubmitResult.message) {
+      //   //
+      //   message.textContent = postSubmitResult.message;
+      //   //
+      //   setTimeout(function () {
+      //     //
+      //     window.location.href = window.location.href;
+      //   }, 1000);
+      // }
       //
     } catch (err) {
       console.log(err);

@@ -59,7 +59,7 @@ router.get("/showImage/:id", async (req, res) => {
 });
 
 //frontend - updateProfileImage
-router.get("/updateProfileImage", (req, res) => {
+router.get("/updateProfileImage", verifyLoggedInUser, (req, res) => {
   try {
     res.render("updateProfileImage");
   } catch (err) {
@@ -67,14 +67,12 @@ router.get("/updateProfileImage", (req, res) => {
   }
 });
 
-//
+//../updateProfileImage
 router.post(
   "/updateProfileImage",
   verifyLoggedInUser,
   upload.single("image"),
   async (req, res) => {
-    //imagePath: "/images/image-1686221480706-959816811"
-    ///images/image-1686221480706-959816811
     try {
       // console.log();
       const user = req.userDetail;
@@ -223,10 +221,10 @@ router.post("/register", upload.single("image"), async (req, res) => {
     if (req.file) {
       // If an image is uploaded, save it and get the image path
       imagePath = `/images/${req.file.filename}`;
-      const newImage = new Image({
-        imagePath: imagePath,
-      });
-      await newImage.save();
+      // const newImage = new Image({
+      //   imagePath: imagePath,
+      // });
+      // await newImage.save();
     }
 
     //comming from helper/utils/hashPass function

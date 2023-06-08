@@ -5,6 +5,13 @@
   index++ ) { %>
 
   <li id="<%=myArray[index]._id %>">
+    <div>
+      <img
+        src="<%= myArray[index].imagePath %>"
+        alt="Image"
+        style="max-width: 120px; max-height: 120px"
+      />
+    </div>
     <p>description : <%=myArray[index].description %></p>
     <p>likes : <%=myArray[index].likes.length %></p>
     <!--  -->

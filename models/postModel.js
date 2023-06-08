@@ -9,6 +9,9 @@ const postSchema = new mongoose.Schema({
   description: {
     type: String,
   },
+  imagePath: {
+    type: String, // Store the local path as a string
+  },
   likes: [
     {
       type: mongoose.Schema.Types.ObjectId,
