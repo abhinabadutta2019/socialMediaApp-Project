@@ -8,7 +8,7 @@
     <br /><br />
     <label for="imageUploadLabel">Upload image</label>
     <br />
-    <input type="file" id="imageUpload" name="imageUpload" />
+    <input type="file" id="imageUpload" name="imageUpload" multiple />
   </form>
   <button id="postSubmit" onclick="onPostSubmit()">submitPost</button>
 </div>
@@ -30,8 +30,14 @@
       //
       const formData = new FormData();
       formData.append("description", description);
-      formData.append("image", imageFile);
+      // formData.append("image", imageFile);
       //
+
+      //
+      for (let i = 0; i < imageUpload.files.length; i++) {
+        const file = imageUpload.files[i];
+        formData.append("images", file);
+      }
 
       const postSubmitResponse = await fetch(
         `${window.location.origin}/post/create`,

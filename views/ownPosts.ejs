@@ -3,15 +3,19 @@
 <div>
   <% if ( myArray.length>0) { %> <% for( let index = 0; index < myArray.length;
   index++ ) { %>
-
+  <!--  -->
   <li id="<%=myArray[index]._id %>">
+    <%if(myArray[index].imagePaths.length>0){%> <% for (let imageIndex = 0;
+    imageIndex < myArray[index].imagePaths.length; imageIndex++) { %>
     <div>
       <img
-        src="<%= myArray[index].imagePath %>"
+        src="<%= myArray[index].imagePaths[imageIndex] %>"
         alt="Image"
         style="max-width: 120px; max-height: 120px"
       />
     </div>
+    <% } %> <% } %>
+    <!--  -->
     <p>description : <%=myArray[index].description %></p>
     <p>likes : <%=myArray[index].likes.length %></p>
     <!--  -->

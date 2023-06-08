@@ -31,7 +31,7 @@ router.get("/create", verifyLoggedInUser, async (req, res) => {
 router.post(
   "/create",
   verifyLoggedInUser,
-  upload.single("image"),
+  upload.array("images", 4),
   async (req, res) => {
     try {
       //user login (route) token required to create post
@@ -47,14 +47,17 @@ router.post(
 
       //
       //if no image
-      let imagePath = null;
-      if (req.file) {
+      // let imagePath = null;
+      let imagePaths = [];
+
+      if (req.files && req.files.length > 0) {
         // If an image is uploaded, save it and get the image path
-        imagePath = `/images/${req.file.filename}`;
-        // const newImage = new Image({
-        //   imagePath: imagePath,
-        // });
-        // await newImage.save();
+
+        for (let k = 0; k < req.files.length; k++) {
+          const file = req.files[k];
+          //
+          imagePaths.push(`/images/${file.filename}`);
+        }
       }
 
       //
@@ -70,7 +73,7 @@ router.post(
         description: req.body.description,
 
         //
-        imagePath: imagePath,
+        imagePaths: imagePaths,
       });
       //save to database
       const post = await newPost.save();
