@@ -169,17 +169,20 @@ router.post("/register", upload.single("image"), async (req, res) => {
       return res.json({ message: "username or password is too small" });
     }
 
+    //
+    let imagePath = null;
+
+    if (req.file) {
+      // If an image is uploaded, save it and get the image path
+      imagePath = `/images/${req.file.filename}`;
+      const newImage = new Image({
+        imagePath: imagePath,
+      });
+      await newImage.save();
+    }
+
     //comming from helper/utils/hashPass function
     const hashedPassword = await hashPass(req.body.password);
-
-    //for multer
-    const imagePath = `/images/${req.file.filename}`;
-    const newImage = new Image({
-      imagePath: imagePath,
-    });
-    //
-    await newImage.save();
-    //
 
     const newUser = new User({
       username: req.body.username,
