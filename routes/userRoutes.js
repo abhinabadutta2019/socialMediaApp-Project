@@ -41,6 +41,7 @@ router.post("/upload", upload.single("image"), async (req, res) => {
       imagePath: imagePath,
     });
     const image = await newImage.save();
+    console.log(image, "image, from /upload (post) route");
     res.send({ image: image });
   } catch (err) {
     res.json(err);

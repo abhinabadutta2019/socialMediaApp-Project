@@ -2,9 +2,43 @@
 
 <h2>Upload image</h2>
 
-<form method="POST" action="/user/upload" enctype="multipart/form-data">
+<form action="#">
   <!--  -->
-  <input type="file" name="image" />
+  <label for="imageUploadLabel">Upload image</label>
+  <br />
+  <input type="file" id="imageUpload" name="imageUpload" />
   <!--  -->
-  <input type="submit" />
 </form>
+<button id="uploadButton" onclick="onSubmitImage()">Upload</button>
+
+<script>
+  async function onSubmitImage() {
+    try {
+      const imageUpload = document.getElementById("imageUpload");
+      //
+      const formData = new FormData();
+      formData.append("image", imageUpload.files[0]);
+      //
+      const response = await fetch(`${window.location.origin}/user/upload`, {
+        method: "POST",
+        body: formData,
+        //
+      });
+      //
+      const result = await response.json();
+      if (result.image._id) {
+        console.log(result, "result");
+
+        // console.log(result.image._id, "image._id");
+
+        //
+        setTimeout(function () {
+          //
+          window.location.href = `${window.location.origin}/user/showImage/${result.image._id}`;
+        }, 1500);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+</script>
