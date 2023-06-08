@@ -18,9 +18,14 @@
       //
       const formData = new FormData();
       formData.append("image", imageUpload.files[0]);
+
       //
+      // console.log(formData, "formData");
+      // console.log(imageUpload.files[0], "imageUpload.files[0]");
+      // //
       const response = await fetch(`${window.location.origin}/user/upload`, {
         method: "POST",
+
         body: formData,
         //
       });
@@ -31,7 +36,6 @@
 
         // console.log(result.image._id, "image._id");
 
-        //
         setTimeout(function () {
           //
           window.location.href = `${window.location.origin}/user/showImage/${result.image._id}`;
