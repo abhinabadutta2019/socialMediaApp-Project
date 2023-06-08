@@ -12,6 +12,9 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 3,
   },
+  imagePath: {
+    type: String, // Store the local path as a string
+  },
   isAdmin: {
     type: Boolean,
     default: false,

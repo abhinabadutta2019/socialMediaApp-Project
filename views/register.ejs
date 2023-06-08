@@ -10,6 +10,11 @@
   <!-- password -->
   <label for="password">Password</label>
   <input type="password" id="registerPassword" required />
+  <br />
+  <!--image  -->
+  <label for="imageUploadLabel">Upload image</label>
+  <br />
+  <input type="file" id="imageUpload" name="imageUpload" />
 </form>
 <!-- form Button -->
 <button id="registerButton" onclick="onRegisterButton()">Submit</button>
@@ -25,17 +30,30 @@
       const username = document.getElementById("registerUsername").value;
       const password = document.getElementById("registerPassword").value;
 
-      const data = { username: username, password: password };
+      //
+      const imageUpload = document.getElementById("imageUpload");
+      //
+      const imageFile = imageUpload.files[0];
+
+      // const data = { username: username, password: password };
       //   console.log(username, "username");
       // console.log(password, "password");
 
+      //
+      const formData = new FormData();
+      formData.append("username", username);
+      formData.append("password", password);
+      formData.append("image", imageFile);
+      //
       const response = await fetch(`${window.location.origin}/user/register`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        // headers: {
+        //   "Content-Type": "application/json",
+        // },
 
-        body: JSON.stringify(data),
+        // body: JSON.stringify(data),
+
+        body: formData,
       });
       //
 
@@ -43,36 +61,36 @@
 
       //
       console.log(result, "result");
-      //
-      if (result.message == "user created") {
-        //
+      // //
+      // if (result.message == "user created") {
+      //   //
 
-        message.textContent = result.message;
-        //
-        setTimeout(function () {
-          //
-          window.location.href = `${window.location.origin}/user/personalDetails`;
-        }, 1000);
-      }
-      //
-      else if (result.message) {
-        message.textContent = result.message;
-        //
-        setTimeout(function () {
-          //
-          window.location.href = window.location.href;
-        }, 2000);
-      }
-      //if mongo -- duplicate username error comes
-      //result?.error?.code
-      else if (result.err.code == 11000) {
-        message.textContent = "username already taken";
-        // console.log(result.err);
-        setTimeout(function () {
-          //
-          window.location.href = window.location.href;
-        }, 2000);
-      }
+      //   message.textContent = result.message;
+      //   //
+      //   setTimeout(function () {
+      //     //
+      //     window.location.href = `${window.location.origin}/user/personalDetails`;
+      //   }, 1000);
+      // }
+      // //
+      // else if (result.message) {
+      //   message.textContent = result.message;
+      //   //
+      //   setTimeout(function () {
+      //     //
+      //     window.location.href = window.location.href;
+      //   }, 2000);
+      // }
+      // //if mongo -- duplicate username error comes
+      // //result?.error?.code
+      // else if (result.err.code == 11000) {
+      //   message.textContent = "username already taken";
+      //   // console.log(result.err);
+      //   setTimeout(function () {
+      //     //
+      //     window.location.href = window.location.href;
+      //   }, 2000);
+      // }
     } catch (err) {
       console.log(err);
     }

@@ -162,7 +162,7 @@ router.get("/allUsers", verifyLoggedInUser, async (req, res) => {
 
 //--/user
 //create / register- user
-router.post("/register", async (req, res) => {
+router.post("/register", upload.single("image"), async (req, res) => {
   try {
     //
     if (req.body.username.length < 3 || req.body.password.length < 3) {
@@ -172,10 +172,21 @@ router.post("/register", async (req, res) => {
     //comming from helper/utils/hashPass function
     const hashedPassword = await hashPass(req.body.password);
 
+    //for multer
+    const imagePath = `/images/${req.file.filename}`;
+    const newImage = new Image({
+      imagePath: imagePath,
+    });
+    //
+    await newImage.save();
+    //
+
     const newUser = new User({
       username: req.body.username,
       password: hashedPassword,
       // isAdmin: req.body.isAdmin,
+      //
+      imagePath: imagePath,
     });
 
     //this works
