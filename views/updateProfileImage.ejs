@@ -1,0 +1,74 @@
+<%- include('partials/header') %>
+<h2>Update user profile image</h2>
+
+<form action="#">
+  <!--  -->
+  <label for="imageUploadLabel">Upload image</label>
+  <br />
+  <input type="file" id="imageUpload" name="imageUpload" />
+  <!--  -->
+</form>
+<button id="uploadButton" onclick="onSubmitImage()">Upload</button>
+
+<script>
+  //
+  let message = document.getElementById("message");
+  //
+  async function onSubmitImage() {
+    try {
+      const imageUpload = document.getElementById("imageUpload");
+      //
+      const formData = new FormData();
+      formData.append("image", imageUpload.files[0]);
+
+      //
+      // console.log(formData, "formData");
+      // console.log(imageUpload.files[0], "imageUpload.files[0]");
+      // //
+      const response = await fetch(
+        `${window.location.origin}/user/updateProfileImage`,
+        {
+          method: "POST",
+
+          body: formData,
+          //
+        }
+      );
+      //
+      const result = await response.json();
+      //   //
+      //   console.log(result, "result");
+      //
+      if (result.updatedImagePath == result.oldImagePath) {
+        console.log(result.updatedImagePath, "result.updatedImagePath");
+        console.log(result.oldImagePath, "result.oldImagePath");
+        // console.log("Image not updated");
+
+        // console.log(result.image._id, "image._id");
+
+        message.textContent = "Image not updated";
+        setTimeout(function () {
+          //
+          window.location.href = window.location.href;
+        }, 1500);
+      }
+      //
+      else if (result.updatedImagePath !== result.oldImagePath) {
+        //
+
+        console.log(result.updatedImagePath, "result.updatedImagePath");
+        console.log(result.oldImagePath, "result.oldImagePath");
+        // console.log("Image not updated");
+
+        message.textContent = "Image updated";
+        //
+        setTimeout(function () {
+          //
+          window.location.href = `${window.location.origin}/user/personalDetails`;
+        }, 1500);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+</script>

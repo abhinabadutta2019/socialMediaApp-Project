@@ -58,6 +58,54 @@ router.get("/showImage/:id", async (req, res) => {
   }
 });
 
+//frontend - updateProfileImage
+router.get("/updateProfileImage", (req, res) => {
+  try {
+    res.render("updateProfileImage");
+  } catch (err) {
+    res.json(err);
+  }
+});
+
+//
+router.post(
+  "/updateProfileImage",
+  verifyLoggedInUser,
+  upload.single("image"),
+  async (req, res) => {
+    //imagePath: "/images/image-1686221480706-959816811"
+    ///images/image-1686221480706-959816811
+    try {
+      // console.log();
+      const user = req.userDetail;
+
+      const oldUser = { ...user };
+      // console.log(oldUser._doc.imagePath, "oldUser");
+      const oldImagePath = oldUser._doc.imagePath;
+      //
+      if (req.file) {
+        const imagePath = `/images/${req.file.filename}`;
+        user.imagePath = imagePath;
+      }
+
+      //
+      // Update the imagePath in the user document
+      // user.imagePath = imagePath;
+      await user.save();
+      // console.log(user);
+      const updatedImagePath = user.imagePath;
+
+      res.json({
+        updatedImagePath: updatedImagePath,
+        oldImagePath: oldImagePath,
+      });
+    } catch (err) {
+      console.log(err);
+      res.json(err);
+    }
+  }
+);
+
 //frontend routes
 router.get("/register", async (req, res) => {
   try {
@@ -169,7 +217,7 @@ router.post("/register", upload.single("image"), async (req, res) => {
       return res.json({ message: "username or password is too small" });
     }
 
-    //
+    //if no image
     let imagePath = null;
 
     if (req.file) {
