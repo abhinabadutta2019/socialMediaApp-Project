@@ -39,7 +39,9 @@ router.post(
       //
       const user = req.userDetail;
       //
-      console.log(req.body, "req.body");
+      // console.log(req.body, "req.body");
+      // console.log(req.files, "req.files");
+      // console.log(req.files.length, "req.files.length");
 
       if (!user) {
         return res.json("User not logged in");
@@ -49,6 +51,11 @@ router.post(
       //if no image
       // let imagePath = null;
       let imagePaths = [];
+
+      //
+      // if (req.files.length > 4) {
+      //   return req.json({ message: "limit is upto 4 image" });
+      // }
 
       if (req.files && req.files.length > 0) {
         // If an image is uploaded, save it and get the image path
