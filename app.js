@@ -7,6 +7,7 @@ const AWS = require("aws-sdk");
 require("aws-sdk/lib/maintenance_mode_message").suppress = true;
 
 //
+const { uploadFileToS3 } = require("./helper/s3");
 // const fs = require("fs");
 
 //
@@ -27,32 +28,32 @@ const path = require("path");
 const app = express();
 app.use(express.json());
 
-//Configure AWS SDK with your credentials and region
-AWS.config.update({
-  accessKeyId: `${process.env.YOUR_ACCESS_KEY_ID}`,
-  secretAccessKey: `${process.env.YOUR_SECRET_ACCESS_KEY}`,
-  region: `${process.env.YOUR_REGION}`,
-});
-//aws related
-// Create an instance of the S3 service
-const s3 = new AWS.S3();
-//
-async function uploadFileToS3() {
-  //
-  const params = {
-    Body: "play world",
-    Bucket: "abhinaba-nodejs-uploads",
-    Key: "a-new-one-file.txt",
-  };
+// //Configure AWS SDK with your credentials and region
+// AWS.config.update({
+//   accessKeyId: `${process.env.YOUR_ACCESS_KEY_ID}`,
+//   secretAccessKey: `${process.env.YOUR_SECRET_ACCESS_KEY}`,
+//   region: `${process.env.YOUR_REGION}`,
+// });
+// //aws related
+// // Create an instance of the S3 service
+// const s3 = new AWS.S3();
+// //
+// async function uploadFileToS3() {
+//   //
+//   const params = {
+//     Body: "play world",
+//     Bucket: "abhinaba-nodejs-uploads",
+//     Key: "a-new-one-file.txt",
+//   };
 
-  //
-  try {
-    const response = await s3.putObject(params).promise();
-    console.log("File uploaded successfully:", response);
-  } catch (error) {
-    console.error("Error uploading file:", error);
-  }
-}
+//   //
+//   try {
+//     const response = await s3.putObject(params).promise();
+//     console.log("File uploaded successfully:", response);
+//   } catch (error) {
+//     console.error("Error uploading file:", error);
+//   }
+// }
 
 //
 // Call the async function to upload the file
