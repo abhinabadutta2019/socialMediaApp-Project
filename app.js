@@ -31,7 +31,7 @@ app.use(express.json());
 AWS.config.update({
   accessKeyId: `${process.env.YOUR_ACCESS_KEY_ID}`,
   secretAccessKey: `${process.env.YOUR_SECRET_ACCESS_KEY}`,
-  // region: "YOUR_REGION",
+  region: `${process.env.YOUR_REGION}`,
 });
 //aws related
 // Create an instance of the S3 service
@@ -40,9 +40,9 @@ const s3 = new AWS.S3();
 async function uploadFileToS3() {
   //
   const params = {
-    Body: "new world",
+    Body: "play world",
     Bucket: "abhinaba-nodejs-uploads",
-    Key: "a-text-file.txt",
+    Key: "a-new-one-file.txt",
   };
 
   //
