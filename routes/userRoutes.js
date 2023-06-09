@@ -87,8 +87,10 @@ router.post(
         // const imagePath = `/images/${req.file.filename}`;
         // user.imagePath = imagePath;
         const uploadedFileUrl = await s3.uploadFileToS3(req.file);
-        console.log(uploadedFileUrl, "uploadedFileUrl");
         user.imagePath = uploadedFileUrl;
+
+        //
+        console.log(uploadedFileUrl, "^^uploadedFileUrl");
       }
 
       //
@@ -224,12 +226,12 @@ router.post("/register", upload.single("image"), async (req, res) => {
     let imagePath = null;
 
     if (req.file) {
-      // If an image is uploaded, save it and get the image path
-      imagePath = `/images/${req.file.filename}`;
-      // const newImage = new Image({
-      //   imagePath: imagePath,
-      // });
-      // await newImage.save();
+      // If an image is uploaded, save AWS/s3 url
+      const uploadedFileUrl = await s3.uploadFileToS3(req.file);
+      imagePath = uploadedFileUrl;
+
+      //
+      console.log(uploadedFileUrl, "uploadedFileUrl");
     }
 
     //comming from helper/utils/hashPass function
