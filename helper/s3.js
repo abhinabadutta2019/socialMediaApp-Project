@@ -16,19 +16,26 @@ const s3 = new AWS.S3({
 });
 
 //
-async function uploadFileToS3() {
+async function uploadFileToS3(file) {
+  //
+  const fileContent = fs.readFileSync(file.path);
   //
   const params = {
-    Body: "play world",
     Bucket: bucketName,
-    Key: "a-new-one-file.txt",
+    Key: file.filename,
+    Body: fileContent,
   };
   //
   try {
-    const response = await s3.putObject(params).promise();
+    const response = await s3.upload(params).promise();
     console.log("File uploaded successfully:", response);
+    //
+    return response.Location; // Return the uploaded file URL
   } catch (err) {
     console.log("Error uploading s3 file:", err);
   }
 }
 exports.uploadFileToS3 = uploadFileToS3;
+// module.exports = {
+//   uploadFileToS3,
+// };

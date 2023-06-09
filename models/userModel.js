@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
     minlength: 3,
   },
   imagePath: {
-    type: String, // Store the local path as a string
+    type: String, // Store the S3 file URL as a string // Store the local path as a string
   },
   isAdmin: {
     type: Boolean,

@@ -15,6 +15,8 @@ const { hashPass, deleteFromUserArray } = require("../helper/utils");
 
 //
 const path = require("path");
+//
+const s3 = require("../helper/s3");
 
 // Import the Image model
 const Image = require("../models/imageModel");
@@ -82,8 +84,11 @@ router.post(
       const oldImagePath = oldUser._doc.imagePath;
       //
       if (req.file) {
-        const imagePath = `/images/${req.file.filename}`;
-        user.imagePath = imagePath;
+        // const imagePath = `/images/${req.file.filename}`;
+        // user.imagePath = imagePath;
+        const uploadedFileUrl = await s3.uploadFileToS3(req.file);
+        console.log(uploadedFileUrl, "uploadedFileUrl");
+        user.imagePath = uploadedFileUrl;
       }
 
       //
