@@ -35,7 +35,7 @@ async function uploadFileToS3(file) {
     console.log("Error uploading s3 file:", err);
   }
 }
-exports.uploadFileToS3 = uploadFileToS3;
-// module.exports = {
-//   uploadFileToS3,
-// };
+// exports.uploadFileToS3 = uploadFileToS3;
+module.exports = {
+  uploadFileToS3,
+};
