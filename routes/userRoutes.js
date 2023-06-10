@@ -69,12 +69,10 @@ router.get("/updateProfileImage", verifyLoggedInUser, (req, res) => {
   }
 });
 
+// prettier-ignore
 //../updateProfileImage
 router.post(
-  "/updateProfileImage",
-  verifyLoggedInUser,
-  upload.single("image"),
-  async (req, res) => {
+  "/updateProfileImage",verifyLoggedInUser,upload.single("image"),async (req, res) => {
     try {
       // console.log();
       const user = req.userDetail;

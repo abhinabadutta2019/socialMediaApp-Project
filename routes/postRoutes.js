@@ -11,6 +11,8 @@ const {
 //multer
 const upload = require("../middleware/multer");
 //
+const s3 = require("../helper/s3");
+//
 //----/post
 //
 
@@ -27,6 +29,7 @@ router.get("/create", verifyLoggedInUser, async (req, res) => {
 });
 //
 //----/post
+//// prettier-ignore
 //create a post
 router.post(
   "/create",
@@ -50,23 +53,25 @@ router.post(
       //
       //if no image
       // let imagePath = null;
-      let imagePaths = [];
-
-      //
-      // if (req.files.length > 4) {
-      //   return req.json({ message: "limit is upto 4 image" });
-      // }
+      const imagePaths = [];
 
       if (req.files && req.files.length > 0) {
         // If an image is uploaded, save it and get the image path
 
+        let uploadedFileUrl;
         for (let k = 0; k < req.files.length; k++) {
           const file = req.files[k];
           //
-          imagePaths.push(`/images/${file.filename}`);
+          // imagePaths.push(`/images/${file.filename}`);
+          //
+          uploadedFileUrl = await s3.uploadFileToS3(file);
+          //
+          imagePaths.push(uploadedFileUrl);
+          // console.log(imagePaths, "imagePaths in loop");
         }
       }
 
+      // console.log(imagePaths, "imagePaths after loop");
       //
       // console.log(req.body, "req.body");
 
