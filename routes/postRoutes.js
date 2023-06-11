@@ -476,6 +476,7 @@ router.get("/strangerOwnPost/:id", async (req, res) => {
 //   }
 // });
 
+//
 // get one post by id
 // router.get("/:id", async (req, res) => {
 //   try {
