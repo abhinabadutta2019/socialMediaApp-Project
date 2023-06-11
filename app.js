@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 
-//test
+//
 //
 const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoutes");
