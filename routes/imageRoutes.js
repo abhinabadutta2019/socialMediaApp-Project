@@ -12,9 +12,10 @@ router.post("/upload", multer.single("file"), async (req, res) => {
     if (!req.file) {
       return res.json({ message: "no file uploaded" });
     }
-    //
+    //this line solved
     const photoPath = `/images/${req.file.filename}`;
-    // console.log(req.file, "req.file");
+
+    console.log(req.file, "req.file");
 
     const newImage = new Image({
       photoPath: photoPath,

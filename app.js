@@ -23,7 +23,12 @@ app.set("view engine", "ejs");
 //
 
 //this line was vital to show image on frontend
-app.use("/images", express.static(path.join(__dirname, "images")));
+//this is for absolute path
+// app.use("/images", express.static(path.join(__dirname, "images")));
+
+//this line was vital to show image on frontend
+//this is for relative path
+app.use("/images", express.static("./images"));
 
 //mongoDB cloud
 let uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.te788iv.mongodb.net/socialApp-15-may?retryWrites=true&w=majority`;
