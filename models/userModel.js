@@ -12,6 +12,12 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 3,
   },
+
+  photoPath: {
+    type: String,
+    required: false,
+  },
+
   isAdmin: {
     type: Boolean,
     default: false,

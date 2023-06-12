@@ -7,6 +7,8 @@ const cookieParser = require("cookie-parser");
 //
 const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoutes");
+//.
+const imageRoutes = require("./routes/imageRoutes");
 //
 const app = express();
 app.use(express.json());
@@ -39,6 +41,8 @@ app.get("/", (req, res) => {
 //
 app.use("/user", userRoutes);
 app.use("/post", postRoutes);
+//-
+app.use("/image", imageRoutes);
 
 //
 app.use((req, res, next) => {
