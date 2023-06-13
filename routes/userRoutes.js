@@ -178,6 +178,54 @@ router.post("/register", multer.single("file"), async (req, res) => {
   }
 });
 //
+//// prettier-ignore
+router.put(
+  "/updateProfileImage",
+  postmanLoginMiddleware,
+  multer.single("file"),
+  async (req, res) => {
+    //
+    try {
+      if (!req.file) {
+        return res.json({ message: "No file to upload" });
+      }
+      // console.log(req.userDetail,"");
+      const user = req.userDetail;
+      //
+      // console.log(user, "before user");
+      const oldUser = { ...user._doc };
+
+      const file = req.file;
+      //
+      const uploadResponse = await aws.uploadFileToS3(file);
+      //
+      console.log(uploadResponse.Location, "uploadResponse.Location");
+      //
+      const updatedUser = await User.findByIdAndUpdate(
+        user._id,
+        {
+          $set: { photoPath: uploadResponse.Location },
+        },
+        { new: true }
+      );
+
+      // console.log(user);
+
+      if (oldUser.photoPath == updatedUser.photoPath) {
+        return res.json({ message: "photo not updated" });
+      }
+      //
+      // console.log(oldUser.photoPath, "oldUser.photoPath");
+      // console.log(updatedUser.photoPath, "updatedUser");
+
+      res.json({ message: "photo updated" });
+    } catch (err) {
+      console.log(err);
+      res.json(err);
+    }
+  }
+);
+
 /////////////////////////////////////////////
 //login route ( it is to check password and genarate token)
 router.post("/login", async (req, res) => {
