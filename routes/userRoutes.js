@@ -12,6 +12,8 @@ const {
   postmanLoginMiddleware,
 } = require("../middleware/postmanLoginMiddleware");
 const { hashPass, deleteFromUserArray } = require("../helper/utils");
+const multer = require("../middleware/multer");
+const aws = require("../helper/s3");
 ///////////////////////////////////////////////
 
 //--/user
@@ -119,7 +121,8 @@ router.get("/allUsers", verifyLoggedInUser, async (req, res) => {
 
 //--/user
 //create / register- user
-router.post("/register", async (req, res) => {
+router.post("/register", multer.single("file"), async (req, res) => {
+  console.log(req.body, "req.body");
   try {
     //
     if (req.body.username.length < 3 || req.body.password.length < 3) {
@@ -129,11 +132,28 @@ router.post("/register", async (req, res) => {
     //comming from helper/utils/hashPass function
     const hashedPassword = await hashPass(req.body.password);
 
-    const newUser = new User({
-      username: req.body.username,
-      password: hashedPassword,
-      // isAdmin: req.body.isAdmin,
-    });
+    //initializing newUser
+    let newUser;
+    //
+    if (req.file) {
+      const file = req.file;
+      //
+      const uploadResponse = await aws.uploadFileToS3(file);
+      //
+      console.log(uploadResponse.Location, "uploadResponse.Location");
+      //
+      newUser = new User({
+        username: req.body.username,
+        password: hashedPassword,
+        photoPath: uploadResponse.Location,
+      });
+    } else if (!req.file) {
+      newUser = new User({
+        username: req.body.username,
+        password: hashedPassword,
+        // isAdmin: req.body.isAdmin,
+      });
+    }
 
     //this works
     const user = await newUser.save();
@@ -148,7 +168,9 @@ router.post("/register", async (req, res) => {
     res.cookie("jwt", token);
     //
 
-    res.json({ message: "user created" });
+    // res.json({ message: "user created" });
+    //
+    res.json({ user: user });
     // res.send();
   } catch (err) {
     console.log(err);

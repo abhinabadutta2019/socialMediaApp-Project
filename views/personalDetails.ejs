@@ -3,6 +3,9 @@
 <h2>User Details</h2>
 
 <div id="<%= user._id %>">
+  <div>
+    <img src="<%= user.photoPath %>" alt="image" width="200" height="150" />
+  </div>
   <p>username:<%= user.username %></p>
 
   <p>followers:<%= user.followers.length %></p>
