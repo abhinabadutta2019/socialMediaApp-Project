@@ -168,9 +168,9 @@ router.post("/register", multer.single("file"), async (req, res) => {
     res.cookie("jwt", token);
     //
 
-    // res.json({ message: "user created" });
+    res.json({ message: "user created" });
     //
-    res.json({ user: user });
+    // res.json({ user: user });
     // res.send();
   } catch (err) {
     console.log(err);
@@ -178,11 +178,8 @@ router.post("/register", multer.single("file"), async (req, res) => {
   }
 });
 //
-//// prettier-ignore
-router.put(
-  "/updateProfileImage",
-  postmanLoginMiddleware,
-  multer.single("file"),
+// prettier-ignore
+router.put("/updateProfileImage",postmanLoginMiddleware,multer.single("file"),
   async (req, res) => {
     //
     try {

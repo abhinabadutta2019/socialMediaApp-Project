@@ -8,6 +8,9 @@ const {
   postmanLoginMiddleware,
 } = require("../middleware/postmanLoginMiddleware");
 //
+const multer = require("../middleware/multer");
+const aws = require("../helper/s3");
+//
 //----/post
 //
 router.get("/create", verifyLoggedInUser, async (req, res) => {
@@ -21,41 +24,82 @@ router.get("/create", verifyLoggedInUser, async (req, res) => {
 });
 //
 //----/post
+////prettier-ignore
 //create a post
-router.post("/create", verifyLoggedInUser, async (req, res) => {
-  try {
-    //user login (route) token required to create post
-    // console.log(req.url, "req.url");
-    //
-    const user = req.userDetail;
+router.post(
+  "/create",
+  postmanLoginMiddleware,
+  multer.array("images", 4),
+  async (req, res) => {
+    try {
+      // multer.array---req.files diyei multiple files upload hoyeche kina check korte hocche
+      //multer.single--- hole req.file
 
-    if (!user) {
-      return res.json("User not logged in");
+      // console.log(req.body, "req.body");
+      // console.log(req.files, "req.files");
+
+      //
+      const user = req.userDetail;
+
+      if (!user) {
+        return res.json("User not logged in");
+      }
+
+      //
+      // console.log(req.body, "req.body");
+
+      if (req.body.description.length < 3) {
+        return res.json({ message: "post description is too short" });
+      }
+      //
+      let newPost;
+      //
+      if (!req.files) {
+        console.log("inside if");
+        //create new post
+        newPost = new Post({
+          userId: user._id.toString(),
+          description: req.body.description,
+        });
+      } else if (req.files) {
+        console.log("inside else if");
+        //
+        const images = req.files;
+
+        const imagePath = [];
+
+        for (let i = 0; i < images.length; i++) {
+          const element = images[i];
+
+          // console.log(element, "element");
+          //
+          const uploadResponse = await aws.uploadFileToS3(element);
+
+          // console.log(uploadResponse, "uploadResponse");
+          imagePath.push(uploadResponse.Location);
+        }
+
+        newPost = new Post({
+          userId: user._id.toString(),
+          description: req.body.description,
+          // photoPath: user.photoPath.push(uploadResponse.Location),
+          // photoPath: uploadResponse.Location,
+          photoPath: imagePath,
+        });
+      }
+
+      //save to database
+      const post = await newPost.save();
+
+      res.json({ post: post });
+      // res.json({ message: "post created" });
+      res.send();
+    } catch (err) {
+      console.log(err);
+      res.json(err);
     }
-
-    //
-    // console.log(req.body, "req.body");
-
-    if (req.body.description.length < 3) {
-      return res.json({ message: "post description is too short" });
-    }
-
-    //create new post
-    const newPost = new Post({
-      userId: user._id.toString(),
-      description: req.body.description,
-    });
-    //save to database
-    const post = await newPost.save();
-
-    // res.json({ post });
-    res.json({ message: "post created" });
-    // res.send();
-  } catch (err) {
-    console.log(err);
-    res.json(err);
   }
-});
+);
 
 //
 
