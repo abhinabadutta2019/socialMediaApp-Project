@@ -119,6 +119,15 @@ router.get("/allUsers", verifyLoggedInUser, async (req, res) => {
   }
 });
 
+//frontend - updateProfileImage
+router.get("/updateProfileImage", verifyLoggedInUser, (req, res) => {
+  try {
+    res.render("updateProfileImage");
+  } catch (err) {
+    res.json(err);
+  }
+});
+
 //--/user
 //create / register- user
 // form er file er variable name and route er multer.single("variable name") same thakte hobe
@@ -179,9 +188,13 @@ router.post("/register", multer.single("fileA"), async (req, res) => {
     res.json({ err: err });
   }
 });
+// form er file er variable name and route er multer.single("variable name") same thakte hobe
 //
-// prettier-ignore
-router.put("/updateProfileImage",postmanLoginMiddleware,multer.single("file"),
+//// prettier-ignore
+router.put(
+  "/updateProfileImage",
+  verifyLoggedInUser,
+  multer.single("imageFile"),
   async (req, res) => {
     //
     try {
@@ -208,16 +221,15 @@ router.put("/updateProfileImage",postmanLoginMiddleware,multer.single("file"),
         { new: true }
       );
 
+      const updatedImagePath = updatedUser.photoPath;
+      const oldImagePath = oldUser.photoPath;
+
+      res.json({
+        updatedImagePath: updatedImagePath,
+        oldImagePath: oldImagePath,
+      });
+
       // console.log(user);
-
-      if (oldUser.photoPath == updatedUser.photoPath) {
-        return res.json({ message: "photo not updated" });
-      }
-      //
-      // console.log(oldUser.photoPath, "oldUser.photoPath");
-      // console.log(updatedUser.photoPath, "updatedUser");
-
-      res.json({ message: "photo updated" });
     } catch (err) {
       console.log(err);
       res.json(err);
