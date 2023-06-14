@@ -3,6 +3,13 @@
 <h2>getUser</h2>
 
 <div id="<%= user._id %>">
+  <!--  -->
+  <% if (user.photoPath) { %>
+  <div>
+    <img src="<%= user.photoPath %>" alt="image" width="200" height="150" />
+  </div>
+  <% } %>
+  <!--  -->
   <p>username:<%= user.username %></p>
   <p>followers:<%= user.followers.length %></p>
   <!--  -->

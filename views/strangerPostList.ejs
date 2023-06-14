@@ -7,6 +7,18 @@
   { %>
 
   <li id="<%=userPosts[i]._id  %>">
+    <!--  -->
+    <% if (userPosts[i].photoPath) { %>
+    <div>
+      <img
+        src="<%= userPosts[i].photoPath %>"
+        alt="image"
+        width="200"
+        height="150"
+      />
+    </div>
+    <% } %>
+    <!--  -->
     <p>description:<%= userPosts[i].description %></p>
     <!--  -->
     <p>postedBy:<%=userPosts[i].userId.username %></p>

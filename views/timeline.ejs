@@ -32,6 +32,18 @@
   postsNotByYou.length; index++ ) { %>
 
   <li id="<%=postsNotByYou[index]._id %>">
+    <!--  -->
+    <% if (postsNotByYou[index].photoPath) { %>
+    <div>
+      <img
+        src="<%= postsNotByYou[index].photoPath %>"
+        alt="image"
+        width="200"
+        height="150"
+      />
+    </div>
+    <% } %>
+    <!--  -->
     <p>description : <%=postsNotByYou[index].description %></p>
     <!--  -->
     <p>postedBy:<%=postsNotByYou[index].userId.username %></p>
