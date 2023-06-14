@@ -6,7 +6,7 @@
     <input type="text" id="postDescription" required />
     <!-- image -->
     <br />
-    <input type="file" id="imageUpload" name="imageUpload" multiple />
+    <input type="file" id="imageUpload" name="imageUpload" />
   </form>
   <button id="postSubmit" onclick="onPostSubmit()">submitPost</button>
 </div>
@@ -28,16 +28,17 @@
       //
       const formData = new FormData();
       formData.append("description", description);
-      // formData.append("image", imageFile);
+
+      formData.append("image", imageFile);
       //
 
       //
-      for (let i = 0; i < imageUpload.files.length; i++) {
-        const file = imageUpload.files[i];
-        //
-        console.log(file);
-        formData.append("images", file);
-      }
+      // for (let i = 0; i < imageUpload.files.length; i++) {
+      //   const file = imageUpload.files[i];
+      //   //
+      //   console.log(file);
+      //   formData.append("images", file);
+      // }
 
       const postSubmitResponse = await fetch(
         `${window.location.origin}/post/create`,

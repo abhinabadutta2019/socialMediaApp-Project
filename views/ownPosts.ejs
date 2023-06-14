@@ -5,23 +5,15 @@
   index++ ) { %>
 
   <li id="<%=myArray[index]._id %>">
-    <% if (myArray[index].photoPath.length>0) { %>
-    <!--  -->
-    <% for( let j = 0; j < myArray[index].photoPath.length; j++ ) { %>
-
+    <% if (myArray[index].photoPath) { %>
     <div>
       <img
-        src="<%=myArray[index].photoPath[j] %>"
+        src="<%= myArray[index].photoPath %>"
         alt="image"
-        width="150"
-        height="100"
+        width="200"
+        height="150"
       />
     </div>
-    <br />
-
-    <% } %>
-
-    <!--  -->
     <% } %>
     <p>description : <%=myArray[index].description %></p>
     <p>likes : <%=myArray[index].likes.length %></p>

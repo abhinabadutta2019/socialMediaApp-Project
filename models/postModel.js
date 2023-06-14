@@ -9,12 +9,10 @@ const postSchema = new mongoose.Schema({
   description: {
     type: String,
   },
-  photoPath: [
-    {
-      type: String,
-      required: false,
-    },
-  ],
+  photoPath: {
+    type: String,
+    required: false,
+  },
   likes: [
     {
       type: mongoose.Schema.Types.ObjectId,

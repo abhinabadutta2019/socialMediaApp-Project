@@ -29,7 +29,7 @@ router.get("/create", verifyLoggedInUser, async (req, res) => {
 router.post(
   "/create",
   verifyLoggedInUser,
-  multer.array("images", 4),
+  multer.single("image"),
   async (req, res) => {
     try {
       // multer.array---req.files diyei multiple files upload hoyeche kina check korte hocche
@@ -53,38 +53,31 @@ router.post(
       }
       //
       let newPost;
+
       //
-      if (!req.files) {
+      console.log(req.file, "req.files");
+      //
+      if (!req.file) {
         console.log("inside if");
         //create new post
         newPost = new Post({
           userId: user._id.toString(),
           description: req.body.description,
         });
-      } else if (req.files) {
+      } else if (req.file) {
         console.log("inside else if");
         //
-        const images = req.files;
+        const image = req.file;
 
-        const imagePath = [];
-
-        for (let i = 0; i < images.length; i++) {
-          const element = images[i];
-
-          // console.log(element, "element");
-          //
-          const uploadResponse = await aws.uploadFileToS3(element);
-
-          // console.log(uploadResponse, "uploadResponse");
-          imagePath.push(uploadResponse.Location);
-        }
+        const uploadResponse = await aws.uploadFileToS3(image);
+        //
+        console.log(uploadResponse.Location, "uploadResponse.Location");
 
         newPost = new Post({
           userId: user._id.toString(),
           description: req.body.description,
           // photoPath: user.photoPath.push(uploadResponse.Location),
-          // photoPath: uploadResponse.Location,
-          photoPath: imagePath,
+          photoPath: uploadResponse.Location,
         });
       }
 
