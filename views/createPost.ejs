@@ -4,6 +4,9 @@
   <form action="#">
     <label for="description">description</label>
     <input type="text" id="postDescription" required />
+    <!-- image -->
+    <br />
+    <input type="file" id="imageUpload" name="imageUpload" multiple />
   </form>
   <button id="postSubmit" onclick="onPostSubmit()">submitPost</button>
 </div>
@@ -20,17 +23,27 @@
     try {
       const description = document.getElementById("postDescription").value;
       //
-      const data = { description: description };
-      console.log(data, "data");
+      const imageUpload = document.getElementById("imageUpload");
+      const imageFile = imageUpload.files[0];
+      //
+      const formData = new FormData();
+      formData.append("description", description);
+      // formData.append("image", imageFile);
+      //
+
+      //
+      for (let i = 0; i < imageUpload.files.length; i++) {
+        const file = imageUpload.files[i];
+        //
+        console.log(file);
+        formData.append("images", file);
+      }
 
       const postSubmitResponse = await fetch(
         `${window.location.origin}/post/create`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
+          body: formData,
         }
       );
       const postSubmitResult = await postSubmitResponse.json();
@@ -47,9 +60,7 @@
           //
           window.location.href = `${window.location.origin}/post/ownposts`;
         }, 2000);
-      }
-      //
-      else if (postSubmitResult.message) {
+      } else if (postSubmitResult.message) {
         //
         message.textContent = postSubmitResult.message;
         //
@@ -58,7 +69,6 @@
           window.location.href = window.location.href;
         }, 1000);
       }
-      //
     } catch (err) {
       console.log(err);
       res.json(err);

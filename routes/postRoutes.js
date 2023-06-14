@@ -28,7 +28,7 @@ router.get("/create", verifyLoggedInUser, async (req, res) => {
 //create a post
 router.post(
   "/create",
-  postmanLoginMiddleware,
+  verifyLoggedInUser,
   multer.array("images", 4),
   async (req, res) => {
     try {
