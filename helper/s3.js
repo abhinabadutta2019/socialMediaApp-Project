@@ -26,7 +26,7 @@ async function uploadFileToS3(file) {
   };
   //
 
-  console.log(fileContent, "fileContent");
+  console.log(fileContent, "^^ from s3.js fileContent");
   try {
     const response = await s3.upload(params).promise();
     console.log(response, "response from function");

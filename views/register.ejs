@@ -10,6 +10,10 @@
   <!-- password -->
   <label for="password">Password</label>
   <input type="password" id="registerPassword" required />
+  <br />
+  <label for="imageUpload">Image</label>
+  <input type="file" id="registerImageUpload" />
+  <!--  -->
 </form>
 <!-- form Button -->
 <button id="registerButton" onclick="onRegisterButton()">Submit</button>
@@ -24,18 +28,32 @@
       //
       const username = document.getElementById("registerUsername").value;
       const password = document.getElementById("registerPassword").value;
+      const imageUpload = document.getElementById("registerImageUpload");
 
-      const data = { username: username, password: password };
+      //
+      const imageFile = imageUpload.files[0];
+
+      // const data = { username: username, password: password, file: imageFile };
       //   console.log(username, "username");
       // console.log(password, "password");
+      //
+      let data = new FormData();
+      data.append("username", username);
+      data.append("password", password);
+
+      // form er file er variable name and route er multer.single("variable name") same thakte hobe
+
+      data.append("fileA", imageFile);
+
+      //
 
       const response = await fetch(`${window.location.origin}/user/register`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        // headers: {
+        //   "Content-Type": "application/json",
+        // },
 
-        body: JSON.stringify(data),
+        body: data,
       });
       //
 
