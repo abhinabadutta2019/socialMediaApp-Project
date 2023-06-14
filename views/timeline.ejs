@@ -15,6 +15,18 @@
   <!--  -->
 
   <li id="<%=userPosts[index]._id %>">
+    <!--  -->
+    <% if (userPosts[index].photoPath) { %>
+    <div>
+      <img
+        src="<%= userPosts[index].photoPath %>"
+        alt="image"
+        width="200"
+        height="150"
+      />
+    </div>
+    <% } %>
+    <!--  -->
     <p>description : <%=userPosts[index].description %></p>
     <!-- likes array er length pathalam -->
     <p>likes : <%=userPosts[index].likes.length %></p>
