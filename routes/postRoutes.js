@@ -91,9 +91,9 @@ router.post(
       //save to database
       const post = await newPost.save();
 
-      res.json({ post: post });
-      // res.json({ message: "post created" });
-      res.send();
+      // res.json({ post: post });
+      res.json({ message: "post created" });
+      // res.send();
     } catch (err) {
       console.log(err);
       res.json(err);

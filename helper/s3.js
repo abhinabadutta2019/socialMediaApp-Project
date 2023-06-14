@@ -25,6 +25,8 @@ async function uploadFileToS3(file) {
     Body: fileContent,
   };
   //
+
+  console.log(fileContent, "fileContent");
   try {
     const response = await s3.upload(params).promise();
     console.log(response, "response from function");
@@ -36,6 +38,7 @@ async function uploadFileToS3(file) {
 
     //resolve hole tokhon return korbe, resolve hoa obhdi wait korbe
     return response;
+    // return;
   } catch (err) {
     console.log(err);
   }
