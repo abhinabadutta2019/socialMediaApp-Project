@@ -1,20 +1,31 @@
 <%- include('partials/header') %>
 
-<h2>Login</h2>
+<div class="container mt-5">
+  <h2 class="mb-4">Login</h2>
 
-<form action="#">
-  <!--  -->
-  <!-- <div id="message"></div> -->
-  <!-- Register -->
-  <label for="username">Username</label>
-  <input type="text" id="loginUsername" required />
+  <form action="#">
+    <!--  -->
+    <!-- <div id="message"></div> -->
+    <!-- Register -->
+
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" class="form-control" id="loginUsername" required />
+    </div>
+
+    <!-- password -->
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" id="loginPassword" required />
+    </div>
+  </form>
+  <!-- form Button -->
   <br />
-  <!-- password -->
-  <label for="password">Password</label>
-  <input type="password" id="loginPassword" required />
-</form>
-<!-- form Button -->
-<button id="loginButton" onclick="onLoginButton()">Submit</button>
+  <button id="loginButton" class="btn btn-primary" onclick="onLoginButton()">
+    Submit
+  </button>
+</div>
 
 <script>
   //
