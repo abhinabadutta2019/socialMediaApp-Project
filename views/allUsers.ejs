@@ -1,8 +1,9 @@
 <%- include('partials/header') %>
 
-<h2>User You may know</h2>
+<div class="container mt-5">
+  <!--  -->
+  <h2>User You may know</h2>
 
-<div>
   <% if (allUsers.length>0) { %> <% for( let i = 0; i < allUsers.length; i++ ) {
   %>
 
@@ -15,6 +16,7 @@
         alt="image"
         width="200"
         height="150"
+        class="img-fluid"
       />
     </div>
     <% } %>
@@ -23,11 +25,29 @@
     <p>followers:<%= allUsers[i].followers.length %></p>
     <p>followings:<%= allUsers[i].followings.length %></p>
     <!--user details button -->
-    <button onclick="getUser()">Details</button>
+    <button
+      class="btn btn-primary"
+      data-id="<%= allUsers[i]._id %>"
+      onclick="getUser(event)"
+    >
+      Details
+    </button>
     <!-- follow button -->
-    <button onclick="followUser()">Follow</button>
+    <button
+      class="btn btn-success"
+      data-id="<%= allUsers[i]._id %>"
+      onclick="followUser(event)"
+    >
+      Follow
+    </button>
     <!--  -->
-    <button onclick="unFollowUser()">unFollow</button>
+    <button
+      class="btn btn-danger"
+      data-id="<%= allUsers[i]._id %>"
+      onclick="unFollowUser(event)"
+    >
+      unFollow
+    </button>
   </li>
   <% } %> <% } else{%>
   <p>No user found</p>

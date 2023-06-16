@@ -108,8 +108,8 @@ router.get("/allUsers", verifyLoggedInUser, async (req, res) => {
     });
 
     //just 2 would be shown
-    if (allUsers.length > 2) {
-      allUsers = allUsers.slice(0, 2);
+    if (allUsers.length > 4) {
+      allUsers = allUsers.slice(0, 4);
     }
 
     // res.json(allUsers);

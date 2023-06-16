@@ -11,6 +11,11 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
     />
 
+    <!-- adding later  -->
+
+    <!-- Bootstrap JS CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+
     <!-- Your Custom CSS -->
     <!-- Add your own CSS file here if you have one -->
 
@@ -37,9 +42,13 @@
           <!--  -->
         </h3>
         <!-- logout Button -->
-        <button onclick="logoutUser()">Logout</button>
+        <button class="btn btn-primary" onclick="logoutUser()">Logout</button>
         <!-- button to see users own posts -->
-        <button id="seeYourPosts" onclick="seeYourPostButton()">
+        <button
+          class="btn btn-primary"
+          id="seeYourPosts"
+          onclick="seeYourPostButton()"
+        >
           seeYourPosts
         </button>
       </ul>
