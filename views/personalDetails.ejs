@@ -16,16 +16,16 @@
     </div>
     <% } %>
 
-    <p>username:<%= user.username %></p>
+    <p><strong>username: </strong><%= user.username %></p>
 
-    <p>followers:<%= user.followers.length %></p>
+    <p><strong>followers: </strong> <%= user.followers.length %></p>
     <!--  -->
     <button class="btn btn-primary" onclick="followersDetails()">
       followers Details
     </button>
     <!--  -->
 
-    <p>followings:<%= user.followings.length %></p>
+    <p><strong>followings: </strong><%= user.followings.length %></p>
     <!--  -->
     <button class="btn btn-primary" onclick="followingsDetails()">
       followings Details
