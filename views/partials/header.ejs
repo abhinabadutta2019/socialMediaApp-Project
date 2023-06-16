@@ -1,77 +1,101 @@
-<nav>
-  <ul>
-    <h3>
-      <li><a href="/user/personalDetails">personalDetails</a></li>
-      <li><a href="/user/updateProfileImage">updateProfileImage</a></li>
-      <li><a href="/user/register">Register</a></li>
-      <li><a href="/user/login">LogIn</a></li>
-      <li><a href="/user/allUsers">User You may know</a></li>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>From header.ejs</title>
 
-      <li><a href="/post/create">Create-Post</a></li>
-      <!--  -->
-      <li><a href="/post/timeline/all">Post-Timeline</a></li>
+    <!-- Bootstrap CSS CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+    />
 
-      <!--  -->
-    </h3>
-    <!-- logout Button -->
-    <button onclick="logoutUser()">Logout</button>
-    <!-- button to see users own posts -->
-    <button id="seeYourPosts" onclick="seeYourPostButton()">
-      seeYourPosts
-    </button>
-  </ul>
-  <!-- message-- each page er script theke, eta te value put kora hobe -->
-  <h3>
-    <ul style="list-style-type: none">
-      <div id="message"></div>
-    </ul>
-  </h3>
-</nav>
+    <!-- Your Custom CSS -->
+    <!-- Add your own CSS file here if you have one -->
 
-<script>
-  //
-  message = document.getElementById("message");
-  //
-  async function seeYourPostButton() {
-    try {
-      // button to see users own posts
-      //just using for redirection
+    <!-- Your Custom JavaScript -->
+    <!-- Add your own JavaScript file here if you have one -->
+  </head>
 
-      window.location.href = `${window.location.origin}/post/ownposts`;
-    } catch (err) {
-      console.log(err);
-    }
-  }
-  //
-  async function logoutUser() {
-    try {
-      const responseLogout = await fetch(
-        `${window.location.origin}/user/logout`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
+  <!--  -->
 
-          //
-        }
-      );
-      //
-      const logoutResult = await responseLogout.json();
-      //
-      console.log(logoutResult);
-      if (logoutResult.message == "logout success") {
-        //
-        message.textContent = logoutResult.message;
-        //
-        setTimeout(function () {
-          //
-          window.location.href = `${window.location.origin}/user/login`;
-        }, 1000);
+  <body>
+    <nav>
+      <ul>
+        <h3>
+          <li><a href="/user/personalDetails">personalDetails</a></li>
+          <li><a href="/user/updateProfileImage">updateProfileImage</a></li>
+          <li><a href="/user/register">Register</a></li>
+          <li><a href="/user/login">LogIn</a></li>
+          <li><a href="/user/allUsers">User You may know</a></li>
+
+          <li><a href="/post/create">Create-Post</a></li>
+          <!--  -->
+          <li><a href="/post/timeline/all">Post-Timeline</a></li>
+
+          <!--  -->
+        </h3>
+        <!-- logout Button -->
+        <button onclick="logoutUser()">Logout</button>
+        <!-- button to see users own posts -->
+        <button id="seeYourPosts" onclick="seeYourPostButton()">
+          seeYourPosts
+        </button>
+      </ul>
+      <!-- message-- each page er script theke, eta te value put kora hobe -->
+      <h3>
+        <ul style="list-style-type: none">
+          <div id="message"></div>
+        </ul>
+      </h3>
+    </nav>
+  </body>
+  <script>
+    //
+    message = document.getElementById("message");
+    //
+    async function seeYourPostButton() {
+      try {
+        // button to see users own posts
+        //just using for redirection
+
+        window.location.href = `${window.location.origin}/post/ownposts`;
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      console.log(err);
-      res.json(err);
     }
-  }
-</script>
+    //
+    async function logoutUser() {
+      try {
+        const responseLogout = await fetch(
+          `${window.location.origin}/user/logout`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+
+            //
+          }
+        );
+        //
+        const logoutResult = await responseLogout.json();
+        //
+        console.log(logoutResult);
+        if (logoutResult.message == "logout success") {
+          //
+          message.textContent = logoutResult.message;
+          //
+          setTimeout(function () {
+            //
+            window.location.href = `${window.location.origin}/user/login`;
+          }, 1000);
+        }
+      } catch (err) {
+        console.log(err);
+        res.json(err);
+      }
+    }
+  </script>
+</html>
