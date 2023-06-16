@@ -1,16 +1,23 @@
 <%- include('partials/header') %>
-<h3>Create Post</h3>
-<div>
-  <form action="#">
-    <label for="description">description</label>
-    <input type="text" id="postDescription" required />
-    <!-- image -->
-    <br />
-    <input type="file" id="imageUpload" name="imageUpload" />
-  </form>
-  <button id="postSubmit" onclick="onPostSubmit()">submitPost</button>
+<div class="container">
+  <h3>Create Post</h3>
+  <div>
+    <form action="#">
+      <div class="mb-3">
+        <label for="description">description</label>
+        <input type="text" id="postDescription" required />
+      </div>
+      <!-- image -->
+      <div class="mb-3">
+        <input type="file" id="imageUpload" name="imageUpload" />
+      </div>
+    </form>
+    <button class="btn btn-primary" id="postSubmit" onclick="onPostSubmit()">
+      submitPost
+    </button>
+  </div>
+  <br /><br /><br />
 </div>
-<br /><br /><br />
 
 <!--  -->
 <script>
