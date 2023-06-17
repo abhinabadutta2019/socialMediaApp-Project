@@ -58,6 +58,7 @@ app.use((req, res, next) => {
   res.status(404).render("404"); // Assuming you have a view called "404.ejs" for the error page
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server Started at ${process.env.PORT}`);
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server Started at ${port}`);
 });
