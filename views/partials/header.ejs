@@ -11,38 +11,46 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
     />
 
-    <!-- adding later  -->
-
-    <!-- Bootstrap JS CDN -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js"></script> -->
-
-    <!-- Your Custom CSS -->
-    <!-- Add your own CSS file here if you have one -->
-
-    <!-- Your Custom JavaScript -->
-    <!-- Add your own JavaScript file here if you have one -->
   </head>
 
   <!--  -->
 
   <body>
-    
-      <ul>
-        <h3>
-          <li><a href="/user/personalDetails">personalDetails</a></li>
-          <li><a href="/user/updateProfileImage">updateProfileImage</a></li>
-          <li><a href="/user/register">Register</a></li>
-          <li><a href="/user/login">LogIn</a></li>
-          <li><a href="/user/allUsers">User You may know</a></li>
+    <nav class="navbar navbar-expand-lg bg-light">
+      <div class="container">
+        <!--  -->
+        <a class="navbar-brand" href="/user/login">let's connect</a>
 
-          <li><a href="/post/create">Create-Post</a></li>
-          <!--  -->
-          <li><a href="/post/timeline/all">Post-Timeline</a></li>
+<!--  -->
+<button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+<!--  -->
+<div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="nav navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/user/personalDetails">personalDetails
+            </a>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="/user/updateProfileImage">updateProfileImage</a></li>
+          <li class="nav-item"><a class="nav-link" href="/user/register">Register</a></li>
+          <li class="nav-item"><a class="nav-link" href="/user/login">LogIn</a></li>
+          <li class="nav-item"><a class="nav-link" href="/user/allUsers">User You may know</a></li>
 
+          <li class="nav-item"><a class="nav-link" href="/post/create">Create-Post</a></li>
           <!--  -->
-        </h3>
-       
+          <li class="nav-item"><a class="nav-link" href="/post/timeline/all">Post-Timeline</a></li>
       </ul>
+    </div>
+    </nav>
       <div class="container mt-2">
       <!--  -->
        <!-- logout Button -->
@@ -51,8 +59,7 @@
        <button
          class="btn btn-primary"
          id="seeYourPosts"
-         onclick="seeYourPostButton()"
-       >
+         onclick="seeYourPostButton()">
          seeYourPosts
        </button>
       <!-- message-- each page er script theke, eta te value put kora hobe -->
