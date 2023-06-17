@@ -1,23 +1,22 @@
 <%- include('partials/header') %>
-<div class="container">
-  <h3>Create Post</h3>
-  <div>
-    <form action="#">
-      <div class="mb-3">
-        <label for="description"><strong>description</strong></label>
-        <input type="text" id="postDescription" required />
-      </div>
-      <!-- image -->
-      <div class="mb-3">
-        <input type="file" id="imageUpload" name="imageUpload" />
-      </div>
-    </form>
-    <button class="btn btn-primary" id="postSubmit" onclick="onPostSubmit()">
-      submitPost
-    </button>
-  </div>
-  <br /><br /><br />
+
+<h3>Create Post</h3>
+<div>
+  <form action="#">
+    <div class="mb-3">
+      <label for="description"><strong>description</strong></label>
+      <input type="text" id="postDescription" required />
+    </div>
+    <!-- image -->
+    <div class="mb-3">
+      <input type="file" id="imageUpload" name="imageUpload" />
+    </div>
+  </form>
+  <button class="btn btn-primary" id="postSubmit" onclick="onPostSubmit()">
+    submitPost
+  </button>
 </div>
+<br /><br /><br />
 
 <!--  -->
 <script>
@@ -83,3 +82,5 @@
     }
   }
 </script>
+
+<%- include('partials/footer') %>

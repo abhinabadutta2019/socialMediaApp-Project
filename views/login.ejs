@@ -1,31 +1,29 @@
 <%- include('partials/header') %>
 
-<div class="container mt-5">
-  <h2 class="mb-4">Login</h2>
+<h2 class="mb-4">Login</h2>
 
-  <form action="#">
-    <!--  -->
-    <!-- <div id="message"></div> -->
-    <!-- Register -->
+<form action="#">
+  <!--  -->
+  <!-- <div id="message"></div> -->
+  <!-- Register -->
 
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input type="text" class="form-control" id="loginUsername" required />
-    </div>
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input type="text" class="form-control" id="loginUsername" required />
+  </div>
 
-    <!-- password -->
+  <!-- password -->
 
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" class="form-control" id="loginPassword" required />
-    </div>
-  </form>
-  <!-- form Button -->
-  <br />
-  <button id="loginButton" class="btn btn-primary" onclick="onLoginButton()">
-    Submit
-  </button>
-</div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" class="form-control" id="loginPassword" required />
+  </div>
+</form>
+<!-- form Button -->
+<br />
+<button id="loginButton" class="btn btn-primary" onclick="onLoginButton()">
+  Submit
+</button>
 
 <script>
   //
@@ -84,3 +82,5 @@
     }
   }
 </script>
+
+<%- include('partials/footer') %>

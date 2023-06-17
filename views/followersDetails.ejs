@@ -1,28 +1,25 @@
 <%- include('partials/header') %>
 <!--  -->
-<div class="container">
-  <h2>followers details</h2>
 
-  <div>
-    <!--  -->
-    <% if (followersList.length>0) { %> <% for( let i = 0; i <
-    followersList.length; i++ ) { %>
+<h2>followers details</h2>
 
-    <!--  -->
-    <li id="<%= followersList[i]._id %>">
-      <p><strong>userName: </strong> <%= followersList[i].username %></p>
-      <p>
-        <strong>followers: </strong> <%= followersList[i].followers.length %>
-      </p>
-      <p>
-        <strong> followings: </strong> <%= followersList[i].followings.length %>
-      </p>
-      <button class="btn btn-primary" onclick="getUser()">Details</button>
-    </li>
-    <% } %> <% } else{%>
-    <p>No followers found</p>
-    <%}%>
-  </div>
+<div>
+  <!--  -->
+  <% if (followersList.length>0) { %> <% for( let i = 0; i <
+  followersList.length; i++ ) { %>
+
+  <!--  -->
+  <li id="<%= followersList[i]._id %>">
+    <p><strong>userName: </strong> <%= followersList[i].username %></p>
+    <p><strong>followers: </strong> <%= followersList[i].followers.length %></p>
+    <p>
+      <strong> followings: </strong> <%= followersList[i].followings.length %>
+    </p>
+    <button class="btn btn-primary" onclick="getUser()">Details</button>
+  </li>
+  <% } %> <% } else{%>
+  <p>No followers found</p>
+  <%}%>
 </div>
 
 <script>
@@ -56,3 +53,5 @@
     }
   }
 </script>
+
+<%- include('partials/footer') %>

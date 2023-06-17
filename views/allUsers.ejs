@@ -1,58 +1,56 @@
 <%- include('partials/header') %>
 
-<div class="container mt-5">
+<!--  -->
+<h2>User You may know</h2>
+
+<% if (allUsers.length>0) { %> <% for( let i = 0; i < allUsers.length; i++ ) {
+%>
+
+<li id="<%= allUsers[i]._id %>">
   <!--  -->
-  <h2>User You may know</h2>
-
-  <% if (allUsers.length>0) { %> <% for( let i = 0; i < allUsers.length; i++ ) {
-  %>
-
-  <li id="<%= allUsers[i]._id %>">
-    <!--  -->
-    <% if (allUsers[i].photoPath) { %>
-    <div>
-      <img
-        src="<%= allUsers[i].photoPath %>"
-        alt="image"
-        width="200"
-        height="150"
-        class="img-fluid"
-      />
-    </div>
-    <% } %>
-    <!--  -->
-    <p><strong>userName: </strong> <%= allUsers[i].username %></p>
-    <p><strong>followers: </strong> <%= allUsers[i].followers.length %></p>
-    <p><strong>followings: </strong> <%= allUsers[i].followings.length %></p>
-    <!--user details button -->
-    <button
-      class="btn btn-primary"
-      data-id="<%= allUsers[i]._id %>"
-      onclick="getUser(event)"
-    >
-      Details
-    </button>
-    <!-- follow button -->
-    <button
-      class="btn btn-success"
-      data-id="<%= allUsers[i]._id %>"
-      onclick="followUser(event)"
-    >
-      Follow
-    </button>
-    <!--  -->
-    <button
-      class="btn btn-danger"
-      data-id="<%= allUsers[i]._id %>"
-      onclick="unFollowUser(event)"
-    >
-      unFollow
-    </button>
-  </li>
-  <% } %> <% } else{%>
-  <p>No user found</p>
-  <%}%>
-</div>
+  <% if (allUsers[i].photoPath) { %>
+  <div>
+    <img
+      src="<%= allUsers[i].photoPath %>"
+      alt="image"
+      width="200"
+      height="150"
+      class="img-fluid"
+    />
+  </div>
+  <% } %>
+  <!--  -->
+  <p><strong>userName: </strong> <%= allUsers[i].username %></p>
+  <p><strong>followers: </strong> <%= allUsers[i].followers.length %></p>
+  <p><strong>followings: </strong> <%= allUsers[i].followings.length %></p>
+  <!--user details button -->
+  <button
+    class="btn btn-primary"
+    data-id="<%= allUsers[i]._id %>"
+    onclick="getUser(event)"
+  >
+    Details
+  </button>
+  <!-- follow button -->
+  <button
+    class="btn btn-success"
+    data-id="<%= allUsers[i]._id %>"
+    onclick="followUser(event)"
+  >
+    Follow
+  </button>
+  <!--  -->
+  <button
+    class="btn btn-danger"
+    data-id="<%= allUsers[i]._id %>"
+    onclick="unFollowUser(event)"
+  >
+    unFollow
+  </button>
+</li>
+<% } %> <% } else{%>
+<p>No user found</p>
+<%}%>
 
 <script>
   //
@@ -160,3 +158,5 @@
     }
   }
 </script>
+
+<%- include('partials/footer') %>

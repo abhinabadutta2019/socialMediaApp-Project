@@ -14,7 +14,7 @@
     <!-- adding later  -->
 
     <!-- Bootstrap JS CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js"></script> -->
 
     <!-- Your Custom CSS -->
     <!-- Add your own CSS file here if you have one -->
@@ -58,53 +58,54 @@
           <div id="message"></div>
         </ul>
       </h3>
-    </div>
-  </body>
-  <script>
-    //
-    message = document.getElementById("message");
-    //
-    async function seeYourPostButton() {
-      try {
-        // button to see users own posts
-        //just using for redirection
 
-        window.location.href = `${window.location.origin}/post/ownposts`;
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    //
-    async function logoutUser() {
-      try {
-        const responseLogout = await fetch(
-          `${window.location.origin}/user/logout`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
+      <script>
+        //
+        message = document.getElementById("message");
+        //
+        async function seeYourPostButton() {
+          try {
+            // button to see users own posts
+            //just using for redirection
 
-            //
+            window.location.href = `${window.location.origin}/post/ownposts`;
+          } catch (err) {
+            console.log(err);
           }
-        );
-        //
-        const logoutResult = await responseLogout.json();
-        //
-        console.log(logoutResult);
-        if (logoutResult.message == "logout success") {
-          //
-          message.textContent = logoutResult.message;
-          //
-          setTimeout(function () {
-            //
-            window.location.href = `${window.location.origin}/user/login`;
-          }, 1000);
         }
-      } catch (err) {
-        console.log(err);
-        res.json(err);
-      }
-    }
-  </script>
+        //
+        async function logoutUser() {
+          try {
+            const responseLogout = await fetch(
+              `${window.location.origin}/user/logout`,
+              {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+
+                //
+              }
+            );
+            //
+            const logoutResult = await responseLogout.json();
+            //
+            console.log(logoutResult);
+            if (logoutResult.message == "logout success") {
+              //
+              message.textContent = logoutResult.message;
+              //
+              setTimeout(function () {
+                //
+                window.location.href = `${window.location.origin}/user/login`;
+              }, 1000);
+            }
+          } catch (err) {
+            console.log(err);
+            res.json(err);
+          }
+        }
+      </script>
+    
+  
 </html>

@@ -1,70 +1,64 @@
 <%- include('partials/header') %>
 
-<div class="container mt-5">
-  <h2>User Details</h2>
+<h2>User Details</h2>
 
-  <div id="<%= user._id %>">
-    <% if (user.photoPath) { %>
-    <div>
-      <img
-        src="<%= user.photoPath %>"
-        alt="image"
-        width="200"
-        height="150"
-        class="img-fluid"
-      />
-    </div>
-    <% } %>
-
-    <p><strong>username: </strong><%= user.username %></p>
-
-    <p><strong>followers: </strong> <%= user.followers.length %></p>
-    <!--  -->
-    <button class="btn btn-primary" onclick="followersDetails()">
-      followers Details
-    </button>
-    <!--  -->
-
-    <p><strong>followings: </strong><%= user.followings.length %></p>
-    <!--  -->
-    <button class="btn btn-primary" onclick="followingsDetails()">
-      followings Details
-    </button>
-    <!--  -->
-    <br /><br />
-    <!-- delete user -->
-    <button class="btn btn-danger" onclick="deleteUser()">
-      deleteYourProfile
-    </button>
-  </div>
-  <br /><br /><br /><br />
+<div id="<%= user._id %>">
+  <% if (user.photoPath) { %>
   <div>
-    <h3>Update Password</h3>
-
-    <!-- <h4>Message:Fill existing username or password to update</h4> -->
-    <br />
-    <form action="#">
-      <!--  -->
-      <p>message : You have to login again - as you submit update button</p>
-      <!-- password -->
-      <label for="updatePassword">updatePassword</label>
-      <input
-        type="password"
-        id="updatePassword"
-        class="form-control"
-        required
-      />
-    </form>
-    <!-- form Button -->
-    <button
-      class="btn btn-primary"
-      id="updatePasswordButton"
-      onclick="onUpdatePasswordButton()"
-    >
-      updatePassword
-    </button>
+    <img
+      src="<%= user.photoPath %>"
+      alt="image"
+      width="200"
+      height="150"
+      class="img-fluid"
+    />
   </div>
+  <% } %>
+
+  <p><strong>username: </strong><%= user.username %></p>
+
+  <p><strong>followers: </strong> <%= user.followers.length %></p>
+  <!--  -->
+  <button class="btn btn-primary" onclick="followersDetails()">
+    followers Details
+  </button>
+  <!--  -->
+
+  <p><strong>followings: </strong><%= user.followings.length %></p>
+  <!--  -->
+  <button class="btn btn-primary" onclick="followingsDetails()">
+    followings Details
+  </button>
+  <!--  -->
+  <br /><br />
+  <!-- delete user -->
+  <button class="btn btn-danger" onclick="deleteUser()">
+    deleteYourProfile
+  </button>
 </div>
+<br /><br /><br /><br />
+<div>
+  <h3>Update Password</h3>
+
+  <!-- <h4>Message:Fill existing username or password to update</h4> -->
+  <br />
+  <form action="#">
+    <!--  -->
+    <p>message : You have to login again - as you submit update button</p>
+    <!-- password -->
+    <label for="updatePassword">updatePassword</label>
+    <input type="password" id="updatePassword" class="form-control" required />
+  </form>
+  <!-- form Button -->
+  <button
+    class="btn btn-primary"
+    id="updatePasswordButton"
+    onclick="onUpdatePasswordButton()"
+  >
+    updatePassword
+  </button>
+</div>
+
 <script>
   //
   let message = document.getElementById("message");
@@ -183,3 +177,6 @@
     }
   }
 </script>
+
+<!--  -->
+<%- include('partials/footer') %>
