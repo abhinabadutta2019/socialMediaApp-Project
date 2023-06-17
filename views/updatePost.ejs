@@ -2,10 +2,14 @@
 <h3>Update Post</h3>
 <div>
   <form action="#">
-    <label for="description">description</label>
-    <input type="text" id="postDescription" required />
+    <div class="form-group">
+      <label for="description">description</label>
+      <input type="text" class="form-control" id="postDescription" required />
+    </div>
   </form>
-  <button id="postUpdate" onclick="onPostUpdate()">updatePost</button>
+  <button class="btn btn-primary" id="postUpdate" onclick="onPostUpdate()">
+    updatePost
+  </button>
 </div>
 
 <script>
@@ -66,3 +70,5 @@
     }
   }
 </script>
+
+<%- include('partials/footer') %>

@@ -3,13 +3,18 @@
 <h3>Create Post</h3>
 <div>
   <form action="#">
-    <div class="mb-3">
+    <div class="form-group">
       <label for="description"><strong>description</strong></label>
-      <input type="text" id="postDescription" required />
+      <input type="text" class="form-control" id="postDescription" required />
     </div>
     <!-- image -->
-    <div class="mb-3">
-      <input type="file" id="imageUpload" name="imageUpload" />
+    <div class="form-group">
+      <input
+        type="file"
+        class="form-control"
+        id="imageUpload"
+        name="imageUpload"
+      />
     </div>
   </form>
   <button class="btn btn-primary" id="postSubmit" onclick="onPostSubmit()">

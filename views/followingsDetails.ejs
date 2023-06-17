@@ -16,7 +16,7 @@
     <p>
       followings:<%= userFollowings[0].followings_info[i].followings.length %>
     </p>
-    <button onclick="getUser()">Details</button>
+    <button class="btn btn-primary" onclick="getUser()">Details</button>
   </li>
   <% } %> <% } else{%>
   <p>No followings found</p>
@@ -54,3 +54,5 @@
     }
   }
 </script>
+
+<%- include('partials/footer') %>

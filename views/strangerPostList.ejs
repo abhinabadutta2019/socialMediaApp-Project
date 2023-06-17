@@ -24,17 +24,21 @@
     <p>postedBy:<%=userPosts[i].userId.username %></p>
 
     <div>
-      <button onclick="postedByInfo()">postedByDetails</button>
+      <button class="btn btn-primary" onclick="postedByInfo()">
+        postedByDetails
+      </button>
     </div>
 
     <!--  -->
     <p>likes:<%= userPosts[i].likes.length %></p>
     <!--  -->
     <div>
-      <button onclick="postLikedByButton()">postLikedBy</button>
+      <button class="btn btn-primary" onclick="postLikedByButton()">
+        postLikedBy
+      </button>
     </div>
     <br /><br />
-    <button onclick="likePostButton()">likePost</button>
+    <button class="btn btn-success" onclick="likePostButton()">likePost</button>
   </li>
   <% } %> <% } else{%>
   <p>No post created by this User</p>
@@ -119,3 +123,5 @@
     }
   }
 </script>
+
+<%- include('partials/footer') %>

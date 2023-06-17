@@ -61,17 +61,21 @@
     <p>postedBy:<%=postsNotByYou[index].userId.username %></p>
     <!--  -->
     <div id="<%= postsNotByYou[index].userId._id %>">
-      <button onclick="postedByInfo()">postedByDetails</button>
+      <button class="btn btn-primary" onclick="postedByInfo()">
+        postedByDetails
+      </button>
     </div>
 
     <!--  -->
     <p>likes : <%=postsNotByYou[index].likes.length %></p>
     <!--  -->
     <div>
-      <button onclick="postLikedByButton()">postLikedBy</button>
+      <button class="btn btn-primary" onclick="postLikedByButton()">
+        postLikedBy
+      </button>
     </div>
     <br /><br />
-    <button onclick="likePostButton()">likePost</button>
+    <button class="btn btn-success" onclick="likePostButton()">likePost</button>
   </li>
 
   <% } %> <%}else{%>
@@ -171,3 +175,4 @@
     }
   }
 </script>
+<%- include('partials/footer') %>

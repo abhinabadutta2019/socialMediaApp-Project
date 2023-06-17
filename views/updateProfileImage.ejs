@@ -3,12 +3,16 @@
 
 <form action="#">
   <!--  -->
-  <label for="imageUploadLabel">Upload image</label>
-  <br />
-  <input type="file" id="imageUpload" name="imageUpload" />
+  <div class="form-group">
+    <label for="imageUploadLabel">Upload image</label>
+    <br />
+    <input type="file" id="imageUpload" name="imageUpload" />
+  </div>
   <!--  -->
 </form>
-<button id="uploadButton" onclick="onSubmitImage()">Upload</button>
+<button class="btn btn-primary" id="uploadButton" onclick="onSubmitImage()">
+  Upload
+</button>
 
 <script>
   //
@@ -72,3 +76,5 @@
     }
   }
 </script>
+
+<%- include('partials/footer') %>

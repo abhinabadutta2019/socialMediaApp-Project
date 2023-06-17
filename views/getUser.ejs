@@ -6,30 +6,42 @@
   <!--  -->
   <% if (user.photoPath) { %>
   <div>
-    <img src="<%= user.photoPath %>" alt="image" width="200" height="150" />
+    <img
+      src="<%= user.photoPath %>"
+      alt="image"
+      width="200"
+      height="150"
+      class="img-fluid"
+    />
   </div>
   <% } %>
   <!--  -->
   <p>username:<%= user.username %></p>
   <p>followers:<%= user.followers.length %></p>
   <!--  -->
-  <button onclick="followersDetails()">followers Details</button>
+  <button class="btn btn-primary" onclick="followersDetails()">
+    followers Details
+  </button>
   <!--  -->
   <!--  -->
   <p>followings:<%= user.followings.length %></p>
   <!--  -->
-  <button onclick="followingsDetails()">followings Details</button>
+  <button class="btn btn-primary" onclick="followingsDetails()">
+    followings Details
+  </button>
   <!--  -->
   <br /><br />
-  <button onclick="followUser()">Follow</button>
+  <button class="btn btn-success" onclick="followUser()">Follow</button>
 
-  <button onclick="unFollowUser()">unFollow</button>
+  <button class="btn btn-danger" onclick="unFollowUser()">unFollow</button>
 
   <br /><br />
 
   <h3>Get this Users all posts</h3>
 
-  <button onclick="userPostsButton()">userAllPosts</button>
+  <button class="btn btn-primary" onclick="userPostsButton()">
+    userAllPosts
+  </button>
 </div>
 
 <script>
@@ -188,3 +200,5 @@
     }
   }
 </script>
+
+<%- include('partials/footer') %>

@@ -12,7 +12,7 @@
     <p>userName:<%= postLikedBy[0].likedBy_info[i].username %></p>
     <p>followers:<%= postLikedBy[0].likedBy_info[i].followers.length %></p>
     <p>followings:<%= postLikedBy[0].likedBy_info[i].followings.length %></p>
-    <button onclick="getUser()">Details</button>
+    <button class="btn btn-primary" onclick="getUser()">Details</button>
   </li>
 
   <% } %> <% } else { %>
@@ -38,3 +38,5 @@
     }
   }
 </script>
+
+<%- include('partials/footer') %>
