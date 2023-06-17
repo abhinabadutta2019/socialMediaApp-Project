@@ -41,7 +41,7 @@ mongoose.connect(uri, {
 //home page would redirect to login url
 app.get("/", (req, res) => {
   try {
-    res.redirect("/user/login");
+    res.redirect("/user/register");
   } catch (err) {
     console.log(err);
     res.json(err);
