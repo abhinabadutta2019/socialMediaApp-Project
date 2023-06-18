@@ -4,175 +4,191 @@
 <!--  -->
 <div>
   <h4>User info</h4>
-  <p>username:<%= userProfile.username %></p>
-  <p>followers:<%= userProfile.followers.length %></p>
-  <p>followings:<%= userProfile.followings.length%></p>
-</div>
-<div>
-  <h4>Users's own posts</h4>
-  <% if (userPosts.length>0) { %> <% for( let index = 0; index <
-  userPosts.length; index++ ) { %>
   <!--  -->
-
-  <li id="<%=userPosts[index]._id %>">
-    <!--  -->
-    <% if (userPosts[index].photoPath) { %>
+  <div id="<%= userProfile._id %>">
+    <% if (userProfile.photoPath) { %>
     <div>
       <img
-        src="<%= userPosts[index].photoPath %>"
+        src="<%= userProfile.photoPath %>"
         alt="image"
-        width="200"
-        height="150"
+        width="500"
+        height="700"
       />
     </div>
     <% } %>
     <!--  -->
-    <p>description : <%=userPosts[index].description %></p>
-    <!-- likes array er length pathalam -->
-    <p>likes : <%=userPosts[index].likes.length %></p>
-  </li>
-  <% } %> <% } else{%>
-  <p>No post of user's own</p>
-  <% } %>
-</div>
-<!--  -->
-<hr />
-<div>
-  <h4>other's posts</h4>
+    <p>username:<%= userProfile.username %></p>
+    <p>followers:<%= userProfile.followers.length %></p>
+    <p>followings:<%= userProfile.followings.length%></p>
+  </div>
+  <div>
+    <% if (userPosts.length>0) { %>
+
+    <!--  -->
+    <h4>Users's own selected posts</h4>
+    <% for( let index = 0; index < userPosts.length; index++ ) { %>
+    <!--  -->
+
+    <li id="<%=userPosts[index]._id %>">
+      <!--  -->
+      <% if (userPosts[index].photoPath) { %>
+      <div>
+        <img
+          src="<%= userPosts[index].photoPath %>"
+          alt="image"
+          width="500"
+          height="700"
+        />
+      </div>
+      <% } %>
+      <!--  -->
+      <p>description : <%=userPosts[index].description %></p>
+      <!-- likes array er length pathalam -->
+      <p>likes : <%=userPosts[index].likes.length %></p>
+    </li>
+    <% } %> <% } %>
+  </div>
   <!--  -->
-  <%if(postsNotByYou.length>0){%> <% for( let index = 0; index <
-  postsNotByYou.length; index++ ) { %>
+  <hr />
+  <div>
+    <h4>other's posts</h4>
+    <!--  -->
+    <%if(postsNotByYou.length>0){%> <% for( let index = 0; index <
+    postsNotByYou.length; index++ ) { %>
 
-  <li id="<%=postsNotByYou[index]._id %>">
-    <!--  -->
-    <% if (postsNotByYou[index].photoPath) { %>
-    <div>
-      <img
-        src="<%= postsNotByYou[index].photoPath %>"
-        alt="image"
-        width="200"
-        height="150"
-      />
-    </div>
-    <% } %>
-    <!--  -->
-    <p>description : <%=postsNotByYou[index].description %></p>
-    <!--  -->
-    <p>postedBy:<%=postsNotByYou[index].userId.username %></p>
-    <!--  -->
-    <div id="<%= postsNotByYou[index].userId._id %>">
-      <button class="btn btn-primary" onclick="postedByInfo()">
-        postedByDetails
+    <li id="<%=postsNotByYou[index]._id %>">
+      <!--  -->
+      <% if (postsNotByYou[index].photoPath) { %>
+      <div>
+        <img
+          src="<%= postsNotByYou[index].photoPath %>"
+          alt="image"
+          width="500"
+          height="700"
+        />
+      </div>
+      <% } %>
+      <!--  -->
+      <p>description : <%=postsNotByYou[index].description %></p>
+      <!--  -->
+      <p>postedBy:<%=postsNotByYou[index].userId.username %></p>
+      <!--  -->
+      <div id="<%= postsNotByYou[index].userId._id %>">
+        <button class="btn btn-primary" onclick="postedByInfo()">
+          postedByDetails
+        </button>
+      </div>
+
+      <!--  -->
+      <p>likes : <%=postsNotByYou[index].likes.length %></p>
+      <!--  -->
+      <div>
+        <button class="btn btn-primary" onclick="postLikedByButton()">
+          postLikedBy
+        </button>
+      </div>
+      <br /><br />
+      <button class="btn btn-success" onclick="likePostButton()">
+        likePost
       </button>
-    </div>
+    </li>
 
-    <!--  -->
-    <p>likes : <%=postsNotByYou[index].likes.length %></p>
-    <!--  -->
-    <div>
-      <button class="btn btn-primary" onclick="postLikedByButton()">
-        postLikedBy
-      </button>
-    </div>
-    <br /><br />
-    <button class="btn btn-success" onclick="likePostButton()">likePost</button>
-  </li>
-
-  <% } %> <%}else{%>
-  <p>no post by others</p>
-  <%}%>
-</div>
-<!--  -->
-<script>
-  let message = document.getElementById("message");
-  message.textContent = "";
-  //
-  async function postLikedByButton() {
+    <% } %> <%}else{%>
+    <p>no post by others</p>
+    <%}%>
+  </div>
+  <!--  -->
+  <script>
+    let message = document.getElementById("message");
+    message.textContent = "";
     //
-    try {
+    async function postLikedByButton() {
       //
-      const postLikedButton = event.target;
-      const postLikedButtonParent = postLikedButton.parentElement;
-      const postLikedButtonGrandParent = postLikedButtonParent.parentElement;
-      //
-      const postLikedButtonGPId = postLikedButtonGrandParent.id;
-      //
-      // console.log(postLikedButtonGPId, "postLikedButtonGPId");
-
-      //redirect
-      window.location.href = `${window.location.origin}/post/postLiked/${postLikedButtonGPId}`;
-      //
-    } catch (err) {
-      console.log(err);
-    }
-  }
-  //
-  async function postedByInfo() {
-    try {
-      const buttonPostedBy = event.target;
-      const buttonPostedByParent = buttonPostedBy.parentElement;
-      const buttonPostedByParentId = buttonPostedByParent.id;
-      // console.log(buttonPostedByParentId, "buttonPostedByParentId");
-      const response = await fetch(
-        `${window.location.origin}/user/getUser/${buttonPostedByParentId}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      //
-      //
-      // const result = await response.json();
-
-      //redirecting
-      window.location.href = `${window.location.origin}/user/getUser/${buttonPostedByParentId}`;
-      // const result = await response.json();
-    } catch (err) {
-      console.log(err);
-    }
-  }
-  //
-
-  //
-  async function likePostButton() {
-    //
-    try {
-      //
-      const buttonLikePost = event.target;
-      const buttonLikePostParent = buttonLikePost.parentElement;
-      const buttonParentId = buttonLikePostParent.id;
-
-      // console.log(buttonParentId, "buttonParentId");
-      //
-      const response = await fetch(
-        `${window.location.origin}/post/like/${buttonParentId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      //
-
-      //
-      const likeResult = await response.json();
-      //
-      console.log(likeResult, "likeResult");
-      if (likeResult.message == "un-liked" || likeResult.message == "Liked") {
+      try {
         //
-        message.textContent = likeResult.message;
+        const postLikedButton = event.target;
+        const postLikedButtonParent = postLikedButton.parentElement;
+        const postLikedButtonGrandParent = postLikedButtonParent.parentElement;
         //
-        setTimeout(function () {
-          //de
-          window.location.href = `${window.location.origin}/post/timeline/all`;
-        }, 1000);
+        const postLikedButtonGPId = postLikedButtonGrandParent.id;
+        //
+        // console.log(postLikedButtonGPId, "postLikedButtonGPId");
+
+        //redirect
+        window.location.href = `${window.location.origin}/post/postLiked/${postLikedButtonGPId}`;
+        //
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      console.log(err);
     }
-  }
-</script>
-<%- include('partials/footer') %>
+    //
+    async function postedByInfo() {
+      try {
+        const buttonPostedBy = event.target;
+        const buttonPostedByParent = buttonPostedBy.parentElement;
+        const buttonPostedByParentId = buttonPostedByParent.id;
+        // console.log(buttonPostedByParentId, "buttonPostedByParentId");
+        const response = await fetch(
+          `${window.location.origin}/user/getUser/${buttonPostedByParentId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        //
+        //
+        // const result = await response.json();
+
+        //redirecting
+        window.location.href = `${window.location.origin}/user/getUser/${buttonPostedByParentId}`;
+        // const result = await response.json();
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    //
+
+    //
+    async function likePostButton() {
+      //
+      try {
+        //
+        const buttonLikePost = event.target;
+        const buttonLikePostParent = buttonLikePost.parentElement;
+        const buttonParentId = buttonLikePostParent.id;
+
+        // console.log(buttonParentId, "buttonParentId");
+        //
+        const response = await fetch(
+          `${window.location.origin}/post/like/${buttonParentId}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        //
+
+        //
+        const likeResult = await response.json();
+        //
+        console.log(likeResult, "likeResult");
+        if (likeResult.message == "un-liked" || likeResult.message == "Liked") {
+          //
+          message.textContent = likeResult.message;
+          //
+          setTimeout(function () {
+            //de
+            window.location.href = `${window.location.origin}/post/timeline/all`;
+          }, 1000);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  </script>
+  <%- include('partials/footer') %>
+</div>
