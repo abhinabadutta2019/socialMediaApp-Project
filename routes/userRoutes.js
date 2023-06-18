@@ -50,7 +50,8 @@ router.get("/logout", async (req, res) => {
     });
 
     //this to redirect
-    res.json({ message: "logout success" });
+    // res.json({ message: "logout success" });
+    res.redirect("login");
   } catch (err) {
     console.log(err);
     res.json(err);

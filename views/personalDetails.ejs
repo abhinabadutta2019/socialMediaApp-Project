@@ -14,20 +14,30 @@
   <p><strong>followers: </strong> <%= user.followers.length %></p>
   <!--  -->
   <button class="btn btn-primary" onclick="followersDetails()">
-    followers Details
+    Followers Details
   </button>
   <!--  -->
 
   <p><strong>followings: </strong><%= user.followings.length %></p>
   <!--  -->
   <button class="btn btn-primary" onclick="followingsDetails()">
-    followings Details
+    Followings Details
+  </button>
+  <!--  -->
+  <br /><br />
+  <button class="btn btn-primary" onclick="updateYourProfileImage()">
+    Update Profile Image
+  </button>
+  <!--  -->
+  <br /><br />
+  <button class="btn btn-primary" onclick="seeAllYourPosts()">
+    See all Your Posts
   </button>
   <!--  -->
   <br /><br />
   <!-- delete user -->
   <button class="btn btn-danger" onclick="deleteUser()">
-    deleteYourProfile
+    Delete Your Profile
   </button>
 </div>
 <br /><br /><br /><br />
@@ -40,16 +50,17 @@
     <!--  -->
     <p>message : You have to login again - as you submit update button</p>
     <!-- password -->
-    <label for="updatePassword">updatePassword</label>
+    <label for="updatePassword">Update Password</label>
     <input type="password" id="updatePassword" class="form-control" required />
   </form>
+
   <!-- form Button -->
   <button
     class="btn btn-primary"
     id="updatePasswordButton"
     onclick="onUpdatePasswordButton()"
   >
-    updatePassword
+    Update Password
   </button>
 </div>
 
@@ -57,6 +68,27 @@
   //
   let message = document.getElementById("message");
   message.textContent = "";
+  //
+
+  //
+  async function seeAllYourPosts() {
+    try {
+      //redirect
+      window.location.href = `${window.location.origin}/post/ownposts`;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  //
+  async function updateYourProfileImage() {
+    try {
+      //redirect
+      window.location.href = `${window.location.origin}/user/updateProfileImage`;
+    } catch (err) {
+      console.log(err);
+    }
+  }
   //
 
   async function followersDetails() {

@@ -11,8 +11,8 @@
       <img
         src="<%= userProfile.photoPath %>"
         alt="image"
-        width="500"
-        height="700"
+        width="400"
+        height="400"
       />
     </div>
     <% } %>
@@ -21,6 +21,7 @@
     <p>followers:<%= userProfile.followers.length %></p>
     <p>followings:<%= userProfile.followings.length%></p>
   </div>
+  <hr />
   <div>
     <% if (userPosts.length>0) { %>
 
@@ -29,15 +30,15 @@
     <% for( let index = 0; index < userPosts.length; index++ ) { %>
     <!--  -->
 
-    <li id="<%=userPosts[index]._id %>">
+    <li style="list-style-type: none" id="<%=userPosts[index]._id %>">
       <!--  -->
       <% if (userPosts[index].photoPath) { %>
       <div>
         <img
           src="<%= userPosts[index].photoPath %>"
           alt="image"
-          width="500"
-          height="700"
+          width="600"
+          height="600"
         />
       </div>
       <% } %>
@@ -56,15 +57,15 @@
     <%if(postsNotByYou.length>0){%> <% for( let index = 0; index <
     postsNotByYou.length; index++ ) { %>
 
-    <li id="<%=postsNotByYou[index]._id %>">
+    <li style="list-style-type: none" id="<%=postsNotByYou[index]._id %>">
       <!--  -->
       <% if (postsNotByYou[index].photoPath) { %>
       <div>
         <img
           src="<%= postsNotByYou[index].photoPath %>"
           alt="image"
-          width="500"
-          height="700"
+          width="600"
+          height="600"
         />
       </div>
       <% } %>
