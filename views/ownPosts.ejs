@@ -1,8 +1,9 @@
 <%- include('partials/header') %>
 <h2>Your own posts</h2>
 <div>
-  <% if ( myArray.length>0) { %> <% for( let index = 0; index < myArray.length;
-  index++ ) { %>
+  <% if ( myArray.length>0) { %>
+  <!--  -->
+  <% for( let index = 0; index < myArray.length; index++ ) { %>
 
   <li id="<%=myArray[index]._id %>">
     <% if (myArray[index].photoPath) { %>
@@ -27,7 +28,10 @@
     <br />
     <!--  -->
     <div>
-      <button class="btn btn-primary" onclick="updatePostButton()">
+      <button
+        class="btn btn-primary"
+        onclick="updatePostButton('<%=myArray[index]._id%>')"
+      >
         updatePost
       </button>
     </div>
@@ -36,21 +40,25 @@
     <button class="btn btn-danger" onclick="deletePost()">DeletePost</button>
   </li>
 
-  <% } %> <% } else{%>
+  <% } %>
+  <!--  -->
+  <% } else{%>
   <p>No post created by user</p>
   <%}%>
 </div>
 <script>
-  async function updatePostButton() {
+  async function updatePostButton(post_id) {
     // console.log("Hy");
-    const postUpdateButton = event.target;
-    const postUpdateButtonParent = postUpdateButton.parentElement;
-    const postUpdateButtonGrandParent = postUpdateButtonParent.parentElement;
-    const postUpdateButtonGPId = postUpdateButtonGrandParent.id;
+    // const postUpdateButton = event.target;
+    // const postUpdateButtonParent = postUpdateButton.parentElement;
+    // const postUpdateButtonGrandParent = postUpdateButtonParent.parentElement;
+    // const postUpdateButtonGPId = postUpdateButtonGrandParent.id;
     //
     // console.log(postUpdateButtonGPId, "postUpdateButtonGPId");
     //
-    window.location.href = `${window.location.origin}/post/update/${postUpdateButtonGPId}`;
+
+    console.log(post_id, "post_id");
+    // window.location.href = `${window.location.origin}/post/update/${post_id}`;
   }
   //
   async function postLikedByButton() {

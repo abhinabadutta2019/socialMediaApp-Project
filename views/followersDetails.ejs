@@ -10,6 +10,18 @@
 
   <!--  -->
   <li id="<%= followersList[i]._id %>">
+    <!--  -->
+    <% if (followersList[i].photoPath) { %>
+    <div>
+      <img
+        src="<%= followersList[i].photoPath %>"
+        alt="image"
+        width="200"
+        height="150"
+      />
+    </div>
+    <!--  -->
+    <% } %>
     <p><strong>userName: </strong> <%= followersList[i].username %></p>
     <p><strong>followers: </strong> <%= followersList[i].followers.length %></p>
     <p>

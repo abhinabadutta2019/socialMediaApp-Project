@@ -9,6 +9,18 @@
 
   <!--  -->
   <li id="<%= userFollowings[0].followings_info[i]._id %>">
+    <!--  -->
+    <% if (userFollowings[0].followings_info[i].photoPath) { %>
+    <div>
+      <img
+        src="<%= userFollowings[0].followings_info[i].photoPath %>"
+        alt="image"
+        width="200"
+        height="150"
+      />
+    </div>
+    <!--  -->
+    <% } %>
     <p>userName:<%= userFollowings[0].followings_info[i].username %></p>
     <p>
       followers:<%= userFollowings[0].followings_info[i].followers.length %>
