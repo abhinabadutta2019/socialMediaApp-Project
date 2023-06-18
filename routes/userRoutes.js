@@ -132,8 +132,8 @@ router.get("/updateProfileImage", verifyLoggedInUser, (req, res) => {
 //create / register- user
 // form er file er variable name and route er multer.single("variable name") same thakte hobe
 router.post("/register", multer.single("fileA"), async (req, res) => {
-  console.log(req.body, "req.body");
-  console.log(req.file, "req.file");
+  // console.log(req.body, "req.body");
+  // console.log(req.file, "req.file");
   try {
     //
     if (req.body.username.length < 3 || req.body.password.length < 3) {
