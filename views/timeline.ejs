@@ -38,11 +38,22 @@
           <li style="list-style-type: none" id="<%=postsNotByYou[index]._id %>">
             <!--  -->
             <% if (postsNotByYou[index].photoPath) { %>
+
+            <!-- jar profile tar image  -->
+            <div class="d-flex">
+              <img
+                src="<%= postsNotByYou[index].userId.photoPath %>"
+                alt="image"
+                width="100"
+              />
+            </div>
+
+            <!-- post's image -->
             <div class="d-flex">
               <img
                 src="<%= postsNotByYou[index].photoPath %>"
                 alt="image"
-                class="img-fluid"
+                width="200"
               />
             </div>
             <% } %>
