@@ -40,47 +40,67 @@
             <% if (postsNotByYou[index].photoPath) { %>
 
             <!-- jar profile tar image  -->
-            <div class="d-flex">
+            <div class="d-flex py-3 px-3">
+              <!-- image-->
               <img
                 src="<%= postsNotByYou[index].userId.photoPath %>"
                 alt="image"
                 class="rounded-circle me-2"
                 style="width: 30; height: 38px; object-fit: cover"
               />
+              <!-- username-->
+              <p class="m-0 fw-bold">
+                <%= postsNotByYou[index].userId.username %>
+              </p>
             </div>
+            <!-- post descripton-->
+            <p class="mt-2 px-2"><%=postsNotByYou[index].description %></p>
 
             <!-- post's image -->
             <div class="d-flex">
               <img
                 src="<%= postsNotByYou[index].photoPath %>"
                 alt="image"
-                width="200"
+                class="img-fluid"
               />
             </div>
             <% } %>
-            <!--  -->
-            <p>description : <%=postsNotByYou[index].description %></p>
-            <!--  -->
-            <p>postedBy:<%=postsNotByYou[index].userId.username %></p>
-            <!--  -->
+
+            <!--button commented out  -->
+            <!--  
             <div id="<%= postsNotByYou[index].userId._id %>">
               <button class="btn btn-primary" onclick="postedByInfo()">
                 postedByDetails
               </button>
             </div>
+            -->
 
             <!--  -->
-            <p>likes : <%=postsNotByYou[index].likes.length %></p>
-            <!--  -->
+            <!--button commented out  -->
+            <!-- 
             <div>
               <button class="btn btn-primary" onclick="postLikedByButton()">
                 postLikedBy
               </button>
             </div>
-            <br /><br />
+            -->
+            <p>likes : <%=postsNotByYou[index].likes.length %></p>
+
             <button class="btn btn-success" onclick="likePostButton()">
-              likePost
+              Like Post
             </button>
+            <!-- div er jagay span use korlam jate line change naa hoi -->
+            <span>
+              <button class="btn btn-primary" onclick="postLikedByButton()">
+                postLikedBy
+              </button>
+            </span>
+            <!-- div er jagay span use korlam jate line change naa hoi -->
+            <span id="<%= postsNotByYou[index].userId._id %>">
+              <button class="btn btn-primary" onclick="postedByInfo()">
+                postedByDetails
+              </button>
+            </span>
           </li>
           <!--  -->
         </div>
