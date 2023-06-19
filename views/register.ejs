@@ -1,119 +1,164 @@
 <%- include('partials/headerWithoutNav') %>
 
-<h2 class="mb-4">Register</h2>
-<br />
-<p>🙏first<strong> Register </strong> to acess the app</p>
-<p>
-  😊if already registerd or logged in, from <strong> nav</strong> you can visit
-  preferable pages
-</p>
-<form action="#">
-  <!-- username -->
-  <div class="form-group">
-    <label for="username">Username</label>
-    <input type="text" class="form-control" id="registerUsername" required />
+<div class="container mt-5 pt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6 width:100%">
+    <!--  -->
+    <h1 class="text-dark fw-bold text-center">SocialApp Register</h1>
+    <!--  -->
+    <div class="bg-white shadow rounded p-3 input-group-lg">
+      <form action="#">
+        <!-- username -->
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            class="form-control"
+            id="registerUsername"
+            required
+          />
+        </div>
+        <!-- password -->
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="registerPassword"
+            required
+          />
+        </div>
+        <div class="form-group mt-3" >
+          <label for="imageUpload">Image</label>
+          <input type="file" class="form-control" id="registerImageUpload" />
+        </div>
+        <!--  -->
+      </form>
+   
+    <!--form ends  -->
+    </div>
+      <!-- form Button -->
+      <div class="mt-3">
+        <button
+          class="btn btn-secondary w-100"
+          id="registerButton"
+          onclick="onRegisterButton()"
+        >
+          Submit
+        </button>
+        
+      </div>
+      <!-- form submit button ends-->
+      <hr/>
+     
+      <p class="text-dark text-center"> Alredy registered? then login<p/>
+        
+         <!--login page  button from register page -->
+      <div class="mt-3 text-center">
+        <button
+          class="btn btn-dark w-50" onclick="onButtontoLoginPage()"
+         
+        >
+          Login
+        </button>
+        
+      </div>
+      <!--  -->
+
+    </div>
   </div>
-  <!-- password -->
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input
-      type="password"
-      class="form-control"
-      id="registerPassword"
-      required
-    />
-  </div>
-  <div class="form-group">
-    <label for="imageUpload">Image</label>
-    <input type="file" class="form-control" id="registerImageUpload" />
-  </div>
-  <!--  -->
-</form>
-<!-- form Button -->
-<button
-  class="btn btn-primary"
-  id="registerButton"
-  onclick="onRegisterButton()"
->
-  Submit
-</button>
-
-<script>
-  let message = document.getElementById("message");
-  //
-  async function onRegisterButton() {
-    //
-    try {
-      message.textContent = "";
-      //
-      const username = document.getElementById("registerUsername").value;
-      const password = document.getElementById("registerPassword").value;
-      const imageUpload = document.getElementById("registerImageUpload");
+</div>
+    <script>
+      let message = document.getElementById("message");
 
       //
-      const imageFile = imageUpload.files[0];
-
-      // const data = { username: username, password: password, file: imageFile };
-      //   console.log(username, "username");
-      // console.log(password, "password");
-      //
-      let data = new FormData();
-      data.append("username", username);
-      data.append("password", password);
-
-      // form er file er variable name and route er multer.single("variable name") same thakte hobe
-
-      data.append("fileA", imageFile);
-
-      //
-
-      const response = await fetch(`${window.location.origin}/user/register`, {
-        method: "POST",
-        // headers: {
-        //   "Content-Type": "application/json",
-        // },
-
-        body: data,
-      });
-      //
-
-      const result = await response.json();
-
-      //
-      console.log(result, "result");
-      //
-      if (result.message == "user created") {
+      async function onButtontoLoginPage(){
         //
-
-        message.textContent = result.message;
-        //
-        setTimeout(function () {
-          //
-          window.location.href = `${window.location.origin}/user/personalDetails`;
-        }, 1000);
+        try {
+          window.location.href = `${window.location.origin}/user/login`;
+        } catch (err) {
+          console.log(err);
+        }
       }
       //
-      else if (result.message) {
-        message.textContent = result.message;
+      async function onRegisterButton() {
         //
-        setTimeout(function () {
+        try {
+          message.textContent = "";
           //
-          window.location.href = window.location.href;
-        }, 2000);
-      }
-      //if mongo -- duplicate username error comes
-      //result?.error?.code
-      else if (result.err.code == 11000) {
-        message.textContent = "username already taken";
-        // console.log(result.err);
-        setTimeout(function () {
+          const username = document.getElementById("registerUsername").value;
+          const password = document.getElementById("registerPassword").value;
+          const imageUpload = document.getElementById("registerImageUpload");
+
           //
-          window.location.href = window.location.href;
-        }, 2000);
+          const imageFile = imageUpload.files[0];
+
+          // const data = { username: username, password: password, file: imageFile };
+          //   console.log(username, "username");
+          // console.log(password, "password");
+          //
+          let data = new FormData();
+          data.append("username", username);
+          data.append("password", password);
+
+          // form er file er variable name and route er multer.single("variable name") same thakte hobe
+
+          data.append("fileA", imageFile);
+
+          //
+
+          const response = await fetch(
+            `${window.location.origin}/user/register`,
+            {
+              method: "POST",
+              // headers: {
+              //   "Content-Type": "application/json",
+              // },
+
+              body: data,
+            }
+          );
+          //
+
+          const result = await response.json();
+
+          //
+          console.log(result, "result");
+          //
+          if (result.message == "user created") {
+            //
+
+            message.textContent = result.message;
+            //
+            setTimeout(function () {
+              //
+              window.location.href = `${window.location.origin}/user/personalDetails`;
+            }, 1000);
+          }
+          //
+          else if (result.message) {
+            message.textContent = result.message;
+            //
+            setTimeout(function () {
+              //
+              window.location.href = window.location.href;
+            }, 2000);
+          }
+          //if mongo -- duplicate username error comes
+          //result?.error?.code
+          else if (result.err.code == 11000) {
+            message.textContent = "username already taken";
+            // console.log(result.err);
+            setTimeout(function () {
+              //
+              window.location.href = window.location.href;
+            }, 2000);
+          }
+        } catch (err) {
+          console.log(err);
+        }
       }
-    } catch (err) {
-      console.log(err);
-    }
-  }
-</script>
-<%- include('partials/footer') %>
+    </script>
+    <%- include('partials/footer') %>
+  </div>
+</div>
