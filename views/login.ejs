@@ -1,35 +1,46 @@
 <%- include('partials/headerWithoutNav') %>
 
-<h2 class="mb-4">Login</h2>
+<!-- <h2 class="mb-4">Login</h2>
 
 <p>🙏first<strong> Login </strong> to acess the app</p>
 <p>
   😊if already registerd or logged in, from <strong> nav</strong> you can visit
   preferable pages
-</p>
+</p> -->
 
-<form action="#">
+<!--d-flex er jonno problem hocchilo  -->
+<div
+  class="container d-flex flex-column flex-lg-row justify-content-evenly mt-5 pt-5"
+>
+  <!--heading  -->
+  <div class="text-center text-lg-start mt-lg-5 pt-lg-5">
+    <h1 class="text-primary fw-bold">SocialApp</h1>
+    <p>Helps you connect with your friends and your family</p>
+  </div>
   <!--  -->
-  <!-- <div id="message"></div> -->
-  <!-- Register -->
+  <form action="#">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" class="form-control" id="loginUsername" required />
+    </div>
 
-  <div class="form-group">
-    <label for="username">Username</label>
-    <input type="text" class="form-control" id="loginUsername" required />
-  </div>
+    <!-- password -->
 
-  <!-- password -->
-
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input type="password" class="form-control" id="loginPassword" required />
-  </div>
-</form>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" id="loginPassword" required />
+    </div>
+    <!--  -->
+  </form>
+  <!--  -->
+</div>
+<!--  -->
 <!-- form Button -->
-<br />
-<button class="btn btn-primary" id="loginButton" onclick="onLoginButton()">
-  Submit
-</button>
+<div class="text-center mt-3">
+  <button class="btn btn-primary" id="loginButton" onclick="onLoginButton()">
+    Submit
+  </button>
+</div>
 
 <script>
   //
