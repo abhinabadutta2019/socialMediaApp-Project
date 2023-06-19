@@ -57,42 +57,53 @@
     <%if(postsNotByYou.length>0){%> <% for( let index = 0; index <
     postsNotByYou.length; index++ ) { %>
 
-    <li style="list-style-type: none" id="<%=postsNotByYou[index]._id %>">
-      <!--  -->
-      <% if (postsNotByYou[index].photoPath) { %>
-      <div>
-        <img
-          src="<%= postsNotByYou[index].photoPath %>"
-          alt="image"
-          width="600"
-          height="600"
-        />
-      </div>
-      <% } %>
-      <!--  -->
-      <p>description : <%=postsNotByYou[index].description %></p>
-      <!--  -->
-      <p>postedBy:<%=postsNotByYou[index].userId.username %></p>
-      <!--  -->
-      <div id="<%= postsNotByYou[index].userId._id %>">
-        <button class="btn btn-primary" onclick="postedByInfo()">
-          postedByDetails
-        </button>
-      </div>
+    <!-- ---------------------------- -->
+    <!--  -->
+    <div class="row justify-content-center">
+      <div class="col-lg-6 width:100%">
+        <div class="bg-white shadow rounded mt-3">
+          <!--  -->
+          <li style="list-style-type: none" id="<%=postsNotByYou[index]._id %>">
+            <!--  -->
+            <% if (postsNotByYou[index].photoPath) { %>
+            <div class="d-flex">
+              <img
+                src="<%= postsNotByYou[index].photoPath %>"
+                alt="image"
+                class="img-fluid"
+              />
+            </div>
+            <% } %>
+            <!--  -->
+            <p>description : <%=postsNotByYou[index].description %></p>
+            <!--  -->
+            <p>postedBy:<%=postsNotByYou[index].userId.username %></p>
+            <!--  -->
+            <div id="<%= postsNotByYou[index].userId._id %>">
+              <button class="btn btn-primary" onclick="postedByInfo()">
+                postedByDetails
+              </button>
+            </div>
 
-      <!--  -->
-      <p>likes : <%=postsNotByYou[index].likes.length %></p>
-      <!--  -->
-      <div>
-        <button class="btn btn-primary" onclick="postLikedByButton()">
-          postLikedBy
-        </button>
+            <!--  -->
+            <p>likes : <%=postsNotByYou[index].likes.length %></p>
+            <!--  -->
+            <div>
+              <button class="btn btn-primary" onclick="postLikedByButton()">
+                postLikedBy
+              </button>
+            </div>
+            <br /><br />
+            <button class="btn btn-success" onclick="likePostButton()">
+              likePost
+            </button>
+          </li>
+          <!--  -->
+        </div>
       </div>
-      <br /><br />
-      <button class="btn btn-success" onclick="likePostButton()">
-        likePost
-      </button>
-    </li>
+    </div>
+
+    <!--  -->
 
     <% } %> <%}else{%>
     <p>no post by others</p>
