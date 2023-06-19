@@ -313,24 +313,24 @@ router.get("/timeline/all", verifyLoggedInUser, async (req, res) => {
     ///////////////////////////////////////////////
 
     //user's own post
-    let userPosts = await Post.find({ userId: user._id.toString() });
+    // let userPosts = await Post.find({ userId: user._id.toString() });
 
-    //sorting
-    userPosts.sort(function (a, b) {
-      const random = 0.5 - Math.random();
-      if (random < 0) {
-        return -1;
-      } else if (random > 0) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
+    // //sorting
+    // userPosts.sort(function (a, b) {
+    //   const random = 0.5 - Math.random();
+    //   if (random < 0) {
+    //     return -1;
+    //   } else if (random > 0) {
+    //     return 1;
+    //   } else {
+    //     return 0;
+    //   }
+    // });
 
-    //just 2 would be shown
-    if (userPosts.length > 2) {
-      userPosts = userPosts.slice(0, 2);
-    }
+    // //just 2 would be shown
+    // if (userPosts.length > 2) {
+    //   userPosts = userPosts.slice(0, 2);
+    // }
 
     //
     /////////////////////////////////
@@ -374,16 +374,27 @@ router.get("/timeline/all", verifyLoggedInUser, async (req, res) => {
     }
 
     //
-
-    //
-
     res.render("timeline", {
       userProfile: visiblePart,
-      userPosts: userPosts,
+
       postsNotByYou: notOwnPost,
     });
     //
-    // res.json({});
+
+    // res.render("timeline", {
+    //   userProfile: visiblePart,
+    //   userPosts: userPosts,
+    //   postsNotByYou: notOwnPost,
+    // });
+
+    //
+
+    //
+    // res.json({
+    //   userProfile: visiblePart,
+    //   userPosts: userPosts,
+    //   postsNotByYou: notOwnPost,
+    // });
     //
   } catch (err) {
     console.log(err);

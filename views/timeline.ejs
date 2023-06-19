@@ -21,34 +21,6 @@
     <p>followers:<%= userProfile.followers.length %></p>
     <p>followings:<%= userProfile.followings.length%></p>
   </div>
-  <hr />
-  <div>
-    <% if (userPosts.length>0) { %>
-
-    <!--  -->
-    <h4>Users's own selected posts</h4>
-    <% for( let index = 0; index < userPosts.length; index++ ) { %>
-    <!--  -->
-
-    <li style="list-style-type: none" id="<%=userPosts[index]._id %>">
-      <!--  -->
-      <% if (userPosts[index].photoPath) { %>
-      <div>
-        <img
-          src="<%= userPosts[index].photoPath %>"
-          alt="image"
-          width="600"
-          height="600"
-        />
-      </div>
-      <% } %>
-      <!--  -->
-      <p>description : <%=userPosts[index].description %></p>
-      <!-- likes array er length pathalam -->
-      <p>likes : <%=userPosts[index].likes.length %></p>
-    </li>
-    <% } %> <% } %>
-  </div>
   <!--  -->
   <hr />
   <div>
@@ -61,7 +33,7 @@
     <!--  -->
     <div class="row justify-content-center">
       <div class="col-lg-6 width:100%">
-        <div class="bg-white shadow rounded mt-3">
+        <div class="bg-white shadow rounded mt-3 pb-3">
           <!--  -->
           <li style="list-style-type: none" id="<%=postsNotByYou[index]._id %>">
             <!--  -->
