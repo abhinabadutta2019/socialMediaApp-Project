@@ -1,165 +1,206 @@
 <%- include('partials/header') %>
 
-<h2>getUser</h2>
+<div class="row justify-content-center">
+  <div class="col-lg-4 width:100%">
+    <div class="bg-white shadow rounded mt-3 pb-3">
+      <h2 class="text-center">Personal Details</h2>
+      <!--  -->
+      <!--  -->
+      <% if (user.photoPath) { %>
+        <div class="d-flex">
+        <img
+          src="<%= user.photoPath %>"
+          alt="image"
+          class="img-fluid"
+        />
+      </div>
+      <% } %>
+     <!-- infos starts -->
+      <div class="d-flex">
+        <div class="flex-fill">
+          <span class="m-2 fw-bold" style="font-size: 25px"
+            ><%= user.username %></span
+          >
+        </div>
+        <div class="flex-fill">
+          <p class="pt-2">
+            <strong>followers:</strong> <%= user.followers.length %>
+          </p>
+        </div>
+        <div class="flex-fill">
+          <p class="pt-2">
+            <strong>followings:</strong> <%= user.followings.length %>
+          </p>
+        </div>
+      </div>
+       <!-- infos ends -->
+       <!-- button starts  -->
 
-<div id="<%= user._id %>">
-  <!--  -->
-  <% if (user.photoPath) { %>
-  <div>
-    <img
-      src="<%= user.photoPath %>"
-      alt="image"
-      width="200"
-      height="150"
-      class="img-fluid"
-    />
+
+        <!-- button line 1-->
+
+      <div class="d-flex">
+
+        <div class="flex-fill me-1">
+          <button class="btn btn-success w-100" onclick="followUser('<%= user._id %>')">
+            Follow
+          </button>
+        </div>
+        <div class="flex-fill me-1">
+          <button class="btn btn-secondary w-100" onclick="unFollowUser('<%= user._id %>')">
+            unfollow
+          </button>
+        </div>
+      </div>
+        <!-- button line 2 -->
+
+        <div class="d-flex mt-1">
+
+          <div class="flex-fill me-1">
+            <button
+            class="btn btn-secondary w-100"
+            onclick="followersDetails('<%= user._id %>')"
+          >
+            Followers
+          </button>
+          </div>
+      <!--  -->
+        <div class="flex-fill me-1">
+          <button
+            class="btn btn-secondary w-100"
+            onclick="followingsDetails('<%= user._id %>')"
+          >
+            Followings
+          </button>
+        </div>
+        </div>
+      <!-- button  line 3 -->
+      <div class="d-flex mt-1">
+
+        <div class="flex-fill me-1">
+          <button
+            class="btn btn-secondary w-100"
+            onclick="userPostsButton('<%= user._id %>')"
+          >
+            userAllPosts
+          </button>
+        </div>
+      </div>
+      <!-- button ends -->
+    </div>
   </div>
-  <% } %>
-  <!--  -->
-  <p>username:<%= user.username %></p>
-  <p>followers:<%= user.followers.length %></p>
-  <!--  -->
-  <button class="btn btn-primary" onclick="followersDetails('<%= user._id %>')">
-    followers Details
-  </button>
-  <!--  -->
-  <!--  -->
-  <p>followings:<%= user.followings.length %></p>
-  <!--  -->
-  <button
-    class="btn btn-primary"
-    onclick="followingsDetails('<%= user._id %>')"
-  >
-    followings Details
-  </button>
-  <!--  -->
-  <br /><br />
-  <button class="btn btn-success" onclick="followUser('<%= user._id %>')">
-    Follow
-  </button>
-
-  <button class="btn btn-danger" onclick="unFollowUser('<%= user._id %>')">
-    unFollow
-  </button>
-
-  <br /><br />
-
-  <h3>Get this Users all posts</h3>
-
-  <button class="btn btn-primary" onclick="userPostsButton('<%= user._id %>')">
-    userAllPosts
-  </button>
 </div>
-
-<script>
-  let message = document.getElementById("message");
-  message.textContent = "";
-  ////////////////
-  //
-  async function userPostsButton(userId) {
-    //
-    try {
+    <script>
+      let message = document.getElementById("message");
+      message.textContent = "";
+      ////////////////
       //
-      //redirect
-      window.location.href = `${window.location.origin}/post/strangerOwnPost/${userId}`;
-    } catch (err) {
-      res.json(err);
-    }
-  }
-  //
-  async function followersDetails(userId) {
-    try {
-      //
-
-      //redirect
-      window.location.href = `${window.location.origin}/user/followersList/${userId}`;
-    } catch (err) {
-      console.log(err);
-    }
-  }
-  //
-  async function followingsDetails(userId) {
-    //
-    try {
-      //redirect
-      window.location.href = `${window.location.origin}/user/followingsList/${userId}`;
-    } catch (err) {
-      console.log(err);
-    }
-  }
-  //
-  async function unFollowUser(userId) {
-    try {
-      // const unFollowButton = event.target;
-      // const unFollowButtonParent = unFollowButton.parentElement;
-      // const unParentId = unFollowButtonParent.id;
-      // console.log(unParentId, "unParentId");
-      const response = await fetch(
-        `${window.location.origin}/user/unfollow/${userId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      //result of the fetch/await
-      const result = await response.json();
-
-      console.log(result, "result");
-
-      if (result.message) {
+      async function userPostsButton(userId) {
         //
-        message.textContent = result.message;
-        //
-        setTimeout(function () {
+        try {
           //
-          window.location.href = window.location.href;
-        }, 1000);
+          //redirect
+          window.location.href = `${window.location.origin}/post/strangerOwnPost/${userId}`;
+        } catch (err) {
+          res.json(err);
+        }
       }
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  //
-  async function followUser(userId) {
-    try {
-      // const followButton = event.target;
-      // const followButtonParent = followButton.parentElement;
-      // const parentId = followButtonParent.id;
-      // //
-      const response = await fetch(
-        `${window.location.origin}/user/follow/${userId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      //result of the fetch/await
-      const result = await response.json();
       //
-      console.log(result, "result");
-      //follow successful hole tokhon e reload
-
-      //
-      if (result.message) {
-        //
-        message.textContent = result.message;
-        //
-        setTimeout(function () {
+      async function followersDetails(userId) {
+        try {
           //
-          window.location.href = window.location.href;
-        }, 1000);
+
+          //redirect
+          window.location.href = `${window.location.origin}/user/followersList/${userId}`;
+        } catch (err) {
+          console.log(err);
+        }
+      }
+      //
+      async function followingsDetails(userId) {
+        //
+        try {
+          //redirect
+          window.location.href = `${window.location.origin}/user/followingsList/${userId}`;
+        } catch (err) {
+          console.log(err);
+        }
+      }
+      //
+      async function unFollowUser(userId) {
+        try {
+          // const unFollowButton = event.target;
+          // const unFollowButtonParent = unFollowButton.parentElement;
+          // const unParentId = unFollowButtonParent.id;
+          // console.log(unParentId, "unParentId");
+          const response = await fetch(
+            `${window.location.origin}/user/unfollow/${userId}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          //result of the fetch/await
+          const result = await response.json();
+
+          console.log(result, "result");
+
+          if (result.message) {
+            //
+            message.textContent = result.message;
+            //
+            setTimeout(function () {
+              //
+              window.location.href = window.location.href;
+            }, 1000);
+          }
+        } catch (err) {
+          console.log(err);
+        }
       }
 
       //
-    } catch (err) {
-      console.log(err);
-    }
-  }
-</script>
+      async function followUser(userId) {
+        try {
+          // const followButton = event.target;
+          // const followButtonParent = followButton.parentElement;
+          // const parentId = followButtonParent.id;
+          // //
+          const response = await fetch(
+            `${window.location.origin}/user/follow/${userId}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          //result of the fetch/await
+          const result = await response.json();
+          //
+          console.log(result, "result");
+          //follow successful hole tokhon e reload
 
-<%- include('partials/footer') %>
+          //
+          if (result.message) {
+            //
+            message.textContent = result.message;
+            //
+            setTimeout(function () {
+              //
+              window.location.href = window.location.href;
+            }, 1000);
+          }
+
+          //
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    </script>
+
+    <%- include('partials/footer') %>
+  </div>
+</div>
