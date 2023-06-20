@@ -71,30 +71,31 @@
             <p>likes : <%=postsNotByYou[index].likes.length %></p>
 
             <!-- buttons section -->
-            <button
-              class="btn btn-success"
-              onclick="likePostButton('<%=postsNotByYou[index]._id %>')"
-            >
-              Like Post
-            </button>
-            <!-- div er jagay span use korlam jate line change naa hoi -->
-            <span>
+            <div class="d-flex">
               <button
-                class="btn btn-primary"
+                class="btn btn-success me-1"
+                onclick="likePostButton('<%=postsNotByYou[index]._id %>')"
+              >
+                Like Post
+              </button>
+              <!-- div er jagay span use korlam jate line change naa hoi -->
+
+              <button
+                class="btn btn-primary me-1"
                 onclick="postLikedByButton('<%=postsNotByYou[index]._id %>')"
               >
                 Liked by
               </button>
-            </span>
-            <!-- div er jagay span use korlam jate line change naa hoi -->
-            <span>
+
+              <!-- div er jagay span use korlam jate line change naa hoi -->
+
               <button
                 class="btn btn-primary"
                 onclick="postedByInfo('<%= postsNotByYou[index].userId._id %>')"
               >
                 Posted by
               </button>
-            </span>
+            </div>
           </li>
           <!--  -->
         </div>
