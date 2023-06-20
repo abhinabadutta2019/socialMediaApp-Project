@@ -1,8 +1,9 @@
 <%- include('partials/header') %>
 
 <h2>User Details</h2>
-
-<div id="<%= user._id %>">
+<!--  -->
+<!-- ei div er id chilo -->
+<div>
   <% if (user.photoPath) { %>
   <div>
     <img src="<%= user.photoPath %>" alt="image" width="200" height="300" />
@@ -12,15 +13,18 @@
   <p><strong>username: </strong><%= user.username %></p>
 
   <p><strong>followers: </strong> <%= user.followers.length %></p>
-  <!--  -->
-  <button class="btn btn-primary" onclick="followersDetails()">
+  <!-- followers details button -->
+  <button class="btn btn-primary" onclick="followersDetails('<%= user._id %>')">
     Followers Details
   </button>
   <!--  -->
 
   <p><strong>followings: </strong><%= user.followings.length %></p>
   <!--  -->
-  <button class="btn btn-primary" onclick="followingsDetails()">
+  <button
+    class="btn btn-primary"
+    onclick="followingsDetails('<%= user._id %>')"
+  >
     Followings Details
   </button>
   <!--  -->
@@ -91,32 +95,22 @@
   }
   //
 
-  async function followersDetails() {
+  async function followersDetails(userId) {
     try {
-      //
-      const followersDetailButton = event.target;
-      const followersDetailParent = followersDetailButton.parentElement;
-      const followersDetailParentId = followersDetailParent.id;
       //
 
       //redirect
-      window.location.href = `${window.location.origin}/user/followersList/${followersDetailParentId}`;
+      window.location.href = `${window.location.origin}/user/followersList/${userId}`;
     } catch (err) {
       console.log(err);
     }
   }
   //
-  async function followingsDetails() {
+  async function followingsDetails(userId) {
     //
     try {
-      const followingsDetailsButton = event.target;
-      const followingsDetailsButtonParent =
-        followingsDetailsButton.parentElement;
-      const followingsDetailsButtonParentId = followingsDetailsButtonParent.id;
-      //
-
       //redirect
-      window.location.href = `${window.location.origin}/user/followingsList/${followingsDetailsButtonParentId}`;
+      window.location.href = `${window.location.origin}/user/followingsList/${userId}`;
     } catch (err) {
       console.log(err);
     }
@@ -171,10 +165,6 @@
   //
   async function deleteUser() {
     try {
-      const deleteButton = event.target;
-      const parentDeleteButton = deleteButton.parentElement;
-      const delParentId = parentDeleteButton.id;
-      // console.log(delParentId, "delParentId");
       const responseDelete = await fetch(
         `${window.location.origin}/user/authDelete`,
         {
