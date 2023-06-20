@@ -3,10 +3,12 @@
 
 <!--  -->
 <div class="row justify-content-center">
+  <!--  -->
+  <!-- loggid in user's section -->
   <div class="col-lg-6 width:100%">
     <div class="bg-white shadow rounded mt-3 pb-3">
       <!--  -->
-      <div id="<%= userProfile._id %>">
+      <div id="<%= userProfile._id %>" style="white-space: nowrap">
         <% if (userProfile.photoPath) { %>
         <span>
           <img
@@ -23,7 +25,7 @@
         </span>
         <!--  -->
         <!-- followers and followings -->
-        <div class="m-2 fw-bold">
+        <div class="m-2 fw-bold" style="white-space: nowrap">
           <span>followers : <%= userProfile.followers.length %></span>
           <span class="m-3"
             >followings : <%= userProfile.followings.length%></span
