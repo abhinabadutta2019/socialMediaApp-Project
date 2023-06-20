@@ -3,54 +3,60 @@
 <div class="row justify-content-center">
   <div class="col-lg-6 width:100%">
     <!-- heading -->
-    <h2 class="text-center">Your own posts</h2>
+    <h2 class="text-center">Your created posts</h2>
     <!--  -->
     <% if ( myArray.length>0) { %>
     <!--  -->
     <% for( let index = 0; index < myArray.length; index++ ) { %>
     <!----------post  box starts-->
     <div class="bg-white shadow rounded mt-3 pb-3">
+      <!--  post description-->
+      <p><%=myArray[index].description %></p>
+      <!--  -->
       <li style="list-style-type: none" id="<%=myArray[index]._id %>">
         <% if (myArray[index].photoPath) { %>
-        <div>
+        <div class="d-flex">
           <img
             src="<%= myArray[index].photoPath %>"
             alt="image"
-            width="200"
-            height="150"
+            class="img-fluid"
           />
         </div>
         <% } %>
-        <p>description : <%=myArray[index].description %></p>
+        <!--  -->
         <p>likes : <%=myArray[index].likes.length %></p>
         <!--  -->
-        <div>
-          <button
-            class="btn btn-primary"
-            onclick="postLikedByButton('<%=myArray[index]._id%>')"
-          >
-            postLikedBy
-          </button>
+        <!-- buttons section  -- these 3 buttons taking equal spaces of available space-->
+        <div class="d-flex">
+          <div class="flex-fill me-1">
+            <button
+              class="btn btn-secondary w-100"
+              onclick="postLikedByButton('<%=myArray[index]._id%>')"
+            >
+              postLikedBy
+            </button>
+          </div>
+
+          <!--  -->
+          <div class="flex-fill me-1">
+            <button
+              class="btn btn-secondary w-100"
+              onclick="updatePostButton('<%=myArray[index]._id%>')"
+            >
+              updatePost
+            </button>
+          </div>
+          <!--  -->
+          <div class="flex-fill me-1">
+            <button
+              class="btn btn-danger w-100"
+              onclick="deletePost('<%=myArray[index]._id%>')"
+            >
+              DeletePost
+            </button>
+          </div>
         </div>
-        <!--  -->
-        <br />
-        <!--  -->
-        <div>
-          <button
-            class="btn btn-primary"
-            onclick="updatePostButton('<%=myArray[index]._id%>')"
-          >
-            updatePost
-          </button>
-        </div>
-        <!--  -->
-        <br />
-        <button
-          class="btn btn-danger"
-          onclick="deletePost('<%=myArray[index]._id%>')"
-        >
-          DeletePost
-        </button>
+        <!-- button section ends here -->
       </li>
       <!----------post box ends-->
     </div>
