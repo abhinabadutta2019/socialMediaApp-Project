@@ -444,8 +444,14 @@ router.get("/strangerOwnPost/:id", async (req, res) => {
     let userPosts = [];
     for (let index = 0; index < allPosts.length; index++) {
       const onePost = allPosts[index];
+
       //
-      if (onePost.userId._id.toString() == peopleId) {
+      //
+      if (
+        onePost.userId &&
+        onePost.userId._id &&
+        onePost.userId._id.toString() == peopleId
+      ) {
         userPosts.push(onePost);
       }
     }

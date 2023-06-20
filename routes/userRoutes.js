@@ -498,6 +498,8 @@ router.put("/unfollow/:id", verifyLoggedInUser, async (req, res) => {
   }
 });
 
+// 6491f37f408f5da10c435178 deleteUserid
+
 //delete user if authenticated/ or user logged in
 router.delete("/authDelete", verifyLoggedInUser, async (req, res) => {
   try {
