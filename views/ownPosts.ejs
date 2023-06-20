@@ -1,58 +1,67 @@
 <%- include('partials/header') %>
-<h2>Your own posts</h2>
-<div>
-  <% if ( myArray.length>0) { %>
-  <!--  -->
-  <% for( let index = 0; index < myArray.length; index++ ) { %>
 
-  <li id="<%=myArray[index]._id %>">
-    <% if (myArray[index].photoPath) { %>
-    <div>
-      <img
-        src="<%= myArray[index].photoPath %>"
-        alt="image"
-        width="200"
-        height="150"
-      />
+<div class="row justify-content-center">
+  <div class="col-lg-6 width:100%">
+    <!-- heading -->
+    <h2 class="text-center">Your own posts</h2>
+    <!--  -->
+    <% if ( myArray.length>0) { %>
+    <!--  -->
+    <% for( let index = 0; index < myArray.length; index++ ) { %>
+    <!----------post  box starts-->
+    <div class="bg-white shadow rounded mt-3 pb-3">
+      <li style="list-style-type: none" id="<%=myArray[index]._id %>">
+        <% if (myArray[index].photoPath) { %>
+        <div>
+          <img
+            src="<%= myArray[index].photoPath %>"
+            alt="image"
+            width="200"
+            height="150"
+          />
+        </div>
+        <% } %>
+        <p>description : <%=myArray[index].description %></p>
+        <p>likes : <%=myArray[index].likes.length %></p>
+        <!--  -->
+        <div>
+          <button
+            class="btn btn-primary"
+            onclick="postLikedByButton('<%=myArray[index]._id%>')"
+          >
+            postLikedBy
+          </button>
+        </div>
+        <!--  -->
+        <br />
+        <!--  -->
+        <div>
+          <button
+            class="btn btn-primary"
+            onclick="updatePostButton('<%=myArray[index]._id%>')"
+          >
+            updatePost
+          </button>
+        </div>
+        <!--  -->
+        <br />
+        <button
+          class="btn btn-danger"
+          onclick="deletePost('<%=myArray[index]._id%>')"
+        >
+          DeletePost
+        </button>
+      </li>
+      <!----------post box ends-->
     </div>
     <% } %>
-    <p>description : <%=myArray[index].description %></p>
-    <p>likes : <%=myArray[index].likes.length %></p>
     <!--  -->
-    <div>
-      <button
-        class="btn btn-primary"
-        onclick="postLikedByButton('<%=myArray[index]._id%>')"
-      >
-        postLikedBy
-      </button>
-    </div>
-    <!--  -->
-    <br />
-    <!--  -->
-    <div>
-      <button
-        class="btn btn-primary"
-        onclick="updatePostButton('<%=myArray[index]._id%>')"
-      >
-        updatePost
-      </button>
-    </div>
-    <!--  -->
-    <br />
-    <button
-      class="btn btn-danger"
-      onclick="deletePost('<%=myArray[index]._id%>')"
-    >
-      DeletePost
-    </button>
-  </li>
+    <% } else{%>
+    <p class="text-center">No post created by user</p>
+    <%}%>
 
-  <% } %>
-  <!--  -->
-  <% } else{%>
-  <p>No post created by user</p>
-  <%}%>
+    <!--  -->
+  </div>
 </div>
 <script>
   async function updatePostButton(post_id) {
