@@ -3,7 +3,7 @@
 <!--  -->
 <!-- ei div er id chilo -->
 <div class="row justify-content-center">
-  <div class="col-lg-6 width:100%">
+  <div class="col-lg-4 width:100%">
     <div class="bg-white shadow rounded mt-3 pb-3">
       <h2 class="text-center">User Details</h2>
       <!--  -->
@@ -15,43 +15,77 @@
         </div>
         <% } %>
         <!-- infos starts -->
-        <p><strong>username: </strong><%= user.username %></p>
-
-        <p><strong>followers: </strong> <%= user.followers.length %></p>
-        <p><strong>followings: </strong><%= user.followings.length %></p>
+        <div class="d-flex">
+          <div class="flex-fill">
+            <span class="m-2 fw-bold" style="font-size: 25px"
+              ><%= user.username %></span
+            >
+          </div>
+          <div class="flex-fill">
+            <p class="pt-2">
+              <strong>followers:</strong> <%= user.followers.length %>
+            </p>
+          </div>
+          <div class="flex-fill">
+            <p class="pt-2">
+              <strong>followings:</strong> <%= user.followings.length %>
+            </p>
+          </div>
+        </div>
         <!-- infos ends -->
-        <!-- followers details button -->
-        <button
-          class="btn btn-primary"
-          onclick="followersDetails('<%= user._id %>')"
-        >
-          Followers Details
-        </button>
-        <!--  -->
 
+        <!-- button starts--------------------- -->
+
+        <!-- button line 1 -->
+        <div class="d-flex">
+          <!-- followers details button -->
+          <div class="flex-fill me-1">
+            <button
+              class="btn btn-secondary w-100"
+              onclick="followersDetails('<%= user._id %>')"
+            >
+              Followers Details
+            </button>
+          </div>
+          <!--  -->
+
+          <!--  -->
+          <div class="flex-fill me-1">
+            <button
+              class="btn btn-secondary w-100"
+              onclick="followingsDetails('<%= user._id %>')"
+            >
+              Followings Details
+            </button>
+          </div>
+        </div>
+        <!-- button line 2 -->
+        <div class="d-flex mt-3">
+          <div class="flex-fill me-1">
+            <button
+              class="btn btn-secondary w-100"
+              onclick="updateYourProfileImage()"
+            >
+              Update profile pic
+            </button>
+          </div>
+          <!--  -->
+          <div class="flex-fill me-1">
+            <button class="btn btn-secondary w-100" onclick="seeAllYourPosts()">
+              See all Your Posts
+            </button>
+          </div>
+        </div>
         <!--  -->
-        <button
-          class="btn btn-primary"
-          onclick="followingsDetails('<%= user._id %>')"
-        >
-          Followings Details
-        </button>
-        <!--  -->
-        <br /><br />
-        <button class="btn btn-primary" onclick="updateYourProfileImage()">
-          Update Profile Image
-        </button>
-        <!--  -->
-        <br /><br />
-        <button class="btn btn-primary" onclick="seeAllYourPosts()">
-          See all Your Posts
-        </button>
-        <!--  -->
-        <br /><br />
+        <!-- button line 3 -->
         <!-- delete user -->
-        <button class="btn btn-danger" onclick="deleteUser()">
-          Delete Your Profile
-        </button>
+        <div class="d-flex mt-3">
+          <div class="flex-fill me-1">
+            <button class="btn btn-danger w-100" onclick="deleteUser()">
+              Delete Your Profile
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <!-- try  -->
