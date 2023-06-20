@@ -25,11 +25,7 @@
   <p><strong>followers: </strong> <%= allUsers[i].followers.length %></p>
   <p><strong>followings: </strong> <%= allUsers[i].followings.length %></p>
   <!--user details button -->
-  <button
-    class="btn btn-primary"
-    data-id="<%= allUsers[i]._id %>"
-    onclick="getUser(event)"
-  >
+  <button class="btn btn-primary" onclick="getUser('<%= allUsers[i]._id %>')">
     Details
   </button>
   <!-- follow button -->
@@ -124,29 +120,10 @@
   }
 
   //Details button = get user detail from all user page
-  async function getUser() {
+  async function getUser(strangerId) {
     try {
-      //   const id = event.target.id;
-      //   console.log(id);
-      const buttonDetail = event.target;
-      //to get the id of the <li>
-      const buttonParent = buttonDetail.parentElement;
-      //   console.log(buttonDetail);
-
-      const id = buttonParent.id;
-
-      //   console.log(id, "id");
-
-      await fetch(`${window.location.origin}/user/getUser/${id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      //   console.log(`${window.location.origin}/user/getUser`);
-      //
-      window.location.href = `${window.location.origin}/user/getUser/${id}`;
+      //redirect
+      window.location.href = `${window.location.origin}/user/getUser/${strangerId}`;
     } catch (err) {
       console.log(err);
     }
