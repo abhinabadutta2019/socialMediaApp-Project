@@ -34,7 +34,7 @@
     <div class="row justify-content-center">
       <div class="col-lg-6 width:100%">
         <div class="bg-white shadow rounded mt-3 pb-3">
-          <!--  -->
+          <!-- li here-->
           <li style="list-style-type: none" id="<%=postsNotByYou[index]._id %>">
             <!--  -->
             <% if (postsNotByYou[index].photoPath) { %>
@@ -66,39 +66,24 @@
             </div>
             <% } %>
 
-            <!--button commented out  -->
-            <!--  
-            <div id="<%= postsNotByYou[index].userId._id %>">
-              <button class="btn btn-primary" onclick="postedByInfo()">
-                postedByDetails
-              </button>
-            </div>
-            -->
-
             <!--  -->
-            <!--button commented out  -->
-            <!-- 
-            <div>
-              <button class="btn btn-primary" onclick="postLikedByButton()">
-                postLikedBy
-              </button>
-            </div>
-            -->
+
             <p>likes : <%=postsNotByYou[index].likes.length %></p>
 
+            <!-- buttons section -->
             <button class="btn btn-success" onclick="likePostButton()">
               Like Post
             </button>
             <!-- div er jagay span use korlam jate line change naa hoi -->
             <span>
               <button class="btn btn-primary" onclick="postLikedByButton()">
-                postLikedBy
+                Liked by
               </button>
             </span>
             <!-- div er jagay span use korlam jate line change naa hoi -->
             <span id="<%= postsNotByYou[index].userId._id %>">
               <button class="btn btn-primary" onclick="postedByInfo()">
-                postedByDetails
+                Posted by
               </button>
             </span>
           </li>
