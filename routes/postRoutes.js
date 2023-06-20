@@ -436,12 +436,16 @@ router.get("/strangerOwnPost/:id", async (req, res) => {
     //
     const peopleId = req.params.id;
     //
+
+    //
     const allPosts = await Post.find({}).populate("userId");
     //
 
     // const userPosts = await Post.find({ userId: req.params.id });
 
     let userPosts = [];
+    let postedBy;
+    //
     for (let index = 0; index < allPosts.length; index++) {
       const onePost = allPosts[index];
 
@@ -452,12 +456,21 @@ router.get("/strangerOwnPost/:id", async (req, res) => {
         onePost.userId._id &&
         onePost.userId._id.toString() == peopleId
       ) {
+        //
+        // console.log(onePost.userId.username, "onePost");
+        postedBy = onePost.userId.username;
+        //
         userPosts.push(onePost);
       }
     }
 
     // console.log(userPosts, "userPosts");
-    res.render("strangerPostList", { userPosts: userPosts });
+    console.log(postedBy, "postedBy");
+    //
+    res.render("strangerPostList", {
+      userPosts: userPosts,
+      postedBy: postedBy,
+    });
     // res.json({ userPosts: userPosts });
     //
   } catch (err) {

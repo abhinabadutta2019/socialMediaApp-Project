@@ -1,127 +1,130 @@
 <%- include('partials/header') %>
-<h2>Users all posts</h2>
 
-<div>
-  <!--  -->
-  <% if (userPosts.length>0) { %> <% for( let i = 0; i < userPosts.length; i++ )
-  { %>
-
-  <li id="<%=userPosts[i]._id  %>">
+<div class="row justify-content-center">
+  <div class="col-lg-6 width:100%">
+    <h2 class="text-center"><%= postedBy %>'s all posts</h2>
     <!--  -->
-    <% if (userPosts[i].photoPath) { %>
-    <div>
-      <img
-        src="<%= userPosts[i].photoPath %>"
-        alt="image"
-        width="200"
-        height="150"
-      />
+    <% if (userPosts.length>0) { %>
+    <!--  -->
+    <% for( let i = 0; i < userPosts.length; i++ ) { %>
+    <!----------post  box starts-->
+    <div class="bg-white shadow rounded mt-3 pb-3">
+      <li style="list-style-type: none">
+        <!--  -->
+        <p class="px-3 pt-3"><%= userPosts[i].description %></p>
+        <!--  -->
+        <% if (userPosts[i].photoPath) { %>
+          <div class="d-flex">
+          <img
+            src="<%= userPosts[i].photoPath %>"
+            alt="image"
+            class="img-fluid"
+          />
+        </div>
+        <% } %>
+
+        <!--  text details starts -->
+        <p>likes:<%= userPosts[i].likes.length %></p>
+        <!--  text details ends -->
+
+        <!--  button starts -->
+        <div class="d-flex">
+
+          <!-- likePost button -->
+          <div class="flex-fill me-1">
+            <button class="btn btn-success w-100" onclick="likePostButton('<%= userPosts[i]._id %>')">
+              likePost
+            </button>
+          </div>
+         
+        
+          <!-- postLikedBy button -->
+          <div class="flex-fill me-1">
+            <button class="btn btn-secondary w-100" onclick="postLikedByButton('<%= userPosts[i]._id %>')">
+              Liked by
+            </button>
+          </div>
+         <!-- postedByDetails button -->
+         <div class="flex-fill me-1">
+          <button class="btn btn-secondary w-100" onclick="postedByInfo()">
+            Posted by details
+          </button>
+        </div>
+          
+        </div>
+        <!--  button ends -->
+      </li>
     </div>
-    <% } %>
-    <!--  -->
-    <p>description:<%= userPosts[i].description %></p>
-    <!--  -->
-    <p>postedBy:<%=userPosts[i].userId.username %></p>
-
-    <div>
-      <button class="btn btn-primary" onclick="postedByInfo()">
-        postedByDetails
-      </button>
+      <% } %> <% } else{%>
+      <p class="text-center">No post created by this User</p>
+      <% } %>
     </div>
-
-    <!--  -->
-    <p>likes:<%= userPosts[i].likes.length %></p>
-    <!--  -->
-    <div>
-      <button class="btn btn-primary" onclick="postLikedByButton()">
-        postLikedBy
-      </button>
-    </div>
-    <br /><br />
-    <button class="btn btn-success" onclick="likePostButton()">likePost</button>
-  </li>
-  <% } %> <% } else{%>
-  <p>No post created by this User</p>
-  <% } %>
-</div>
-
-<script>
-  //
-  let message = document.getElementById("message");
-  message.textContent = "";
-  //
-  async function likePostButton() {
+  </div>
+  <script>
     //
-    try {
+    let message = document.getElementById("message");
+    message.textContent = "";
+    //
+    async function likePostButton(userId) {
       //
-      const buttonLikePost = event.target;
-      const buttonLikePostParent = buttonLikePost.parentElement;
-      const buttonParentId = buttonLikePostParent.id;
+      try {
+        //
+        const response = await fetch(
+          `${window.location.origin}/post/like/${userId}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        //
 
-      // console.log(buttonParentId, "buttonParentId");
-      //
-      const response = await fetch(
-        `${window.location.origin}/post/like/${buttonParentId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
+        //
+        const likeResult = await response.json();
+        //
+        console.log(likeResult, "likeResult");
+        if (likeResult.message == "un-liked" || likeResult.message == "Liked") {
+          //
+          message.textContent = likeResult.message;
+          //
+          setTimeout(function () {
+            //de
+            window.location.href = window.location.href;
+          }, 1000);
         }
-      );
-      //
-
-      //
-      const likeResult = await response.json();
-      //
-      console.log(likeResult, "likeResult");
-      if (likeResult.message == "un-liked" || likeResult.message == "Liked") {
-        //
-        message.textContent = likeResult.message;
-        //
-        setTimeout(function () {
-          //de
-          window.location.href = window.location.href;
-        }, 1000);
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      console.log(err);
     }
-  }
-  //
-  async function postLikedByButton() {
     //
-    try {
+    async function postLikedByButton(userId) {
       //
-      const postLikedButton = event.target;
-      const postLikedButtonParent = postLikedButton.parentElement;
-      const postLikedButtonGrandParent = postLikedButtonParent.parentElement;
-      //
-      const postLikedButtonGPId = postLikedButtonGrandParent.id;
-      //
-      // console.log(postLikedButtonGPId, "postLikedButtonGPId");
+      try {
+        //
 
-      //redirect
-      window.location.href = `${window.location.origin}/post/postLiked/${postLikedButtonGPId}`;
-      //
-    } catch (err) {
-      console.log(err);
+        //redirect
+        window.location.href = `${window.location.origin}/post/postLiked/${userId}`;
+        //
+      } catch (err) {
+        console.log(err);
+      }
     }
-  }
-  //
-  async function postedByInfo() {
-    try {
-      //   console.log(window.location.href.split("/")[5], "window.location.href");
+    //
+    async function postedByInfo() {
+      try {
+        //   console.log(window.location.href.split("/")[5], "window.location.href");
 
-      const creatorIdFromUrl = window.location.href.split("/")[5];
+        const creatorIdFromUrl = window.location.href.split("/")[5];
 
-      //
-      //   //redirecting
-      window.location.href = `${window.location.origin}/user/getUser/${creatorIdFromUrl}`;
-    } catch (err) {
-      console.log(err);
+        //
+        //   //redirecting
+        window.location.href = `${window.location.origin}/user/getUser/${creatorIdFromUrl}`;
+      } catch (err) {
+        console.log(err);
+      }
     }
-  }
-</script>
+  </script>
 
-<%- include('partials/footer') %>
+  <%- include('partials/footer') %>
+</div>
