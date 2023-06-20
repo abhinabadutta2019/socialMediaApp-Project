@@ -20,7 +20,10 @@
     <p>likes : <%=myArray[index].likes.length %></p>
     <!--  -->
     <div>
-      <button class="btn btn-primary" onclick="postLikedByButton()">
+      <button
+        class="btn btn-primary"
+        onclick="postLikedByButton('<%=myArray[index]._id%>')"
+      >
         postLikedBy
       </button>
     </div>
@@ -37,7 +40,12 @@
     </div>
     <!--  -->
     <br />
-    <button class="btn btn-danger" onclick="deletePost()">DeletePost</button>
+    <button
+      class="btn btn-danger"
+      onclick="deletePost('<%=myArray[index]._id%>')"
+    >
+      DeletePost
+    </button>
   </li>
 
   <% } %>
@@ -48,49 +56,27 @@
 </div>
 <script>
   async function updatePostButton(post_id) {
-    // console.log("Hy");
-    // const postUpdateButton = event.target;
-    // const postUpdateButtonParent = postUpdateButton.parentElement;
-    // const postUpdateButtonGrandParent = postUpdateButtonParent.parentElement;
-    // const postUpdateButtonGPId = postUpdateButtonGrandParent.id;
-    //
-    // console.log(postUpdateButtonGPId, "postUpdateButtonGPId");
-    //
-
-    // console.log(post_id, "post_id");
     window.location.href = `${window.location.origin}/post/update/${post_id}`;
   }
   //
-  async function postLikedByButton() {
+  async function postLikedByButton(postId) {
     //
     try {
       //
-      const postLikedButton = event.target;
-      const postLikedButtonParent = postLikedButton.parentElement;
-      const postLikedButtonGrandParent = postLikedButtonParent.parentElement;
-      //
-      const postLikedButtonGPId = postLikedButtonGrandParent.id;
-      //
-      // console.log(postLikedButtonGPId, "postLikedButtonGPId");
 
       //redirect
-      window.location.href = `${window.location.origin}/post/postLiked/${postLikedButtonGPId}`;
+      window.location.href = `${window.location.origin}/post/postLiked/${postId}`;
       //
     } catch (err) {
       console.log(err);
     }
   }
   //
-  async function deletePost() {
+  async function deletePost(postId) {
     //
     try {
-      const deleteButton = event.target;
-      const deleteButtonParent = deleteButton.parentElement;
-      const deleteParentId = deleteButtonParent.id;
-      // console.log(deleteParentId, "deleteParentId");
-
       const responseDelete = await fetch(
-        `${window.location.origin}/post/delete/${deleteParentId}`,
+        `${window.location.origin}/post/delete/${postId}`,
         {
           method: "DELETE",
           headers: {
