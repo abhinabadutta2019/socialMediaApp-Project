@@ -14,10 +14,12 @@
           <img src="<%= user.photoPath %>" alt="image" class="img-fluid" />
         </div>
         <% } %>
-
+        <!-- infos starts -->
         <p><strong>username: </strong><%= user.username %></p>
 
         <p><strong>followers: </strong> <%= user.followers.length %></p>
+        <p><strong>followings: </strong><%= user.followings.length %></p>
+        <!-- infos ends -->
         <!-- followers details button -->
         <button
           class="btn btn-primary"
@@ -27,7 +29,6 @@
         </button>
         <!--  -->
 
-        <p><strong>followings: </strong><%= user.followings.length %></p>
         <!--  -->
         <button
           class="btn btn-primary"
@@ -52,34 +53,38 @@
           Delete Your Profile
         </button>
       </div>
-      <br /><br /><br /><br />
-      <div>
-        <h3>Update Password</h3>
-
-        <!-- <h4>Message:Fill existing username or password to update</h4> -->
-        <br />
+    </div>
+    <!-- try  -->
+    <div>
+      <h3 class="text-center mt-3">Update Password</h3>
+      <!-- <h4>Message:Fill existing username or password to update</h4> -->
+      <br />
+      <!-- from starts -->
+      <div class="bg-white shadow rounded p-3 input-group-lg">
         <form action="#">
           <!--  -->
-          <p>message : You have to login again - as you submit update button</p>
+
           <!-- password -->
-          <label for="updatePassword">Update Password</label>
+          <label for="updatePassword">Updated Password</label>
           <input
             type="password"
             id="updatePassword"
             class="form-control"
             required
           />
+          <p>message : You have to login again - as you submit update button</p>
         </form>
-
-        <!-- form Button -->
-        <button
-          class="btn btn-primary"
-          id="updatePasswordButton"
-          onclick="onUpdatePasswordButton()"
-        >
-          Update Password
-        </button>
       </div>
+      <!-- form ends -->
+
+      <!-- form Button -->
+      <button
+        class="btn btn-secondary w-100"
+        id="updatePasswordButton"
+        onclick="onUpdatePasswordButton()"
+      >
+        Update Password
+      </button>
     </div>
   </div>
 </div>
