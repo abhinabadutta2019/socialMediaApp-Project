@@ -76,7 +76,10 @@
             </button>
             <!-- div er jagay span use korlam jate line change naa hoi -->
             <span>
-              <button class="btn btn-primary" onclick="postLikedByButton()">
+              <button
+                class="btn btn-primary"
+                onclick="postLikedByButton('<%=postsNotByYou[index]._id %>')"
+              >
                 Liked by
               </button>
             </span>
@@ -106,20 +109,10 @@
     let message = document.getElementById("message");
     message.textContent = "";
     //
-    async function postLikedByButton() {
+    async function postLikedByButton(post_id) {
       //
       try {
-        //
-        const postLikedButton = event.target;
-        const postLikedButtonParent = postLikedButton.parentElement;
-        const postLikedButtonGrandParent = postLikedButtonParent.parentElement;
-        //
-        const postLikedButtonGPId = postLikedButtonGrandParent.id;
-        //
-        // console.log(postLikedButtonGPId, "postLikedButtonGPId");
-
-        //redirect
-        window.location.href = `${window.location.origin}/post/postLiked/${postLikedButtonGPId}`;
+        window.location.href = `${window.location.origin}/post/postLiked/${post_id}`;
         //
       } catch (err) {
         console.log(err);
