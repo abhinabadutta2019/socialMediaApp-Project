@@ -1,42 +1,85 @@
 <%- include('partials/header') %>
 <!--  -->
-<h2>post liked by</h2>
 
-<div>
-  <!--  -->
-  <% if (postLikedBy[0].likedBy_info.length>0) { %> <% for( let i = 0; i <
-  postLikedBy[0].likedBy_info.length; i++ ) { %>
+<div class="row justify-content-center">
+  <div class="col-lg-4 width:100%">
+    <h4 class="text-center">Post liked by</h4>
+    <!--  -->
+    <% if (postLikedBy[0].likedBy_info.length>0) { %>
+    <!--  -->
+    <% for( let i = 0; i < postLikedBy[0].likedBy_info.length; i++ ) { %>
 
-  <!--  -->
-  <li id="<%=postLikedBy[0].likedBy_info[i]._id  %>">
-    <p>userName:<%= postLikedBy[0].likedBy_info[i].username %></p>
-    <p>followers:<%= postLikedBy[0].likedBy_info[i].followers.length %></p>
-    <p>followings:<%= postLikedBy[0].likedBy_info[i].followings.length %></p>
-    <button class="btn btn-primary" onclick="getUser()">Details</button>
-  </li>
+    <!--  -->
+     <!----------user  box starts-->
+  <div class="bg-white shadow rounded mt-3 pb-3">
+    <li style="list-style-type: none">
+      <!-- image -->
+      <div class="d-flex">
+        <img src="<%= postLikedBy[0].likedBy_info[i].photoPath%>" alt="image" class="img-fluid"/>
+      </div>
+      <!-- image ends -->
+      <!-- user text starts- <%= postLikedBy[0].likedBy_info[i].username %>--------<%= postLikedBy[0].likedBy_info[i].followers.length %> ----------<%= postLikedBy[0].likedBy_info[i].followings.length %>---------->
+      <div class="d-flex flex-wrap">
+        <div class="flex-fill">
+          <span class="m-2 fw-bold" style="font-size: 25px"
+            > <%= postLikedBy[0].likedBy_info[i].username %></span
+          >
+        </div>
+        <!--  -->
+        <div class="flex-fill">
+          <p class="pt-2">
+            <strong>followers:</strong> <%= postLikedBy[0].likedBy_info[i].followers.length %>
+          </p>
+        </div>
+        <!--  -->
+        <div class="flex-fill">
+          <p class="pt-2">
+            <strong>followings:</strong> <%= postLikedBy[0].likedBy_info[i].followings.length %>
+          </p>
+        </div>
+        <!--  -->
+      </div>
+      <!-- user text ends -->
+      <div class="d-flex">
+        <div class="flex-fill me-1">
+          <button
+          class="btn btn-secondary w-100"
+            onclick="getUser('<%=postLikedBy[0].likedBy_info[i]._id  %>')"
+          >
+            Details
+          </button>
+      <!--  -->
+      </div>
+    </div>
+    </li>
+  </div>
 
-  <% } %> <% } else { %>
-  <p>Not liked by anyone</p>
-  <%}%>
+    <% } %>
+    <!--  -->
+    <% } else { %>
+    <p>Not liked by anyone</p>
+    <%}%>
+  </div>
 </div>
 
-<script>
-  async function getUser() {
-    try {
-      //
-      const buttonDetail = event.target;
-      //
-      const buttonParent = buttonDetail.parentElement;
-      const id = buttonParent.id;
-      //
-      //   console.log(id, "id");
-      //redirect
-      window.location.href = `${window.location.origin}/user/getUser/${id}`;
-      //
-    } catch (err) {
-      console.log(err);
+  <script>
+    async function getUser(userId) {
+      try {
+        //
+        // const buttonDetail = event.target;
+        // //
+        // const buttonParent = buttonDetail.parentElement;
+        // const id = buttonParent.id;
+        //
+        //   console.log(id, "id");
+        //redirect
+        window.location.href = `${window.location.origin}/user/getUser/${userId}`;
+        //
+      } catch (err) {
+        console.log(err);
+      }
     }
-  }
-</script>
+  </script>
 
-<%- include('partials/footer') %>
+  <%- include('partials/footer') %>
+</div>
