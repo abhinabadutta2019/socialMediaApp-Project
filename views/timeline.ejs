@@ -81,8 +81,11 @@
               </button>
             </span>
             <!-- div er jagay span use korlam jate line change naa hoi -->
-            <span id="<%= postsNotByYou[index].userId._id %>">
-              <button class="btn btn-primary" onclick="postedByInfo()">
+            <span>
+              <button
+                class="btn btn-primary"
+                onclick="postedByInfo('<%= postsNotByYou[index].userId._id %>')"
+              >
                 Posted by
               </button>
             </span>
@@ -122,28 +125,12 @@
         console.log(err);
       }
     }
-    //
-    async function postedByInfo() {
-      try {
-        const buttonPostedBy = event.target;
-        const buttonPostedByParent = buttonPostedBy.parentElement;
-        const buttonPostedByParentId = buttonPostedByParent.id;
-        // console.log(buttonPostedByParentId, "buttonPostedByParentId");
-        const response = await fetch(
-          `${window.location.origin}/user/getUser/${buttonPostedByParentId}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        //
-        //
-        // const result = await response.json();
 
+    //
+    async function postedByInfo(post_user_id) {
+      try {
         //redirecting
-        window.location.href = `${window.location.origin}/user/getUser/${buttonPostedByParentId}`;
+        window.location.href = `${window.location.origin}/user/getUser/${post_user_id}`;
         // const result = await response.json();
       } catch (err) {
         console.log(err);
