@@ -19,27 +19,34 @@
   <p>username:<%= user.username %></p>
   <p>followers:<%= user.followers.length %></p>
   <!--  -->
-  <button class="btn btn-primary" onclick="followersDetails()">
+  <button class="btn btn-primary" onclick="followersDetails('<%= user._id %>')">
     followers Details
   </button>
   <!--  -->
   <!--  -->
   <p>followings:<%= user.followings.length %></p>
   <!--  -->
-  <button class="btn btn-primary" onclick="followingsDetails()">
+  <button
+    class="btn btn-primary"
+    onclick="followingsDetails('<%= user._id %>')"
+  >
     followings Details
   </button>
   <!--  -->
   <br /><br />
-  <button class="btn btn-success" onclick="followUser()">Follow</button>
+  <button class="btn btn-success" onclick="followUser('<%= user._id %>')">
+    Follow
+  </button>
 
-  <button class="btn btn-danger" onclick="unFollowUser()">unFollow</button>
+  <button class="btn btn-danger" onclick="unFollowUser('<%= user._id %>')">
+    unFollow
+  </button>
 
   <br /><br />
 
   <h3>Get this Users all posts</h3>
 
-  <button class="btn btn-primary" onclick="userPostsButton()">
+  <button class="btn btn-primary" onclick="userPostsButton('<%= user._id %>')">
     userAllPosts
   </button>
 </div>
@@ -49,92 +56,46 @@
   message.textContent = "";
   ////////////////
   //
-  async function userPostsButton() {
+  async function userPostsButton(userId) {
     //
     try {
-      const userPostsButton = event.target;
-      const userPostsButtonParent = userPostsButton.parentElement;
-      const userPostsButtonParentId = userPostsButtonParent.id;
-      //
-      // console.log(userPostsButtonParentId, "userPostsButtonParentId");
-
       //
       //redirect
-      window.location.href = `${window.location.origin}/post/strangerOwnPost/${userPostsButtonParentId}`;
+      window.location.href = `${window.location.origin}/post/strangerOwnPost/${userId}`;
     } catch (err) {
       res.json(err);
     }
   }
   //
-  async function followersDetails() {
+  async function followersDetails(userId) {
     try {
       //
-      const followersDetailButton = event.target;
-      const followersDetailParent = followersDetailButton.parentElement;
-      const followersDetailParentId = followersDetailParent.id;
-      //
-      // console.log(followersDetailParentId, "followersDetailParentId");
-      //
-      // const response = await fetch(
-      //   `${window.location.origin}/user/followersList/${followersDetailParentId}`,
-      //   {
-      //     method: "GET",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //   }
-      // );
-      //
-      // const result = await response.json();
 
       //redirect
-      window.location.href = `${window.location.origin}/user/followersList/${followersDetailParentId}`;
+      window.location.href = `${window.location.origin}/user/followersList/${userId}`;
     } catch (err) {
       console.log(err);
     }
   }
   //
-  async function followingsDetails() {
+  async function followingsDetails(userId) {
     //
     try {
-      const followingsDetailsButton = event.target;
-      const followingsDetailsButtonParent =
-        followingsDetailsButton.parentElement;
-      const followingsDetailsButtonParentId = followingsDetailsButtonParent.id;
-      //
-      // console.log(
-      //   followingsDetailsButtonParentId,
-      //   "followingsDetailsButtonParentId"
-      // );
-      //
-      const response = await fetch(
-        `${window.location.origin}/user/followingsList/${followingsDetailsButtonParentId}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      //
-      // const result = await response.json();
-      // console.log(result, "result");
-
       //redirect
-      window.location.href = `${window.location.origin}/user/followingsList/${followingsDetailsButtonParentId}`;
+      window.location.href = `${window.location.origin}/user/followingsList/${userId}`;
     } catch (err) {
       console.log(err);
     }
   }
   //
-  async function unFollowUser() {
+  async function unFollowUser(userId) {
     try {
-      const unFollowButton = event.target;
-      const unFollowButtonParent = unFollowButton.parentElement;
-      const unParentId = unFollowButtonParent.id;
+      // const unFollowButton = event.target;
+      // const unFollowButtonParent = unFollowButton.parentElement;
+      // const unParentId = unFollowButtonParent.id;
       // console.log(unParentId, "unParentId");
       const response = await fetch(
-        `${window.location.origin}/user/unfollow/${unParentId}`,
+        `${window.location.origin}/user/unfollow/${userId}`,
         {
           method: "PUT",
           headers: {
@@ -162,14 +123,14 @@
   }
 
   //
-  async function followUser() {
+  async function followUser(userId) {
     try {
-      const followButton = event.target;
-      const followButtonParent = followButton.parentElement;
-      const parentId = followButtonParent.id;
-      //
+      // const followButton = event.target;
+      // const followButtonParent = followButton.parentElement;
+      // const parentId = followButtonParent.id;
+      // //
       const response = await fetch(
-        `${window.location.origin}/user/follow/${parentId}`,
+        `${window.location.origin}/user/follow/${userId}`,
         {
           method: "PUT",
           headers: {
