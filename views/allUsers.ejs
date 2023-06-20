@@ -3,8 +3,9 @@
 <!--  -->
 <h2>User You may know</h2>
 
-<% if (allUsers.length>0) { %> <% for( let i = 0; i < allUsers.length; i++ ) {
-%>
+<% if (allUsers.length>0) { %>
+<!--  -->
+<% for( let i = 0; i < allUsers.length; i++ ) { %>
 
 <li id="<%= allUsers[i]._id %>">
   <!--  -->
@@ -34,21 +35,21 @@
   <!-- follow button -->
   <button
     class="btn btn-success"
-    data-id="<%= allUsers[i]._id %>"
-    onclick="followUser(event)"
+    onclick="followUser('<%= allUsers[i]._id %>')"
   >
     Follow
   </button>
   <!--  -->
   <button
     class="btn btn-danger"
-    data-id="<%= allUsers[i]._id %>"
-    onclick="unFollowUser(event)"
+    onclick="unFollowUser('<%= allUsers[i]._id %>')"
   >
     unFollow
   </button>
 </li>
-<% } %> <% } else{%>
+<% } %>
+<!--  -->
+<% } else{%>
 <p>No user found</p>
 <%}%>
 
@@ -57,14 +58,11 @@
   let message = document.getElementById("message");
   message.textContent = "";
   //
-  async function unFollowUser() {
+  async function unFollowUser(strangerId) {
     try {
-      const unFollowButton = event.target;
-      const unFollowButtonParent = unFollowButton.parentElement;
-      const unParentId = unFollowButtonParent.id;
-      // console.log(unParentId, "unParentId");
+      //
       const response = await fetch(
-        `${window.location.origin}/user/unfollow/${unParentId}`,
+        `${window.location.origin}/user/unfollow/${strangerId}`,
         {
           method: "PUT",
           headers: {
@@ -91,14 +89,10 @@
     }
   }
   //
-  async function followUser() {
+  async function followUser(strangerId) {
     try {
-      const followButton = event.target;
-      const followButtonParent = followButton.parentElement;
-      const parentId = followButtonParent.id;
-      //
       const response = await fetch(
-        `${window.location.origin}/user/follow/${parentId}`,
+        `${window.location.origin}/user/follow/${strangerId}`,
         {
           method: "PUT",
           headers: {
