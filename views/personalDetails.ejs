@@ -1,71 +1,87 @@
 <%- include('partials/header') %>
 
-<h2>User Details</h2>
 <!--  -->
 <!-- ei div er id chilo -->
-<div>
-  <% if (user.photoPath) { %>
-  <div>
-    <img src="<%= user.photoPath %>" alt="image" width="200" height="300" />
+<div class="row justify-content-center">
+  <div class="col-lg-6 width:100%">
+    <div class="bg-white shadow rounded mt-3 pb-3">
+      <h2 class="text-center">User Details</h2>
+      <!--  -->
+      <!--  -->
+      <div>
+        <% if (user.photoPath) { %>
+        <div class="d-flex">
+          <img src="<%= user.photoPath %>" alt="image" class="img-fluid" />
+        </div>
+        <% } %>
+
+        <p><strong>username: </strong><%= user.username %></p>
+
+        <p><strong>followers: </strong> <%= user.followers.length %></p>
+        <!-- followers details button -->
+        <button
+          class="btn btn-primary"
+          onclick="followersDetails('<%= user._id %>')"
+        >
+          Followers Details
+        </button>
+        <!--  -->
+
+        <p><strong>followings: </strong><%= user.followings.length %></p>
+        <!--  -->
+        <button
+          class="btn btn-primary"
+          onclick="followingsDetails('<%= user._id %>')"
+        >
+          Followings Details
+        </button>
+        <!--  -->
+        <br /><br />
+        <button class="btn btn-primary" onclick="updateYourProfileImage()">
+          Update Profile Image
+        </button>
+        <!--  -->
+        <br /><br />
+        <button class="btn btn-primary" onclick="seeAllYourPosts()">
+          See all Your Posts
+        </button>
+        <!--  -->
+        <br /><br />
+        <!-- delete user -->
+        <button class="btn btn-danger" onclick="deleteUser()">
+          Delete Your Profile
+        </button>
+      </div>
+      <br /><br /><br /><br />
+      <div>
+        <h3>Update Password</h3>
+
+        <!-- <h4>Message:Fill existing username or password to update</h4> -->
+        <br />
+        <form action="#">
+          <!--  -->
+          <p>message : You have to login again - as you submit update button</p>
+          <!-- password -->
+          <label for="updatePassword">Update Password</label>
+          <input
+            type="password"
+            id="updatePassword"
+            class="form-control"
+            required
+          />
+        </form>
+
+        <!-- form Button -->
+        <button
+          class="btn btn-primary"
+          id="updatePasswordButton"
+          onclick="onUpdatePasswordButton()"
+        >
+          Update Password
+        </button>
+      </div>
+    </div>
   </div>
-  <% } %>
-
-  <p><strong>username: </strong><%= user.username %></p>
-
-  <p><strong>followers: </strong> <%= user.followers.length %></p>
-  <!-- followers details button -->
-  <button class="btn btn-primary" onclick="followersDetails('<%= user._id %>')">
-    Followers Details
-  </button>
-  <!--  -->
-
-  <p><strong>followings: </strong><%= user.followings.length %></p>
-  <!--  -->
-  <button
-    class="btn btn-primary"
-    onclick="followingsDetails('<%= user._id %>')"
-  >
-    Followings Details
-  </button>
-  <!--  -->
-  <br /><br />
-  <button class="btn btn-primary" onclick="updateYourProfileImage()">
-    Update Profile Image
-  </button>
-  <!--  -->
-  <br /><br />
-  <button class="btn btn-primary" onclick="seeAllYourPosts()">
-    See all Your Posts
-  </button>
-  <!--  -->
-  <br /><br />
-  <!-- delete user -->
-  <button class="btn btn-danger" onclick="deleteUser()">
-    Delete Your Profile
-  </button>
-</div>
-<br /><br /><br /><br />
-<div>
-  <h3>Update Password</h3>
-
-  <!-- <h4>Message:Fill existing username or password to update</h4> -->
-  <br />
-  <form action="#">
-    <!--  -->
-    <p>message : You have to login again - as you submit update button</p>
-    <!-- password -->
-    <label for="updatePassword">Update Password</label>
-    <input type="password" id="updatePassword" class="form-control" required />
-  </form>
-
-  <!-- form Button -->
-  <button
-    class="btn btn-primary"
-    id="updatePasswordButton"
-    onclick="onUpdatePasswordButton()"
-  >
-    Update Password
-  </button>
 </div>
 
 <script>
