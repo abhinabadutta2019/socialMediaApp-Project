@@ -34,27 +34,25 @@
             <p class="pt-2"><strong>followings:</strong> <%= allUsers[i].followings.length %></p>
           </div>
         </div>
-        <!--user details button -->
-        <button
-          class="btn btn-primary"
-          onclick="getUser('<%= allUsers[i]._id %>')"
-        >
-          Details
-        </button>
-        <!-- follow button -->
-        <button
-          class="btn btn-success"
-          onclick="followUser('<%= allUsers[i]._id %>')"
-        >
-          Follow
-        </button>
-        <!--  -->
-        <button
-          class="btn btn-danger"
-          onclick="unFollowUser('<%= allUsers[i]._id %>')"
-        >
-          unFollow
-        </button>
+        <!--button starts -->
+        <div class="d-flex">
+          <div class="flex-fill me-1">
+            <button class="btn btn-secondary w-100" onclick="getUser('<%= allUsers[i]._id %>')">
+              Details
+            </button>
+          </div>
+          <div class="flex-fill me-1">
+            <button class="btn btn-success w-100" onclick="followUser('<%= allUsers[i]._id %>')">
+              Follow
+            </button>
+          </div>
+          <div class="flex-fill">
+            <button class="btn btn-secondary w-100" onclick="unFollowUser('<%= allUsers[i]._id %>')">
+              Unfollow
+            </button>
+          </div>
+        </div>
+        <!-- button ends -->
       </li>
     </div>
       <% } %>
