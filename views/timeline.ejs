@@ -1,30 +1,42 @@
 <%- include('partials/header') %>
 <!--  -->
-<h2>Timeline</h2>
+
 <!--  -->
-<div>
-  <h4>User info</h4>
-  <!--  -->
-  <div id="<%= userProfile._id %>">
-    <% if (userProfile.photoPath) { %>
-    <div>
-      <img
-        src="<%= userProfile.photoPath %>"
-        alt="image"
-        width="400"
-        height="400"
-      />
+<div class="row justify-content-center">
+  <div class="col-lg-6 width:100%">
+    <div class="bg-white shadow rounded mt-3 pb-3">
+      <!--  -->
+      <div id="<%= userProfile._id %>">
+        <% if (userProfile.photoPath) { %>
+        <span>
+          <img
+            src="<%= userProfile.photoPath %>"
+            alt="image"
+            class="rounded-circle me-2"
+            style="width: 70; height: 80px; object-fit: cover"
+          />
+        </span>
+        <% } %>
+        <!-- username -->
+        <span class="m-2 fw-bold" style="font-size: 25px">
+          <%= userProfile.username %>'s timeline
+        </span>
+        <!--  -->
+        <!-- followers and followings -->
+        <div class="m-2 fw-bold">
+          <span>followers : <%= userProfile.followers.length %></span>
+          <span class="m-3"
+            >followings : <%= userProfile.followings.length%></span
+          >
+        </div>
+        <!--  -->
+      </div>
     </div>
-    <% } %>
-    <!--  -->
-    <p>username:<%= userProfile.username %></p>
-    <p>followers:<%= userProfile.followers.length %></p>
-    <p>followings:<%= userProfile.followings.length%></p>
   </div>
   <!--  -->
-  <hr />
+
   <div>
-    <h4>other's posts</h4>
+    <h4 class="text-center mt-3">Timeline posts</h4>
     <!--  -->
     <%if(postsNotByYou.length>0){%> <% for( let index = 0; index <
     postsNotByYou.length; index++ ) { %>
