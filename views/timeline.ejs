@@ -70,32 +70,36 @@
 
             <p>likes : <%=postsNotByYou[index].likes.length %></p>
 
-            <!-- buttons section -->
+            <!-- buttons section  -- these 3 buttons taking equal spaces of available space-->
             <div class="d-flex">
-              <button
-                class="btn btn-success me-1"
-                onclick="likePostButton('<%=postsNotByYou[index]._id %>')"
-              >
-                Like Post
-              </button>
-              <!-- div er jagay span use korlam jate line change naa hoi -->
+              <div class="flex-fill me-1">
+                <button
+                  class="btn btn-success w-100"
+                  onclick="likePostButton('<%=postsNotByYou[index]._id %>')"
+                >
+                  Like Post
+                </button>
+              </div>
 
-              <button
-                class="btn btn-primary me-1"
-                onclick="postLikedByButton('<%=postsNotByYou[index]._id %>')"
-              >
-                Liked by
-              </button>
+              <div class="flex-fill me-1">
+                <button
+                  class="btn btn-secondary w-100"
+                  onclick="postLikedByButton('<%=postsNotByYou[index]._id %>')"
+                >
+                  Liked by
+                </button>
+              </div>
 
-              <!-- div er jagay span use korlam jate line change naa hoi -->
-
-              <button
-                class="btn btn-primary"
-                onclick="postedByInfo('<%= postsNotByYou[index].userId._id %>')"
-              >
-                Posted by
-              </button>
+              <div class="flex-fill">
+                <button
+                  class="btn btn-secondary w-100"
+                  onclick="postedByInfo('<%= postsNotByYou[index].userId._id %>')"
+                >
+                  Posted by
+                </button>
+              </div>
             </div>
+            <!--  -->
           </li>
           <!--  -->
         </div>
