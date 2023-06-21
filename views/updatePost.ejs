@@ -1,74 +1,97 @@
 <%- include('partials/header') %>
-<h3>Update Post</h3>
-<div>
-  <form action="#">
-    <div class="form-group">
-      <label for="description">description</label>
-      <input type="text" class="form-control" id="postDescription" required />
+<div class="container mt-5 pt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6 width:100%">
+      <!--form field - -->
+      <h3 class="text-dark fw-bold text-center">Update Post</h3>
+      <!--  -->
+      <div class="bg-white shadow rounded p-3 input-group-lg">
+        <!--form field - -->
+        <form action="#">
+          <div class="form-group">
+            <label for="description">description</label>
+            <input
+              type="text"
+              class="form-control"
+              id="postDescription"
+              required
+            />
+          </div>
+        </form>
+      </div>
+      <!-- form field ends  -->
+      <!-- button starts -->
+      <div class="mt-3">
+        <button
+          class="btn btn-secondary w-100"
+          id="postUpdate"
+          onclick="onPostUpdate()"
+        >
+          Update post
+        </button>
+      </div>
+      <!-- button ends -->
     </div>
-  </form>
-  <button class="btn btn-primary" id="postUpdate" onclick="onPostUpdate()">
-    updatePost
-  </button>
-</div>
+  </div>
 
-<script>
-  //
-  let message = document.getElementById("message");
-  message.textContent = "";
-  //
-  async function onPostUpdate() {
+  <script>
     //
-    try {
-      const splitForId = window.location.href.split("/");
-      const postId = splitForId[5];
-      //   console.log(postId, "postId");
+    let message = document.getElementById("message");
+    message.textContent = "";
+    //
+    async function onPostUpdate() {
       //
-      const description = document.getElementById("postDescription").value;
-      //
-      const data = { description: description };
-      //   console.log(data, "data");
-      //
-      const updateResponse = await fetch(
-        `${window.location.origin}/post/update/${postId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
+      try {
+        const splitForId = window.location.href.split("/");
+        const postId = splitForId[5];
+        //   console.log(postId, "postId");
+        //
+        const description = document.getElementById("postDescription").value;
+        //
+        const data = { description: description };
+        //   console.log(data, "data");
+        //
+        const updateResponse = await fetch(
+          `${window.location.origin}/post/update/${postId}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        //
+        const updateResponseResult = await updateResponse.json();
+        //
+        console.log(updateResponseResult, "updateResponseResult");
+        //
+        if (updateResponseResult.message == "post updated") {
+          //
+          message.textContent = updateResponseResult.message;
+          //
+          setTimeout(function () {
+            //
+            window.location.href = `${window.location.origin}/post/ownposts`;
+          }, 2000);
         }
-      );
-      //
-      const updateResponseResult = await updateResponse.json();
-      //
-      console.log(updateResponseResult, "updateResponseResult");
-      //
-      if (updateResponseResult.message == "post updated") {
         //
-        message.textContent = updateResponseResult.message;
-        //
-        setTimeout(function () {
+        else if (updateResponseResult.message) {
           //
-          window.location.href = `${window.location.origin}/post/ownposts`;
-        }, 2000);
-      }
-      //
-      else if (updateResponseResult.message) {
-        //
-        message.textContent = updateResponseResult.message;
-        //
-        setTimeout(function () {
+          message.textContent = updateResponseResult.message;
           //
-          window.location.href = window.location.href;
-        }, 1000);
-      }
+          setTimeout(function () {
+            //
+            window.location.href = window.location.href;
+          }, 1000);
+        }
 
-      //
-    } catch (err) {
-      console.log(err);
+        //
+      } catch (err) {
+        console.log(err);
+      }
     }
-  }
-</script>
+  </script>
 
-<%- include('partials/footer') %>
+  <%- include('partials/footer') %>
+</div>
