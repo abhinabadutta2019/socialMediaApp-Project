@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const Post = require("../models/postModel");
+const User = require("../models/userModel");
 const router = express.Router();
 const { verifyLoggedInUser } = require("../middleware/verifyLoggedInUser");
 
@@ -435,7 +436,11 @@ router.get("/strangerOwnPost/:id", async (req, res) => {
   try {
     //
     const peopleId = req.params.id;
-    //
+
+    //the strangerUser
+    const strangerUser = await User.findById({ _id: peopleId });
+
+    console.log(strangerUser, "strangerUser");
 
     //
     const allPosts = await Post.find({}).populate("userId");
@@ -444,7 +449,7 @@ router.get("/strangerOwnPost/:id", async (req, res) => {
     // const userPosts = await Post.find({ userId: req.params.id });
 
     let userPosts = [];
-    let postedBy;
+    // let postedBy;
     //
     for (let index = 0; index < allPosts.length; index++) {
       const onePost = allPosts[index];
@@ -458,18 +463,18 @@ router.get("/strangerOwnPost/:id", async (req, res) => {
       ) {
         //
         // console.log(onePost.userId.username, "onePost");
-        postedBy = onePost.userId.username;
+        // postedBy = onePost.userId.username;
         //
         userPosts.push(onePost);
       }
     }
 
     // console.log(userPosts, "userPosts");
-    console.log(postedBy, "postedBy");
+    // console.log(postedBy, "postedBy");
     //
     res.render("strangerPostList", {
       userPosts: userPosts,
-      postedBy: postedBy,
+      postedBy: strangerUser.username,
     });
     // res.json({ userPosts: userPosts });
     //
