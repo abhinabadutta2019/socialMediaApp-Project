@@ -164,6 +164,8 @@ router.post("/register", multer.single("fileA"), async (req, res) => {
         username: req.body.username,
         password: hashedPassword,
         // isAdmin: req.body.isAdmin,
+        //
+        photoPath: "/images/defaultImage.jpg",
       });
     }
 
