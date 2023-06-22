@@ -58,13 +58,14 @@
               style="background-color: #f5f5f5"
             >
               <!-- image-->
-
+              <% if (postsNotByYou[index].userId.photoPath) { %>
               <img
                 src="<%= postsNotByYou[index].userId.photoPath %>"
                 alt="image"
                 class="rounded-circle me-2"
                 style="width: 60; height: 70px; object-fit: cover"
               />
+              <% } %>
               <!-- username-->
               <p class="m-2 fw-bold" style="font-size: 25px">
                 <%= postsNotByYou[index].userId.username %>
