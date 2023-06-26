@@ -1,6 +1,12 @@
 # socialMediaApp-Project
 
-A social media app, build with, nodejs, mongoDb, express and the frontend done with ejs. Used JWT for authentication, aws-s3 api for image upload, mongoDb-atlas for cloud database
+Description:
+
+A social media app,
+
+Build with, nodejs, mongoDb, express and the frontend done with ejs.
+
+Used JWT for authentication, aws-s3 api for image upload, mongoDb-atlas for cloud database
 
 /register page
 
