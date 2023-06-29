@@ -2,7 +2,9 @@
 
 Description:
 
-A social media app,
+(this "againtry branch is most updated, and currently deployed)
+
+A Social media app,
 
 Build with, nodejs, mongoDb, express and the frontend done with ejs.
 
