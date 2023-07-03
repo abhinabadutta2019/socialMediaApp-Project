@@ -10,16 +10,8 @@ const postRoutes = require("./routes/postRoutes");
 //.
 const imageRoutes = require("./routes/imageRoutes");
 //
-const path = require("path");
-
-//
-
-//////////////////////////////////////////
-
-//////////////////////////////////////////////
 const app = express();
 app.use(express.json());
-
 //
 dotenv.config();
 
@@ -55,7 +47,7 @@ app.get("/", (req, res) => {
     res.json(err);
   }
 });
-
+//
 app.use("/user", userRoutes);
 app.use("/post", postRoutes);
 //-
