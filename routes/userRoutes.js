@@ -16,102 +16,7 @@ const multer = require("../middleware/multer");
 const aws = require("../helper/s3");
 ///////////////////////////////////////////////
 
-//
-const path = require("path");
-//
-const s3 = require("../helper/s3");
-
-// Import the Image model
-const Image = require("../models/imageModel");
-const upload = require("../middleware/multer");
-// Import the upload middleware from app.js
-// const upload = require("../app");
-
-///////////////////////////////////////////////
 //--/user
-
-//
-router.get("/upload", (req, res) => {
-  try {
-    res.render("upload");
-  } catch (err) {
-    res.json(err);
-  }
-});
-//
-router.post("/upload", upload.single("image"), async (req, res) => {
-  try {
-    const imagePath = `/images/${req.file.filename}`;
-    const newImage = new Image({
-      imagePath: imagePath,
-    });
-    const image = await newImage.save();
-    console.log(image, "image, from /upload (post) route");
-    res.send({ image: image });
-  } catch (err) {
-    res.json(err);
-  }
-});
-//
-router.get("/showImage/:id", async (req, res) => {
-  try {
-    console.log(req.url, "req.url");
-    const oneImage = await Image.findById(req.params.id);
-    res.render("showImage", { imagePath: oneImage.imagePath });
-  } catch (err) {
-    res.json(err);
-  }
-});
-
-//frontend - updateProfileImage
-router.get("/updateProfileImage", verifyLoggedInUser, (req, res) => {
-  try {
-    res.render("updateProfileImage");
-  } catch (err) {
-    res.json(err);
-  }
-});
-
-// prettier-ignore
-//../updateProfileImage
-router.post(
-  "/updateProfileImage",verifyLoggedInUser,upload.single("image"),async (req, res) => {
-    try {
-      // console.log();
-      const user = req.userDetail;
-
-      const oldUser = { ...user };
-      // console.log(oldUser._doc.imagePath, "oldUser");
-      const oldImagePath = oldUser._doc.imagePath;
-      //
-      if (req.file) {
-        // const imagePath = `/images/${req.file.filename}`;
-        // user.imagePath = imagePath;
-        const uploadedFileUrl = await s3.uploadFileToS3(req.file);
-        user.imagePath = uploadedFileUrl;
-
-        //
-        console.log(uploadedFileUrl, "^^uploadedFileUrl");
-      }
-
-      //
-      // Update the imagePath in the user document
-      // user.imagePath = imagePath;
-      await user.save();
-      // console.log(user);
-      const updatedImagePath = user.imagePath;
-
-      res.json({
-        updatedImagePath: updatedImagePath,
-        oldImagePath: oldImagePath,
-      });
-    } catch (err) {
-      console.log(err);
-      res.json(err);
-    }
-  }
-);
-
 //frontend routes
 router.get("/register", async (req, res) => {
   try {
@@ -234,18 +139,6 @@ router.post("/register", multer.single("fileA"), async (req, res) => {
     //
     if (req.body.username.length < 3 || req.body.password.length < 3) {
       return res.json({ message: "username or password is too small" });
-    }
-
-    //if no image
-    let imagePath = null;
-
-    if (req.file) {
-      // If an image is uploaded, save AWS/s3 url
-      const uploadedFileUrl = await s3.uploadFileToS3(req.file);
-      imagePath = uploadedFileUrl;
-
-      //
-      console.log(uploadedFileUrl, "uploadedFileUrl");
     }
 
     //comming from helper/utils/hashPass function

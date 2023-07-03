@@ -8,19 +8,11 @@ const { verifyLoggedInUser } = require("../middleware/verifyLoggedInUser");
 const {
   postmanLoginMiddleware,
 } = require("../middleware/postmanLoginMiddleware");
-
-//multer
-const upload = require("../middleware/multer");
-//
-const s3 = require("../helper/s3");
 //
 const multer = require("../middleware/multer");
 const aws = require("../helper/s3");
 //
 //----/post
-//
-
-//
 //
 router.get("/create", verifyLoggedInUser, async (req, res) => {
   //
@@ -506,7 +498,6 @@ router.get("/strangerOwnPost/:id", async (req, res) => {
 //   }
 // });
 
-//
 // get one post by id
 // router.get("/:id", async (req, res) => {
 //   try {
