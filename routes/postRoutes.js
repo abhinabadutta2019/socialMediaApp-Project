@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const Post = require("../models/postModel");
+const User = require("../models/userModel");
 const router = express.Router();
 const { verifyLoggedInUser } = require("../middleware/verifyLoggedInUser");
 
@@ -12,6 +13,9 @@ const {
 const upload = require("../middleware/multer");
 //
 const s3 = require("../helper/s3");
+//
+const multer = require("../middleware/multer");
+const aws = require("../helper/s3");
 //
 //----/post
 //
@@ -29,68 +33,67 @@ router.get("/create", verifyLoggedInUser, async (req, res) => {
 });
 //
 //----/post
-//// prettier-ignore
+////prettier-ignore
 //create a post
 router.post(
   "/create",
   verifyLoggedInUser,
-  upload.array("images", 4),
+  multer.single("image"),
   async (req, res) => {
     try {
-      //user login (route) token required to create post
-      // console.log(req.url, "req.url");
-      //
-      const user = req.userDetail;
-      //
+      // multer.array---req.files diyei multiple files upload hoyeche kina check korte hocche
+      //multer.single--- hole req.file
+
       // console.log(req.body, "req.body");
       // console.log(req.files, "req.files");
-      // console.log(req.files.length, "req.files.length");
+
+      //
+      const user = req.userDetail;
 
       if (!user) {
         return res.json("User not logged in");
       }
 
       //
-      //if no image
-      // let imagePath = null;
-      const imagePaths = [];
-
-      if (req.files && req.files.length > 0) {
-        // If an image is uploaded, save it and get the image path
-
-        let uploadedFileUrl;
-        for (let k = 0; k < req.files.length; k++) {
-          const file = req.files[k];
-          //
-          // imagePaths.push(`/images/${file.filename}`);
-          //
-          uploadedFileUrl = await s3.uploadFileToS3(file);
-          //
-          imagePaths.push(uploadedFileUrl);
-          // console.log(imagePaths, "imagePaths in loop");
-        }
-      }
-
-      // console.log(imagePaths, "imagePaths after loop");
-      //
       // console.log(req.body, "req.body");
 
       if (req.body.description.length < 3) {
         return res.json({ message: "post description is too short" });
       }
+      //
+      let newPost;
 
-      //create new post
-      const newPost = new Post({
-        userId: user._id.toString(),
-        description: req.body.description,
-
+      //
+      console.log(req.file, "req.files");
+      //
+      if (!req.file) {
+        console.log("inside if");
+        //create new post
+        newPost = new Post({
+          userId: user._id.toString(),
+          description: req.body.description,
+        });
+      } else if (req.file) {
+        console.log("inside else if");
         //
-        imagePaths: imagePaths,
-      });
+        const image = req.file;
+
+        const uploadResponse = await aws.uploadFileToS3(image);
+        //
+        console.log(uploadResponse.Location, "uploadResponse.Location");
+
+        newPost = new Post({
+          userId: user._id.toString(),
+          description: req.body.description,
+          // photoPath: user.photoPath.push(uploadResponse.Location),
+          photoPath: uploadResponse.Location,
+        });
+      }
+
       //save to database
       const post = await newPost.save();
 
-      // res.json({ post });
+      // res.json({ post: post });
       res.json({ message: "post created" });
       // res.send();
     } catch (err) {
@@ -309,34 +312,17 @@ router.put("/like/:id", verifyLoggedInUser, async (req, res) => {
 router.get("/timeline/all", verifyLoggedInUser, async (req, res) => {
   try {
     console.log(req.url, "req.url");
+
     //
     const user = req.userDetail;
+
+    // console.log(req.userDetail, "req.userDetail");
     //
     const newUser = { ...user._doc };
     // console.log(newUser);
     const { _id, password, __v, ...visiblePart } = newUser;
     // console.log(visiblePart);
     ///////////////////////////////////////////////
-
-    //user's own post
-    let userPosts = await Post.find({ userId: user._id.toString() });
-
-    //sorting
-    userPosts.sort(function (a, b) {
-      const random = 0.5 - Math.random();
-      if (random < 0) {
-        return -1;
-      } else if (random > 0) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
-
-    //just 2 would be shown
-    if (userPosts.length > 2) {
-      userPosts = userPosts.slice(0, 2);
-    }
 
     //
     /////////////////////////////////
@@ -349,11 +335,28 @@ router.get("/timeline/all", verifyLoggedInUser, async (req, res) => {
 
     // if not own post
     let notOwnPost = [];
+    //
+
     for (let i = 0; i < allPosts.length; i++) {
       const onePost = allPosts[i];
 
+      // console.log(
+      //   onePost.userId._id.toString(),
+      //   "onePost.userId._id.toString()"
+      // );
+
+      // console.log(user._id.toString(), "user._id.toString()");
+
       // if not own post
-      if (onePost.userId._id.toString() !== user._id.toString()) {
+
+      if (
+        onePost.userId &&
+        onePost.userId._id &&
+        onePost.userId._id.toString() !== user._id.toString()
+      ) {
+        //
+        // console.log(onePost, "onePost");
+        //
         notOwnPost.push(onePost);
       }
       // console.log(onePost.userId.username);
@@ -379,17 +382,21 @@ router.get("/timeline/all", verifyLoggedInUser, async (req, res) => {
       notOwnPost = notOwnPost.slice(0, 10);
     }
 
-    //
+    // //
 
     //
+    // res.json({
+    //   userProfile: visiblePart,
+    //   postsNotByYou: notOwnPost,
+    // });
 
+    //
     res.render("timeline", {
       userProfile: visiblePart,
-      userPosts: userPosts,
       postsNotByYou: notOwnPost,
     });
     //
-    // res.json({});
+
     //
   } catch (err) {
     console.log(err);
@@ -437,6 +444,12 @@ router.get("/strangerOwnPost/:id", async (req, res) => {
   try {
     //
     const peopleId = req.params.id;
+
+    //the strangerUser
+    const strangerUser = await User.findById({ _id: peopleId });
+
+    console.log(strangerUser, "strangerUser");
+
     //
     const allPosts = await Post.find({}).populate("userId");
     //
@@ -444,16 +457,33 @@ router.get("/strangerOwnPost/:id", async (req, res) => {
     // const userPosts = await Post.find({ userId: req.params.id });
 
     let userPosts = [];
+    // let postedBy;
+    //
     for (let index = 0; index < allPosts.length; index++) {
       const onePost = allPosts[index];
+
       //
-      if (onePost.userId._id.toString() == peopleId) {
+      //
+      if (
+        onePost.userId &&
+        onePost.userId._id &&
+        onePost.userId._id.toString() == peopleId
+      ) {
+        //
+        // console.log(onePost.userId.username, "onePost");
+        // postedBy = onePost.userId.username;
+        //
         userPosts.push(onePost);
       }
     }
 
     // console.log(userPosts, "userPosts");
-    res.render("strangerPostList", { userPosts: userPosts });
+    // console.log(postedBy, "postedBy");
+    //
+    res.render("strangerPostList", {
+      userPosts: userPosts,
+      postedBy: strangerUser.username,
+    });
     // res.json({ userPosts: userPosts });
     //
   } catch (err) {
@@ -486,5 +516,6 @@ router.get("/strangerOwnPost/:id", async (req, res) => {
 //     res.send(e);
 //   }
 // });
+//
 //
 module.exports = router;

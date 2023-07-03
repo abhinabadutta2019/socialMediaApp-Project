@@ -1,94 +1,97 @@
 <%- include('partials/header') %>
-<h2>Your own posts</h2>
-<div>
-  <% if ( myArray.length>0) { %> <% for( let index = 0; index < myArray.length;
-  index++ ) { %>
-  <!--  -->
-  <li id="<%=myArray[index]._id %>">
-    <%if(myArray[index].imagePaths.length>0){ const
-    imageWidth=200/myArray[index].imagePaths.length %> <% for (let imageIndex =
-    0; imageIndex < myArray[index].imagePaths.length; imageIndex++) { %>
 
-    <div
-      style="
-        max-width: <%=imageWidth %>px;
-        max-height: 150px;
-        display: inline-block;
-      "
-    >
-      <img
-        src="<%= myArray[index].imagePaths[imageIndex] %>"
-        alt="Image"
-        style="max-width: 100%; max-height: 100%"
-      />
-    </div>
-    <% } %> <% } %>
+<div class="row justify-content-center">
+  <div class="col-lg-6 width:100%">
+    <!-- heading -->
+    <h2 class="text-center">Your created posts</h2>
     <!--  -->
-    <p>description : <%=myArray[index].description %></p>
-    <p>likes : <%=myArray[index].likes.length %></p>
+    <% if ( myArray.length>0) { %>
     <!--  -->
-    <div>
-      <button onclick="postLikedByButton()">postLikedBy</button>
-    </div>
-    <!--  -->
-    <br />
-    <!--  -->
-    <div>
-      <button onclick="updatePostButton()">updatePost</button>
-    </div>
-    <!--  -->
-    <br />
-    <button onclick="deletePost()">DeletePost</button>
-    <br /><br />
-  </li>
+    <% for( let index = 0; index < myArray.length; index++ ) { %>
+    <!----------post  box starts-->
+    <div class="bg-white shadow rounded mt-3 pb-3">
+      <!--  post description-->
+      <p class="px-3 pt-3"><%=myArray[index].description %></p>
+      <!--  -->
+      <li style="list-style-type: none" id="<%=myArray[index]._id %>">
+        <% if (myArray[index].photoPath) { %>
+        <div class="d-flex">
+          <img
+            src="<%= myArray[index].photoPath %>"
+            alt="image"
+            class="img-fluid"
+          />
+        </div>
+        <% } %>
+        <!--  -->
+        <p>likes : <%=myArray[index].likes.length %></p>
+        <!--  -->
+        <!-- buttons section  -- these 3 buttons taking equal spaces of available space-->
+        <div class="d-flex">
+          <div class="flex-fill me-1">
+            <button
+              class="btn btn-secondary w-100"
+              onclick="postLikedByButton('<%=myArray[index]._id%>')"
+            >
+              postLikedBy
+            </button>
+          </div>
 
-  <% } %> <% } else{%>
-  <p>No post created by user</p>
-  <%}%>
+          <!--  -->
+          <div class="flex-fill me-1">
+            <button
+              class="btn btn-secondary w-100"
+              onclick="updatePostButton('<%=myArray[index]._id%>')"
+            >
+              updatePost
+            </button>
+          </div>
+          <!--  -->
+          <div class="flex-fill me-1">
+            <button
+              class="btn btn-danger w-100"
+              onclick="deletePost('<%=myArray[index]._id%>')"
+            >
+              DeletePost
+            </button>
+          </div>
+        </div>
+        <!-- button section ends here -->
+      </li>
+      <!----------post box ends-->
+    </div>
+    <% } %>
+    <!--  -->
+    <% } else{%>
+    <p class="text-center">No post created by user</p>
+    <%}%>
+
+    <!--  -->
+  </div>
 </div>
 <script>
-  async function updatePostButton() {
-    // console.log("Hy");
-    const postUpdateButton = event.target;
-    const postUpdateButtonParent = postUpdateButton.parentElement;
-    const postUpdateButtonGrandParent = postUpdateButtonParent.parentElement;
-    const postUpdateButtonGPId = postUpdateButtonGrandParent.id;
-    //
-    // console.log(postUpdateButtonGPId, "postUpdateButtonGPId");
-    //
-    window.location.href = `${window.location.origin}/post/update/${postUpdateButtonGPId}`;
+  async function updatePostButton(post_id) {
+    window.location.href = `${window.location.origin}/post/update/${post_id}`;
   }
   //
-  async function postLikedByButton() {
+  async function postLikedByButton(postId) {
     //
     try {
       //
-      const postLikedButton = event.target;
-      const postLikedButtonParent = postLikedButton.parentElement;
-      const postLikedButtonGrandParent = postLikedButtonParent.parentElement;
-      //
-      const postLikedButtonGPId = postLikedButtonGrandParent.id;
-      //
-      // console.log(postLikedButtonGPId, "postLikedButtonGPId");
 
       //redirect
-      window.location.href = `${window.location.origin}/post/postLiked/${postLikedButtonGPId}`;
+      window.location.href = `${window.location.origin}/post/postLiked/${postId}`;
       //
     } catch (err) {
       console.log(err);
     }
   }
   //
-  async function deletePost() {
+  async function deletePost(postId) {
     //
     try {
-      const deleteButton = event.target;
-      const deleteButtonParent = deleteButton.parentElement;
-      const deleteParentId = deleteButtonParent.id;
-      // console.log(deleteParentId, "deleteParentId");
-
       const responseDelete = await fetch(
-        `${window.location.origin}/post/delete/${deleteParentId}`,
+        `${window.location.origin}/post/delete/${postId}`,
         {
           method: "DELETE",
           headers: {
@@ -114,3 +117,5 @@
     }
   }
 </script>
+
+<%- include('partials/footer') %>

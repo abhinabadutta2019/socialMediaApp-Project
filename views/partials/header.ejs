@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <nav>
   <ul>
     <h3>
@@ -6,72 +7,147 @@
       <li><a href="/user/register">Register</a></li>
       <li><a href="/user/login">LogIn</a></li>
       <li><a href="/user/allUsers">User You may know</a></li>
+=======
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>socialApp</title>
+>>>>>>> againtry
 
-      <li><a href="/post/create">Create-Post</a></li>
+    <!-- font awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<!-- Bootstrap CSS CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+<!--  -->
+<!-- Tab Icon -->
+<link rel="icon" href="/images/icon.png" type="image/png">
+
+  </head>
+
+  <!--  -->
+
+  <body>
+
+    <!--  -->
+    <nav class="navbar navbar-expand-lg bg-light">
+      <div class="container">
+        <!--  -->
+        <a class="navbar-brand px-5" href="/post/timeline/all">🦝socialApp</a>
+
+<!--  -->
+<button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+<!--  -->
+<div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="nav navbar-nav px-5">
+          <li class="nav-item">
+            <a class="nav-link" href="/user/personalDetails">Personal Details
+            </a>
+          </li>
+          <!-- <li class="nav-item"><a class="nav-link" href="/user/updateProfileImage">Update Profile Image</a></li> -->
+          <!-- <li class="nav-item"><a class="nav-link" href="/user/register">Register</a></li> -->
+          <!-- <li class="nav-item"><a class="nav-link" href="/user/login">LogIn</a></li> -->
+          <li class="nav-item"><a class="nav-link" href="/user/allUsers">You may know</a></li>
+
+          <li class="nav-item"><a class="nav-link" href="/post/create">Create Post</a></li>
+          <!--  -->
+          <li class="nav-item"><a class="nav-link" href="/post/timeline/all">Post Timeline</a></li>
+          <!--  -->
+          <li class="nav-item"><a class="nav-link" href="/post/ownposts">Your Posts</a></li>
+          <!--  -->
+          <li class="nav-item"><a class="nav-link" href="/user/logout">Logout</a></li>
+      </ul>
+    </div>
+    </nav>
+
+       <!-- message-- each page er script theke, eta te value put kora hobe -->
+
+    <div class="row justify-content-center">
+      <div class="col-lg-6 width:100%">
+        <h3 class="text-center">
+        
+            <div id="message"></div>
+       
+        </h3>
+      </div>
+  </div>
+
+  <!-- this for all the page that imports it -->
+      <div class="container mt-2">
       <!--  -->
-      <li><a href="/post/timeline/all">Post-Timeline</a></li>
+       <!-- logout Button -->
+       <!-- <button class="btn btn-primary" onclick="logoutUser()">Logout</button> -->
+       <!--  -->
+       <!--  -->
+       <!-- button to see users own posts -->
+       <!-- <button
+         class="btn btn-primary"
+         id="seeYourPosts"
+         onclick="seeYourPostButton()">
+         See Your Posts
+       </button> -->
+      <!-- message-- each page er script theke, eta te value put kora hobe -->
+   
 
-      <!--  -->
-    </h3>
-    <!-- logout Button -->
-    <button onclick="logoutUser()">Logout</button>
-    <!-- button to see users own posts -->
-    <button id="seeYourPosts" onclick="seeYourPostButton()">
-      seeYourPosts
-    </button>
-  </ul>
-  <!-- message-- each page er script theke, eta te value put kora hobe -->
-  <h3>
-    <ul style="list-style-type: none">
-      <div id="message"></div>
-    </ul>
-  </h3>
-</nav>
+      <script>
+        //
+        message = document.getElementById("message");
+        //
+        async function seeYourPostButton() {
+          try {
+            // button to see users own posts
+            //just using for redirection
 
-<script>
-  //
-  message = document.getElementById("message");
-  //
-  async function seeYourPostButton() {
-    try {
-      // button to see users own posts
-      //just using for redirection
-
-      window.location.href = `${window.location.origin}/post/ownposts`;
-    } catch (err) {
-      console.log(err);
-    }
-  }
-  //
-  async function logoutUser() {
-    try {
-      const responseLogout = await fetch(
-        `${window.location.origin}/user/logout`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-
-          //
+            window.location.href = `${window.location.origin}/post/ownposts`;
+          } catch (err) {
+            console.log(err);
+          }
         }
-      );
-      //
-      const logoutResult = await responseLogout.json();
-      //
-      console.log(logoutResult);
-      if (logoutResult.message == "logout success") {
         //
-        message.textContent = logoutResult.message;
-        //
-        setTimeout(function () {
-          //
-          window.location.href = `${window.location.origin}/user/login`;
-        }, 1000);
-      }
-    } catch (err) {
-      console.log(err);
-      res.json(err);
-    }
-  }
-</script>
+        async function logoutUser() {
+          try {
+            const responseLogout = await fetch(
+              `${window.location.origin}/user/logout`,
+              {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+
+                //
+              }
+            );
+            //
+            const logoutResult = await responseLogout.json();
+            //
+            console.log(logoutResult);
+            if (logoutResult.message == "logout success") {
+              //
+              message.textContent = logoutResult.message;
+              //
+              setTimeout(function () {
+                //
+                window.location.href = `${window.location.origin}/user/login`;
+              }, 1000);
+            }
+          } catch (err) {
+            console.log(err);
+            res.json(err);
+          }
+        }
+      </script>
+    
+  
+</html>

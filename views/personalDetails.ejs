@@ -1,49 +1,126 @@
 <%- include('partials/header') %>
 
-<h2>User Details</h2>
+<!--  -->
+<!-- ei div er id chilo -->
+<div class="row justify-content-center">
+  <div class="col-lg-4 width:100%">
+    <div class="bg-white shadow rounded mt-3 pb-3">
+      <h2 class="text-center">Personal Details</h2>
+      <!--  -->
+      <!--  -->
+      <div>
+        <% if (user.photoPath) { %>
+        <div class="d-flex">
+          <img src="<%= user.photoPath %>" alt="image" class="img-fluid" />
+        </div>
+        <% } %>
+        <!-- infos starts -->
+        <div class="d-flex">
+          <div class="flex-fill">
+            <span class="m-2 fw-bold" style="font-size: 25px"
+              ><%= user.username %></span
+            >
+          </div>
+          <div class="flex-fill">
+            <p class="pt-2">
+              <strong>followers:</strong> <%= user.followers.length %>
+            </p>
+          </div>
+          <div class="flex-fill">
+            <p class="pt-2">
+              <strong>followings:</strong> <%= user.followings.length %>
+            </p>
+          </div>
+        </div>
+        <!-- infos ends -->
 
-<div id="<%= user._id %>">
-  <!--  -->
-  <div>
-    <img
-      src="<%= user.imagePath %>"
-      alt="Image"
-      style="max-width: 120px; max-height: 120px"
-    />
+        <!-- button starts--------------------- -->
+
+        <!-- button line 1 -->
+        <div class="d-flex">
+          <!-- followers details button -->
+          <div class="flex-fill me-1">
+            <button
+              class="btn btn-secondary w-100"
+              onclick="followersDetails('<%= user._id %>')"
+            >
+              Followers Details
+            </button>
+          </div>
+          <!--  -->
+
+          <!--  -->
+          <div class="flex-fill me-1">
+            <button
+              class="btn btn-secondary w-100"
+              onclick="followingsDetails('<%= user._id %>')"
+            >
+              Followings Details
+            </button>
+          </div>
+        </div>
+        <!-- button line 2 -->
+        <div class="d-flex mt-3">
+          <div class="flex-fill me-1">
+            <button
+              class="btn btn-secondary w-100"
+              onclick="updateYourProfileImage()"
+            >
+              Update profile pic
+            </button>
+          </div>
+          <!--  -->
+          <div class="flex-fill me-1">
+            <button class="btn btn-secondary w-100" onclick="seeAllYourPosts()">
+              See all Your Posts
+            </button>
+          </div>
+        </div>
+        <!--  -->
+        <!-- button line 3 -->
+        <!-- delete user -->
+        <div class="d-flex mt-3">
+          <div class="flex-fill me-1">
+            <button class="btn btn-danger w-100" onclick="deleteUser()">
+              Delete Your Profile
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- try  -->
+    <div>
+      <h3 class="text-center mt-3">Update Password</h3>
+      <!-- <h4>Message:Fill existing username or password to update</h4> -->
+      <br />
+      <!-- from starts -->
+      <div class="bg-white shadow rounded p-3 input-group-lg">
+        <form action="#">
+          <!--  -->
+
+          <!-- password -->
+          <label for="updatePassword">Updated Password</label>
+          <input
+            type="password"
+            id="updatePassword"
+            class="form-control"
+            required
+          />
+          <p>message : You have to login again - as you submit update button</p>
+        </form>
+      </div>
+      <!-- form ends -->
+
+      <!-- form Button -->
+      <button
+        class="btn btn-secondary w-100"
+        id="updatePasswordButton"
+        onclick="onUpdatePasswordButton()"
+      >
+        Update Password
+      </button>
+    </div>
   </div>
-  <!--  -->
-  <p>username:<%= user.username %></p>
-
-  <p>followers:<%= user.followers.length %></p>
-  <!--  -->
-  <button onclick="followersDetails()">followers Details</button>
-  <!--  -->
-
-  <p>followings:<%= user.followings.length %></p>
-  <!--  -->
-  <button onclick="followingsDetails()">followings Details</button>
-  <!--  -->
-  <br /><br />
-  <!-- delete user -->
-  <button onclick="deleteUser()">deleteYourProfile</button>
-</div>
-<br /><br /><br /><br />
-<div>
-  <h3>Update Password</h3>
-
-  <!-- <h4>Message:Fill existing username or password to update</h4> -->
-  <br />
-  <form action="#">
-    <!--  -->
-    <p>message : You have to login again - as you submit update button</p>
-    <!-- password -->
-    <label for="updatePassword">updatePassword</label>
-    <input type="password" id="updatePassword" required />
-  </form>
-  <!-- form Button -->
-  <button id="updatePasswordButton" onclick="onUpdatePasswordButton()">
-    updatePassword
-  </button>
 </div>
 
 <script>
@@ -52,32 +129,43 @@
   message.textContent = "";
   //
 
-  async function followersDetails() {
+  //
+  async function seeAllYourPosts() {
     try {
-      //
-      const followersDetailButton = event.target;
-      const followersDetailParent = followersDetailButton.parentElement;
-      const followersDetailParentId = followersDetailParent.id;
-      //
-
       //redirect
-      window.location.href = `${window.location.origin}/user/followersList/${followersDetailParentId}`;
+      window.location.href = `${window.location.origin}/post/ownposts`;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  //
+  async function updateYourProfileImage() {
+    try {
+      //redirect
+      window.location.href = `${window.location.origin}/user/updateProfileImage`;
     } catch (err) {
       console.log(err);
     }
   }
   //
-  async function followingsDetails() {
-    //
+
+  async function followersDetails(userId) {
     try {
-      const followingsDetailsButton = event.target;
-      const followingsDetailsButtonParent =
-        followingsDetailsButton.parentElement;
-      const followingsDetailsButtonParentId = followingsDetailsButtonParent.id;
       //
 
       //redirect
-      window.location.href = `${window.location.origin}/user/followingsList/${followingsDetailsButtonParentId}`;
+      window.location.href = `${window.location.origin}/user/followersList/${userId}`;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  //
+  async function followingsDetails(userId) {
+    //
+    try {
+      //redirect
+      window.location.href = `${window.location.origin}/user/followingsList/${userId}`;
     } catch (err) {
       console.log(err);
     }
@@ -132,10 +220,6 @@
   //
   async function deleteUser() {
     try {
-      const deleteButton = event.target;
-      const parentDeleteButton = deleteButton.parentElement;
-      const delParentId = parentDeleteButton.id;
-      // console.log(delParentId, "delParentId");
       const responseDelete = await fetch(
         `${window.location.origin}/user/authDelete`,
         {
@@ -164,3 +248,6 @@
     }
   }
 </script>
+
+<!--  -->
+<%- include('partials/footer') %>

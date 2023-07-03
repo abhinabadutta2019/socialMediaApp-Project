@@ -1,56 +1,103 @@
 <%- include('partials/header') %>
 <!--  -->
-<h2>followings details</h2>
 
-<div>
-  <!--  -->
-  <% if (userFollowings[0].followings_info.length>0) { %> <% for( let i = 0; i <
-  userFollowings[0].followings_info.length; i++ ) { %>
+<div class="row justify-content-center">
+  <div class="col-lg-4 width:100%">
+    <h2 class="text-center">followers details</h2>
+    <!--  -->
+    <% if (userFollowings[0].followings_info.length>0) { %> <% for( let i = 0; i
+    < userFollowings[0].followings_info.length; i++ ) { %>
 
-  <!--  -->
-  <li id="<%= userFollowings[0].followings_info[i]._id %>">
-    <p>userName:<%= userFollowings[0].followings_info[i].username %></p>
-    <p>
-      followers:<%= userFollowings[0].followings_info[i].followers.length %>
-    </p>
-    <p>
-      followings:<%= userFollowings[0].followings_info[i].followings.length %>
-    </p>
-    <button onclick="getUser()">Details</button>
-  </li>
-  <% } %> <% } else{%>
-  <p>No followings found</p>
-  <%}%>
+    <!----------user  box starts-->
+    <div class="bg-white shadow rounded mt-3 pb-3">
+      <li style="list-style-type: none">
+        <!--  -->
+        <% if (userFollowings[0].followings_info[i].photoPath) { %>
+        <div class="d-flex">
+          <img
+            src="<%= userFollowings[0].followings_info[i].photoPath %>"
+            alt="image"
+            class="img-fluid"
+          />
+        </div>
+        <!--  -->
+        <% } %>
+        <!-- text details starts -->
+        <div class="d-flex flex-wrap">
+          <div class="flex-fill">
+            <span class="m-2 fw-bold" style="font-size: 25px"
+              ><%= userFollowings[0].followings_info[i].username %></span
+            >
+          </div>
+          <!--  -->
+          <div class="flex-fill">
+            <p class="pt-2">
+              <strong>followers:</strong> <%=
+              userFollowings[0].followings_info[i].followers.length %>
+            </p>
+          </div>
+          <!--  -->
+          <div class="flex-fill">
+            <p class="pt-2">
+              <strong>followings:</strong> <%=
+              userFollowings[0].followings_info[i].followings.length %>
+            </p>
+          </div>
+          <!--  -->
+        </div>
+        <!--text details ends  -->
+
+        <!--  button starts-->
+        <div class="d-flex">
+          <div class="flex-fill me-1">
+            <button
+              class="btn btn-secondary w-100"
+              onclick="getUser('<%= userFollowings[0].followings_info[i]._id %>')"
+            >
+              Details
+            </button>
+          </div>
+        </div>
+        <!-- button ends  -->
+      </li>
+    </div>
+
+    <% } %> <% } else{%>
+    <p class="text-center">No followings found</p>
+    <%}%>
+    <!-- div ends  -->
+  </div>
 </div>
-
 <script>
   //
   //Details button = get user detail from all user page
-  async function getUser() {
+  async function getUser(userId) {
     try {
       //   const id = event.target.id;
       //   console.log(id);
-      const buttonDetail = event.target;
-      //to get the id of the <li>
-      const buttonParent = buttonDetail.parentElement;
-      //   console.log(buttonDetail);
+      // const buttonDetail = event.target;
+      // //to get the id of the <li>
+      // const buttonParent = buttonDetail.parentElement;
+      // //   console.log(buttonDetail);
 
-      const id = buttonParent.id;
+      // const id = buttonParent.id;
 
-      //   console.log(id, "id");
+      // //   console.log(id, "id");
 
-      await fetch(`${window.location.origin}/user/getUser/${id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      // await fetch(`${window.location.origin}/user/getUser/${id}`, {
+      //   method: "GET",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      // });
 
       //   console.log(`${window.location.origin}/user/getUser`);
       //
-      window.location.href = `${window.location.origin}/user/getUser/${id}`;
+      window.location.href = `${window.location.origin}/user/getUser/${userId}`;
     } catch (err) {
       console.log(err);
     }
   }
 </script>
+
+<%- include('partials/footer') %>

@@ -12,6 +12,9 @@ const {
   postmanLoginMiddleware,
 } = require("../middleware/postmanLoginMiddleware");
 const { hashPass, deleteFromUserArray } = require("../helper/utils");
+const multer = require("../middleware/multer");
+const aws = require("../helper/s3");
+///////////////////////////////////////////////
 
 //
 const path = require("path");
@@ -142,7 +145,8 @@ router.get("/logout", async (req, res) => {
     });
 
     //this to redirect
-    res.json({ message: "logout success" });
+    // res.json({ message: "logout success" });
+    res.redirect("login");
   } catch (err) {
     console.log(err);
     res.json(err);
@@ -200,8 +204,8 @@ router.get("/allUsers", verifyLoggedInUser, async (req, res) => {
     });
 
     //just 2 would be shown
-    if (allUsers.length > 2) {
-      allUsers = allUsers.slice(0, 2);
+    if (allUsers.length > 4) {
+      allUsers = allUsers.slice(0, 4);
     }
 
     // res.json(allUsers);
@@ -211,9 +215,21 @@ router.get("/allUsers", verifyLoggedInUser, async (req, res) => {
   }
 });
 
+//frontend - updateProfileImage
+router.get("/updateProfileImage", verifyLoggedInUser, (req, res) => {
+  try {
+    res.render("updateProfileImage");
+  } catch (err) {
+    res.json(err);
+  }
+});
+
 //--/user
 //create / register- user
-router.post("/register", upload.single("image"), async (req, res) => {
+// form er file er variable name and route er multer.single("variable name") same thakte hobe
+router.post("/register", multer.single("fileA"), async (req, res) => {
+  // console.log(req.body, "req.body");
+  // console.log(req.file, "req.file");
   try {
     //
     if (req.body.username.length < 3 || req.body.password.length < 3) {
@@ -235,13 +251,30 @@ router.post("/register", upload.single("image"), async (req, res) => {
     //comming from helper/utils/hashPass function
     const hashedPassword = await hashPass(req.body.password);
 
-    const newUser = new User({
-      username: req.body.username,
-      password: hashedPassword,
-      // isAdmin: req.body.isAdmin,
+    //initializing newUser
+    let newUser;
+    //
+    if (req.file) {
+      const file = req.file;
       //
-      imagePath: imagePath,
-    });
+      const uploadResponse = await aws.uploadFileToS3(file);
+      //
+      console.log(uploadResponse.Location, "uploadResponse.Location");
+      //
+      newUser = new User({
+        username: req.body.username,
+        password: hashedPassword,
+        photoPath: uploadResponse.Location,
+      });
+    } else if (!req.file) {
+      newUser = new User({
+        username: req.body.username,
+        password: hashedPassword,
+        // isAdmin: req.body.isAdmin,
+        //
+        photoPath: "/images/defaultImage.jpg",
+      });
+    }
 
     //this works
     const user = await newUser.save();
@@ -257,13 +290,63 @@ router.post("/register", upload.single("image"), async (req, res) => {
     //
 
     res.json({ message: "user created" });
+    //
+    // res.json({ user: user });
     // res.send();
   } catch (err) {
     console.log(err);
     res.json({ err: err });
   }
 });
+// form er file er variable name and route er multer.single("variable name") same thakte hobe
 //
+//// prettier-ignore
+router.put(
+  "/updateProfileImage",
+  verifyLoggedInUser,
+  multer.single("imageFile"),
+  async (req, res) => {
+    //
+    try {
+      if (!req.file) {
+        return res.json({ message: "No file to upload" });
+      }
+      // console.log(req.userDetail,"");
+      const user = req.userDetail;
+      //
+      // console.log(user, "before user");
+      const oldUser = { ...user._doc };
+
+      const file = req.file;
+      //
+      const uploadResponse = await aws.uploadFileToS3(file);
+      //
+      console.log(uploadResponse.Location, "uploadResponse.Location");
+      //
+      const updatedUser = await User.findByIdAndUpdate(
+        user._id,
+        {
+          $set: { photoPath: uploadResponse.Location },
+        },
+        { new: true }
+      );
+
+      const updatedImagePath = updatedUser.photoPath;
+      const oldImagePath = oldUser.photoPath;
+
+      res.json({
+        updatedImagePath: updatedImagePath,
+        oldImagePath: oldImagePath,
+      });
+
+      // console.log(user);
+    } catch (err) {
+      console.log(err);
+      res.json(err);
+    }
+  }
+);
+
 /////////////////////////////////////////////
 //login route ( it is to check password and genarate token)
 router.post("/login", async (req, res) => {
@@ -523,6 +606,8 @@ router.put("/unfollow/:id", verifyLoggedInUser, async (req, res) => {
     res.json({ err: err });
   }
 });
+
+// 6491f37f408f5da10c435178 deleteUserid
 
 //delete user if authenticated/ or user logged in
 router.delete("/authDelete", verifyLoggedInUser, async (req, res) => {

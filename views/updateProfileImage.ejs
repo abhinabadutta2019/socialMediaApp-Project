@@ -3,12 +3,30 @@
 
 <form action="#">
   <!--  -->
+<<<<<<< HEAD
   <label for="imageUploadLabel">Upload image</label>
   <br />
   <input type="file" id="imageUpload" name="imageUpload" />
   <!--  -->
 </form>
 <button id="uploadButton" onclick="onSubmitImage()">Upload</button>
+=======
+  <div class="form-group">
+    <label for="imageUploadLabel">Upload image</label>
+    <br />
+    <input
+      type="file"
+      class="form-control"
+      id="imageUpload"
+      name="imageUpload"
+    />
+  </div>
+  <!--  -->
+</form>
+<button class="btn btn-primary" id="uploadButton" onclick="onSubmitImage()">
+  Upload
+</button>
+>>>>>>> againtry
 
 <script>
   //
@@ -19,7 +37,11 @@
       const imageUpload = document.getElementById("imageUpload");
       //
       const formData = new FormData();
+<<<<<<< HEAD
       formData.append("image", imageUpload.files[0]);
+=======
+      formData.append("imageFile", imageUpload.files[0]);
+>>>>>>> againtry
 
       //
       // console.log(formData, "formData");
@@ -28,7 +50,11 @@
       const response = await fetch(
         `${window.location.origin}/user/updateProfileImage`,
         {
+<<<<<<< HEAD
           method: "POST",
+=======
+          method: "PUT",
+>>>>>>> againtry
 
           body: formData,
           //
@@ -36,9 +62,15 @@
       );
       //
       const result = await response.json();
+<<<<<<< HEAD
       //   //
       //   console.log(result, "result");
       //
+=======
+      //
+      console.log(result, "result");
+
+>>>>>>> againtry
       if (result.updatedImagePath == result.oldImagePath) {
         console.log(result.updatedImagePath, "result.updatedImagePath");
         console.log(result.oldImagePath, "result.oldImagePath");
@@ -72,3 +104,8 @@
     }
   }
 </script>
+<<<<<<< HEAD
+=======
+
+<%- include('partials/footer') %>
+>>>>>>> againtry

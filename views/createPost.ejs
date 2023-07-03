@@ -1,80 +1,112 @@
 <%- include('partials/header') %>
-<h3>Create Post</h3>
-<div>
-  <form action="#">
-    <label for="description">description</label>
-    <input type="text" id="postDescription" required />
-    <!-- image -->
-    <br /><br />
-    <label for="imageUploadLabel">Upload image</label>
-    <br />
-    <input type="file" id="imageUpload" name="imageUpload" multiple />
-  </form>
-  <button id="postSubmit" onclick="onPostSubmit()">submitPost</button>
-</div>
-<br /><br /><br />
 
-<!--  -->
-<script>
-  //
-  let message = document.getElementById("message");
-  message.textContent = "";
-  //
-  async function onPostSubmit() {
-    //
-    try {
-      const description = document.getElementById("postDescription").value;
-      //
-      const imageUpload = document.getElementById("imageUpload");
-      const imageFile = imageUpload.files[0];
-      //
-      const formData = new FormData();
-      formData.append("description", description);
-      // formData.append("image", imageFile);
-      //
 
-      //
-      for (let i = 0; i < imageUpload.files.length; i++) {
-        const file = imageUpload.files[i];
-        formData.append("images", file);
-      }
 
-      const postSubmitResponse = await fetch(
-        `${window.location.origin}/post/create`,
-        {
-          method: "POST",
-          body: formData,
+<div class="container mt-5 pt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6 width:100%">
+      <h3 class="text-dark fw-bold text-center">Create Post</h3>
+      <!-- form starts -->
+      <div class="bg-white shadow rounded p-3 input-group-lg">
+      <form action="#">
+        <div class="form-group">
+          <label for="description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            id="postDescription"
+            required
+          />
+        </div>
+        <!-- image -->
+        <div class="form-group">
+          <input
+            type="file"
+            class="form-control"
+            id="imageUpload"
+            name="imageUpload"
+          />
+        </div>
+      </form>
+    </div>
+    </div>
+  </div>
+  </div>
+    <!--  -->
+    <div class="row justify-content-center p-3">
+      <div class="col-lg-6 width:100%">
+      <button class="btn btn-secondary w-100" id="postSubmit" onclick="onPostSubmit()">
+        submitPost
+      </button>
+    </div>
+    </div>
+
+
+    <!--  -->
+    <script>
+      //
+      let message = document.getElementById("message");
+      message.textContent = "";
+      //
+      async function onPostSubmit() {
+        //
+        try {
+          const description = document.getElementById("postDescription").value;
+          //
+          const imageUpload = document.getElementById("imageUpload");
+          const imageFile = imageUpload.files[0];
+          //
+          const formData = new FormData();
+          formData.append("description", description);
+
+          formData.append("image", imageFile);
+          //
+
+          //
+          // for (let i = 0; i < imageUpload.files.length; i++) {
+          //   const file = imageUpload.files[i];
+          //   //
+          //   console.log(file);
+          //   formData.append("images", file);
+          // }
+
+          const postSubmitResponse = await fetch(
+            `${window.location.origin}/post/create`,
+            {
+              method: "POST",
+              body: formData,
+            }
+          );
+          const postSubmitResult = await postSubmitResponse.json();
+
+          //
+          console.log(postSubmitResult, "postSubmitResult");
+          // //
+          // console.log(postSubmitResult, "postSubmitResult");
+          if (postSubmitResult.message == "post created") {
+            //
+            message.textContent = postSubmitResult.message;
+            //
+            setTimeout(function () {
+              //
+              window.location.href = `${window.location.origin}/post/ownposts`;
+            }, 2000);
+          } else if (postSubmitResult.message) {
+            //
+            message.textContent = postSubmitResult.message;
+            //
+            setTimeout(function () {
+              //
+              window.location.href = window.location.href;
+            }, 1000);
+          }
+        } catch (err) {
+          console.log(err);
+          res.json(err);
         }
-      );
-      const postSubmitResult = await postSubmitResponse.json();
+      }
+    </script>
 
-      //
-      console.log(postSubmitResult, "postSubmitResult");
-      // //
-      // console.log(postSubmitResult, "postSubmitResult");
-      // if (postSubmitResult.message == "post created") {
-      //   //
-      //   message.textContent = postSubmitResult.message;
-      //   //
-      //   setTimeout(function () {
-      //     //
-      //     window.location.href = `${window.location.origin}/post/ownposts`;
-      //   }, 2000);
-      // }
-      //
-      // else if (postSubmitResult.message) {
-      //   //
-      //   message.textContent = postSubmitResult.message;
-      //   //
-      //   setTimeout(function () {
-      //     //
-      //     window.location.href = window.location.href;
-      //   }, 1000);
-      // }
-      //
-    } catch (err) {
-      console.log(err);
-      res.json(err);
-    }
-  }
-</script>
+    <%- include('partials/footer') %>
+  </div>
+</div>

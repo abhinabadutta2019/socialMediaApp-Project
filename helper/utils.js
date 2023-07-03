@@ -48,6 +48,10 @@ const deleteFromUserArray = async function (deleteUserid) {
         });
       }
     }
+
+    //
+    // Delete user's posts
+    await Post.deleteMany({ userId: deleteUserid });
     //........................
     //delete user._id from all the post.likes array -
     const allPosts = await Post.find({});
